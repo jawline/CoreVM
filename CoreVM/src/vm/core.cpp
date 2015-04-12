@@ -13,14 +13,24 @@ Core::~Core() {
 
 void Core::setupJumpTable() {
 	_jumpTable = new std::function<void(Core*)>[255];
+	
 	_jumpTable[NoOp] = &Core::noOp;
 	_jumpTable[LoadImmediate] = &Core::loadImmediate;
 
+
+	_jumpTable[AddImmediate] = &Core::addImmediate;
+	_jumpTable[SubtractImmediate] = &Core::subtractImmediate;
+	_jumpTable[MultiplyImmediate] = &Core::multiplyImmediate;
+	_jumpTable[DivideImmediate] = &Core::divideImmediate;
+	_jumpTable[GreaterThanImmediate] = &Core::greaterThanImmediate;
+	_jumpTable[LessThanImmediate] = &Core::lessThanImmediate;
 
 	_jumpTable[AddRegister] = &Core::addRegister;
 	_jumpTable[SubtractRegister] = &Core::subtractRegister;
 	_jumpTable[MultiplyRegister] = &Core::multiplyRegister;
 	_jumpTable[DivideRegister] = &Core::divideRegister;
+	_jumpTable[GreaterThanRegister] = &Core::lessThanRegister;
+	_jumpTable[LessThanRegister] = &Core::greaterThanRegister;
 
 	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
 	_jumpTable[JumpRegister] = &Core::jumpRegister;
