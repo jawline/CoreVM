@@ -1,6 +1,7 @@
 #ifndef _COREVM_PARSER_TOKENS_DEF_H_
 #define _COREVM_PARSER_TOKENS_DEF_H_
 #include <cstddef>
+#include <string>
 
 extern "C" {
 	#include <regexpm/parser.h>
@@ -11,21 +12,23 @@ namespace Assembler {
 		ID,
 		NUM,
 		JUMP,
+		LOAD,
 		COLON,
-		EOF,
+		TOKEN_EOF,
 		INVALID_TOKEN
 	} TOKEN_ID;
 
 	class Token {
 	private:
 		TOKEN_ID _id;
-		char* _data;
+		std::string _data;
 
 	public:
 		Token(TOKEN_ID id);
 		Token(TOKEN_ID id, char const* input, size_t len);
 		~Token();
 
+		TOKEN_ID tokenId() const;
 		char const* tokenString() const;
 	};
 
