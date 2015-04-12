@@ -25,6 +25,13 @@ void Core::jumpImmediate(Core* inst) {
 	printf("JMP %i\n", val);
 }
 
+void Core::jumpRegister(Core* inst) {
+	uint8_t val;
+	CoreUtils::byteFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	inst->_registers[ProgramCounter] = inst->_registers[val];
+	printf("JMP %i\n", val);
+}
+
 void Core::addImmediate(Core* inst) {
 	uint8_t r1;
 	int32_t val;
@@ -137,4 +144,58 @@ void Core::lessThanRegister(Core* inst) {
 	inst->rSetInt(r1, inst->rAsInt(r1) < inst->rAsInt(r2));
 	inst->_registers[ProgramCounter] += 3;
 	printf("LT %i %i %i\n",r1, r2, inst->_registers[r1]);
+}
+
+void Core::jumpIfEqualImmediate(Core* inst) {
+	uint8_t r1, r2;
+	uint32_t dstReg;
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::uintFromBuffer(dstReg, &inst->_data[inst->_registers[ProgramCounter]+3]);
+	if (inst->_registers[r1] == inst->_registers[r2]) {
+		inst->_registers[ProgramCounter] = inst->_registers[dstReg];
+	} else {
+		inst->_registers[ProgramCounter] += 7;
+	}
+	printf("JEQ\n");
+}
+
+void Core::jumpIfNotEqualImmediate(Core* inst) {
+	uint8_t r1, r2;
+	uint32_t dstReg;
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::uintFromBuffer(dstReg, &inst->_data[inst->_registers[ProgramCounter]+3]);
+	if (inst->_registers[r1] != inst->_registers[r2]) {
+		inst->_registers[ProgramCounter] = inst->_registers[dstReg];
+	} else {
+		inst->_registers[ProgramCounter] += 7;
+	}
+	printf("JNEQ\n");
+}
+
+void Core::jumpIfEqualRegister(Core* inst) {
+	uint8_t r1, r2, dstReg;
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::byteFromBuffer(dstReg, &inst->_data[inst->_registers[ProgramCounter]+3]);
+	if (inst->_registers[r1] == inst->_registers[r2]) {
+		inst->_registers[ProgramCounter] = inst->_registers[dstReg];
+	} else {
+		inst->_registers[ProgramCounter] += 4;
+	}
+	printf("JEQ\n");
+}
+
+void Core::jumpIfNotEqualRegister(Core* inst) {
+	uint8_t r1, r2, dstReg;
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::byteFromBuffer(dstReg, &inst->_data[inst->_registers[ProgramCounter]+3]);
+	if (inst->_registers[r1] != inst->_registers[r2]) {
+		inst->_registers[ProgramCounter] = inst->_registers[dstReg];
+	} else {
+		inst->_registers[ProgramCounter] += 4;
+	}
+	printf("JNEQ\n");
 }

@@ -48,7 +48,7 @@ namespace VM {
 		JumpEqualImmediate,
 		JumpNotEqualImmediate,
 		JumpEqualRegister,
-		JumpNotEqualRegister,
+		JumpNotEqualRegister
 	};
 }
 

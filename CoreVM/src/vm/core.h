@@ -60,6 +60,15 @@ namespace VM {
 		 * Unconditional jumps
 		 */
 		static void jumpImmediate(Core*);
+		static void jumpRegister(Core*);
+
+		/**
+		 * Branching conditions
+		 */
+		 static void jumpIfEqualImmediate(Core*);
+		 static void jumpIfNotEqualImmediate(Core*);
+		 static void jumpIfEqualRegister(Core*);
+		 static void jumpIfNotEqualRegister(Core*);
 	};
 }
 

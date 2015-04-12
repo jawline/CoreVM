@@ -15,11 +15,21 @@ void Core::setupJumpTable() {
 	_jumpTable = new std::function<void(Core*)>[255];
 	_jumpTable[NoOp] = &Core::noOp;
 	_jumpTable[LoadImmediate] = &Core::loadImmediate;
-	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
+
+
 	_jumpTable[AddRegister] = &Core::addRegister;
 	_jumpTable[SubtractRegister] = &Core::subtractRegister;
 	_jumpTable[MultiplyRegister] = &Core::multiplyRegister;
 	_jumpTable[DivideRegister] = &Core::divideRegister;
+
+	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
+	_jumpTable[JumpRegister] = &Core::jumpRegister;
+
+	_jumpTable[JumpEqualImmediate] = &Core::jumpIfEqualImmediate;
+	_jumpTable[JumpNotEqualImmediate] = &Core::jumpIfNotEqualImmediate;
+
+	_jumpTable[JumpEqualRegister] = &Core::jumpIfEqualRegister;
+	_jumpTable[JumpNotEqualRegister] = &Core::jumpIfNotEqualRegister;
 }
 
 void Core::setData(uint8_t* data, unsigned int dataSize) {
