@@ -26,14 +26,15 @@ void ByteBuffer::insert(uint8_t byte) {
 		expandBuffer();
 	}
 
-	buffer[bufferCurrentIter++] = byte;
+	insert(byte, bufferCurrentIter);
+	bufferCurrentIter += 1;
 }
 
 void ByteBuffer::insert(uint16_t word) {
 	if (bufferCurrentIter + sizeof(uint16_t) >= bufferCurrentSize) {
 		expandBuffer();
 	}
-	*((uint16_t*)&buffer[bufferCurrentIter]) = word;
+	insert(word, bufferCurrentIter);
 	bufferCurrentIter += sizeof(uint16_t);
 }
 
@@ -41,6 +42,23 @@ void ByteBuffer::insert(uint32_t num) {
 	if (bufferCurrentIter + sizeof(uint32_t) >= bufferCurrentSize) {
 		expandBuffer();
 	}
-	*((uint32_t*)&buffer[bufferCurrentIter]) = num;
+	insert(num, bufferCurrentIter);
 	bufferCurrentIter += sizeof(uint32_t);
+}
+
+
+void ByteBuffer::insert(uint8_t byte, size_t at) {
+	buffer[at] = byte;
+}
+
+void ByteBuffer::insert(uint16_t word, size_t at) {
+	*((uint16_t*)&buffer[at]) = word;
+}
+
+void ByteBuffer::insert(uint32_t num, size_t at) {
+	*((uint32_t*)&buffer[at]) = num;
+}
+
+size_t ByteBuffer::current() {
+	return bufferCurrentIter;
 }
