@@ -1,7 +1,7 @@
 #Output executable
 OUTPUT_DIR  = ./bin/
-OUTPUT_FILE = corevm
-OUTPUT_LIB  = libcorevm.so
+OUTPUT_FILE = coreasm
+OUTPUT_LIB  = libcoreasm.so
 EXECUTABLE  = $(OUTPUT_DIR)$(OUTPUT_FILE)
 LIBRARY     = $(OUTPUT_DIR)$(OUTPUT_LIB)
 
@@ -10,7 +10,7 @@ OBJ_DIR=obj
 
 INSTALL_EXE_PATH = /usr/bin/
 INSTALL_LIB_PATH = /usr/lib/
-INSTALL_INCLUDE_PATH = /usr/local/include/CoreVM/
+INSTALL_INCLUDE_PATH = /usr/local/include/CoreASM/
 
 #Compiler settings
 CC=g++
