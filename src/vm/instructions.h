@@ -6,8 +6,10 @@ namespace VM {
 		NoOp = 0x0,
 		LoadImmediate,
 		JumpImmediate,
-		AddImmediate,
-		SubtractImmediate,
+		AddRegister,
+		SubtractRegister,
+		MultiplyRegister,
+		DivideRegister,
 		JumpRegister
 	};
 }

@@ -16,8 +16,10 @@ void Core::setupJumpTable() {
 	_jumpTable[NoOp] = &Core::noOp;
 	_jumpTable[LoadImmediate] = &Core::loadImmediate;
 	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
-	_jumpTable[AddImmediate] = &Core::addImmediate;
-	_jumpTable[SubtractImmediate] = &Core::subtractImmediate;
+	_jumpTable[AddRegister] = &Core::addRegister;
+	_jumpTable[SubtractRegister] = &Core::subtractRegister;
+	_jumpTable[MultiplyRegister] = &Core::multiplyRegister;
+	_jumpTable[DivideRegister] = &Core::divideRegister;
 }
 
 void Core::setData(uint8_t* data, unsigned int dataSize) {

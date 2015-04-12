@@ -17,9 +17,14 @@ namespace VM {
 
 		void setupJumpTable();
 		
-		inline int rAsInt(unsigned int registerNumber) {
+		inline int rAsInt(unsigned int const& registerNumber) {
 			return *((int*)&_registers[registerNumber]);
 		}
+
+		inline void rSetInt(unsigned int const& registerNumber, int const& val) {
+			*((int*)&_registers[registerNumber]) = val;
+		}
+
 	public:
 		Core();
 		~Core();
@@ -30,8 +35,10 @@ namespace VM {
 		static void noOp(Core*);
 		static void loadImmediate(Core*);
 		static void jumpImmediate(Core*);
-		static void addImmediate(Core*);
-		static void subtractImmediate(Core*);
+		static void addRegister(Core*);
+		static void subtractRegister(Core*);
+		static void multiplyRegister(Core*);
+		static void divideRegister(Core*);
 	};
 }
 

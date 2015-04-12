@@ -25,16 +25,42 @@ void Core::jumpImmediate(Core* inst) {
 	printf("JMP %i\n", val);
 }
 
-void Core::addImmediate(Core* inst) {
+void Core::addRegister(Core* inst) {
 	uint8_t dst, r1, r2;
 	CoreUtils::byteFromBuffer(dst, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+2]);
 	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+3]);
-	inst->_registers[dst] = inst->rAsInt(r1) + inst->rAsInt(r2);
+	inst->rSetInt(dst, inst->rAsInt(r1) + inst->rAsInt(r2));
 	inst->_registers[ProgramCounter] += 4;
 	printf("ADD %i %i %i %i\n", dst, r1, r2, inst->_registers[dst]);
 }
 
-void Core::subtractImmediate(Core* inst) {
+void Core::subtractRegister(Core* inst) {
+	uint8_t dst, r1, r2;
+	CoreUtils::byteFromBuffer(dst, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+3]);
+	inst->rSetInt(dst, inst->rAsInt(r1) - inst->rAsInt(r2));
+	inst->_registers[ProgramCounter] += 4;
+	printf("SUB %i %i %i %i\n", dst, r1, r2, inst->_registers[dst]);
+}
 
+void Core::multiplyRegister(Core* inst) {
+	uint8_t dst, r1, r2;
+	CoreUtils::byteFromBuffer(dst, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+3]);
+	inst->rSetInt(dst, inst->rAsInt(r1) * inst->rAsInt(r2));
+	inst->_registers[ProgramCounter] += 4;
+	printf("MUL %i %i %i %i\n", dst, r1, r2, inst->_registers[dst]);
+}
+
+void Core::divideRegister(Core* inst) {
+	uint8_t dst, r1, r2;
+	CoreUtils::byteFromBuffer(dst, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+3]);
+	inst->rSetInt(dst, inst->rAsInt(r1) / inst->rAsInt(r2));
+	inst->_registers[ProgramCounter] += 4;
+	printf("DIV %i %i %i %i\n", dst, r1, r2, inst->_registers[dst]);
 }
