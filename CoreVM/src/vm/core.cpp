@@ -9,6 +9,7 @@ Core::Core() {
 
 Core::~Core() {
 	delete[] _registers;
+	delete[] _jumpTable;
 }
 
 void Core::setupJumpTable() {
