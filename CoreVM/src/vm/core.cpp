@@ -18,7 +18,6 @@ void Core::setupJumpTable() {
 	_jumpTable[NoOp] = &Core::noOp;
 	_jumpTable[LoadImmediate] = &Core::loadImmediate;
 
-
 	_jumpTable[AddImmediate] = &Core::addImmediate;
 	_jumpTable[SubtractImmediate] = &Core::subtractImmediate;
 	_jumpTable[MultiplyImmediate] = &Core::multiplyImmediate;
@@ -49,7 +48,9 @@ void Core::setData(uint8_t* data, unsigned int dataSize) {
 }
 
 void Core::run() {
+	
 	_registers[ProgramCounter] = 0;
+
 	while (_registers[ProgramCounter] < _maxData) {
 		_jumpTable[_data[_registers[ProgramCounter]]](this);
 	}

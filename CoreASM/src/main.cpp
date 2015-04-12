@@ -29,7 +29,7 @@ char* readFromFile(char const* filename) {
 
 	if (!fin) {
 		printf("Could not open file %s\n", filename);
-		return 0;;
+		return 0;
 	}
 
 	fseek(fin, 0, SEEK_END);
