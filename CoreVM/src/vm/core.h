@@ -53,6 +53,8 @@ namespace VM {
 		static void subtractRegister(Core*);
 		static void multiplyRegister(Core*);
 		static void divideRegister(Core*);
+		static void greaterThanRegister(Core*);
+		static void lessThanRegister(Core*);
 
 		/**
 		 * Unconditional jumps

@@ -120,3 +120,21 @@ void Core::divideRegister(Core* inst) {
 	inst->_registers[ProgramCounter] += 3;
 	printf("DIV %i %i %i\n",r1, r2, inst->_registers[r1]);
 }
+
+void Core::greaterThanRegister(Core* inst) {
+	uint8_t r1, r2;
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	inst->rSetInt(r1, inst->rAsInt(r1) > inst->rAsInt(r2));
+	inst->_registers[ProgramCounter] += 3;
+	printf("GT %i %i %i\n",r1, r2, inst->_registers[r1]);
+}
+
+void Core::lessThanRegister(Core* inst) {
+	uint8_t r1, r2;
+	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	inst->rSetInt(r1, inst->rAsInt(r1) < inst->rAsInt(r2));
+	inst->_registers[ProgramCounter] += 3;
+	printf("LT %i %i %i\n",r1, r2, inst->_registers[r1]);
+}
