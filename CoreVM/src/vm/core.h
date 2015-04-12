@@ -33,12 +33,31 @@ namespace VM {
 		void run();
 
 		static void noOp(Core*);
+
 		static void loadImmediate(Core*);
-		static void jumpImmediate(Core*);
+
+		/**
+		 * Immediate op implementation
+		 */
+		static void addImmediate(Core*);
+		static void subtractImmediate(Core*);
+		static void multiplyImmediate(Core*);
+		static void divideImmediate(Core*);
+		static void greaterThanImmediate(Core*);
+		static void lessThanImmediate(Core*);
+
+		/**
+		 * Register op implementations
+		 */
 		static void addRegister(Core*);
 		static void subtractRegister(Core*);
 		static void multiplyRegister(Core*);
 		static void divideRegister(Core*);
+
+		/**
+		 * Unconditional jumps
+		 */
+		static void jumpImmediate(Core*);
 	};
 }
 

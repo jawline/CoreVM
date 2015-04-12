@@ -1,6 +1,6 @@
 jmp start
 
-#Program Entry Pointer
+#Program Entry Point
 start:
 	jmp auxProcess
 ret:
@@ -9,16 +9,9 @@ ret:
 
 #Auxillery Process
 auxProcess:
-	loadi $1 0
-	loadi $2 1
-	add $1 $1 $2
-	add $1 $1 $2
-	add $1 $1 $2
-	add $1 $1 $2
-	add $1 $1 $2
-	add $1 $1 $2
-	add $1 $1 $2
-	add $1 $1 $2
-	add $1 $1 $2
-	add $1 $1 $2
-	jmp ret
+	loadi A 0
+	loadi B 1
+loop:
+	add A A B
+	jeq ret A 10
+	jmp loop

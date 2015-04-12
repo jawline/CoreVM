@@ -3,14 +3,52 @@
 
 namespace VM {
 	enum {
+
+		/**
+		 * NoOp. Its traditional
+		 */
 		NoOp = 0x0,
+
+		/**
+		 * Load a 32 bit value into a register
+		 */
 		LoadImmediate,
-		JumpImmediate,
+
+		/**
+		 * Immediate operations take a register and apply a 32bit signed integer to them
+		 */
+		AddImmediate,
+		SubtractImmediate,
+		MultiplyImmediate,
+		DivideImmediate,
+		GreaterThanImmediate,
+		LessThanImmediate,
+
+		/**
+		 * Register operations apply one register to another, treating each as a 32 bit signed
+		 * int
+		 */
 		AddRegister,
 		SubtractRegister,
 		MultiplyRegister,
 		DivideRegister,
-		JumpRegister
+		GreaterThanRegister,
+		LessThanRegister,
+
+
+		/**
+		 * Unconditional Jumps
+		 */
+		JumpImmediate,
+		JumpRegister,
+		
+		/**
+		 * Branching operations
+		 */
+		JumpEqualImmediate,
+		JumpNotEqualImmediate,
+		JumpEqualRegister,
+		JumpNotEqualRegister,
 	};
 }
 
