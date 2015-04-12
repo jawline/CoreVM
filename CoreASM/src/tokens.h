@@ -1,0 +1,45 @@
+#ifndef _COREVM_PARSER_TOKENS_DEF_H_
+#define _COREVM_PARSER_TOKENS_DEF_H_
+#include <cstddef>
+
+extern "C" {
+	#include <regexpm/parser.h>
+}
+
+namespace Assembler {
+	typedef enum {
+		ID,
+		NUM,
+		JUMP,
+		COLON,
+		EOF,
+		INVALID_TOKEN
+	} TOKEN_ID;
+
+	class Token {
+	private:
+		TOKEN_ID _id;
+		char* _data;
+
+	public:
+		Token(TOKEN_ID id);
+		Token(TOKEN_ID id, char const* input, size_t len);
+		~Token();
+
+		char const* tokenString() const;
+	};
+
+	class Tokeniser {
+	private:
+		regex idRegex;
+		regex intRegex;
+
+		char const* skipWhite(char const* input);
+	public:
+		Tokeniser();
+		~Tokeniser();
+		Token nextToken(char const*& input);
+	};
+}
+
+#endif //_COREVM_PARSER_TOKENS_DEF_H_

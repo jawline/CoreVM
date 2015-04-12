@@ -38,7 +38,7 @@ clean:
 
 #The executable rule compiles the set of objects into the target executable
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 	
 $(LIBRARY): $(OBJECTS)
 	$(CC) $(LDFLAGS)  -shared  $(OBJECTS) -o $@
