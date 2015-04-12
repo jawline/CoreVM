@@ -59,6 +59,10 @@ void ByteBuffer::insert(uint32_t num, size_t at) {
 	*((uint32_t*)&buffer[at]) = num;
 }
 
-size_t ByteBuffer::current() {
+uint8_t* ByteBuffer::raw() const {
+	return buffer;
+}
+
+size_t ByteBuffer::current() const {
 	return bufferCurrentIter;
 }

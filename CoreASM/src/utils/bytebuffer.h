@@ -24,7 +24,9 @@ namespace Assembler {
 		void insert(uint8_t byte, size_t at);
 		void insert(uint16_t word, size_t at);
 		void insert(uint32_t num, size_t at);
-		size_t current();
+
+		uint8_t* raw() const;
+		size_t current() const;
 	};
 }
 
