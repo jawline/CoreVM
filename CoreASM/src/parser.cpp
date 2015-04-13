@@ -6,18 +6,28 @@ using namespace Assembler;
 Parser::Parser() {}
 Parser::~Parser() {}
 
-bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {}
+bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
+	return false;
+}
 
 bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 	Token next = _tokeniser.peekToken(input);
 	
 	if (next.tokenId() == ID) {
-		parseLabel(input, buffer);
+		if (!parseLabel(input, buffer)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
 bool Parser::parse(char const* input, ByteBuffer& buffer) {
-	parseBlock(input, buffer);
+	
+	if (!parseBlock(input, buffer)) {
+		return false;
+	}
+
 	Token next = _tokeniser.peekToken(input);
 	
 	if (next.tokenId() == INVALID_TOKEN) {

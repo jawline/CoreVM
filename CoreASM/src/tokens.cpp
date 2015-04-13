@@ -46,8 +46,9 @@ char const* Tokeniser::skipWhite(char const* input) {
 
 Token Tokeniser::nextToken(char const*& input) {
 	size_t len;
-	Token t = peekToken(input, len);
+	Token next = peekToken(input, len);
 	input += len;
+	return next;
 }
 
 Token Tokeniser::peekToken(char const* input) {
@@ -72,9 +73,9 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 		result = Token(LOAD, input, 4);
 		len = 4;
 	} else if ((len = nfaMatches(idRegex.start, input)) > 0) {
-		result = Token(ID, input, regexLen);
+		result = Token(ID, input, len);
 	} else if ((len = nfaMatches(intRegex.start, input)) > 0) {
-		result = Token(NUM, input, regexLen);
+		result = Token(NUM, input, len);
 	}
 
 	return result;

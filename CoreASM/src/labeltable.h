@@ -22,8 +22,7 @@ namespace Assembler {
        * If the label does not exist return false
        */
       bool getLabel(std::string const& labelName, size_t& position);
-  }
-  }
+  };
 }
 
 #endif //_LABEL_TABLE_DEF_H_
