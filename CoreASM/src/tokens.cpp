@@ -47,7 +47,6 @@ char const* Tokeniser::skipWhite(char const* input) {
 Token Tokeniser::nextToken(char const*& input) {
 	size_t regexLen;
 	Token result = Token(INVALID_TOKEN);
-
 	input = skipWhite(input);
 
 	if (*input == '\0') {
