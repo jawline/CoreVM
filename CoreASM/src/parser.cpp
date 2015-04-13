@@ -3,11 +3,8 @@
 
 using namespace Assembler;
 
-Parser::Parser() {
-}
-
-Parser::~Parser() {
-}
+Parser::Parser() {}
+Parser::~Parser() {}
 
 void Parser::parse(char const* input, ByteBuffer& buffer) {
 	Token next = Token(INVALID_TOKEN);
