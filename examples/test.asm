@@ -1,5 +1,6 @@
-jmp start
-
 start:
-	load A 0
+end:
+left:
+right:
+zero:
 	jmp start

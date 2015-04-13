@@ -45,6 +45,7 @@ char const* Tokeniser::skipWhite(char const* input) {
 }
 
 Token Tokeniser::nextToken(char const*& input) {
+	input = skipWhite(input);
 	size_t len;
 	Token next = peekToken(input, len);
 	input += len;
@@ -52,6 +53,7 @@ Token Tokeniser::nextToken(char const*& input) {
 }
 
 Token Tokeniser::peekToken(char const* input) {
+	input = skipWhite(input);
 	size_t len;
 	return peekToken(input, len);
 }
@@ -63,7 +65,7 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	if (*input == '\0') {
 		result = Token(TOKEN_EOF);
 		len = 0;
-	} else if (*input == ':') {
+	} else if (strncmp(input, ":", 1) == 0) {
 		result = Token(COLON, input, 1);
 		len = 1;
 	} else if (strncmp(input, "jmp", 3) == 0) {
