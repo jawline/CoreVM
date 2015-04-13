@@ -37,7 +37,7 @@ void Core::addImmediate(Core* inst) {
 	int32_t val;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) + val);
+	inst->registerSetInt(r1, inst->registerAsInt(r1) + val);
 	inst->_registers[ProgramCounter] += 6;
 	printf("ADD %i %i\n", r1, val);
 }
@@ -47,7 +47,7 @@ void Core::subtractImmediate(Core* inst) {
 	int32_t val;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) - val);
+	inst->registerSetInt(r1, inst->registerAsInt(r1) - val);
 	inst->_registers[ProgramCounter] += 6;
 	printf("SUB %i %i\n", r1, val);
 }
@@ -57,7 +57,7 @@ void Core::multiplyImmediate(Core* inst) {
 	int32_t val;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) * val);
+	inst->registerSetInt(r1, inst->registerAsInt(r1) * val);
 	inst->_registers[ProgramCounter] += 6;
 	printf("MUL %i %i\n", r1, val);
 }
@@ -67,7 +67,7 @@ void Core::divideImmediate(Core* inst) {
 	int32_t val;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) / val);
+	inst->registerSetInt(r1, inst->registerAsInt(r1) / val);
 	inst->_registers[ProgramCounter] += 6;
 	printf("DIV %i %i\n", r1, val);
 }
@@ -77,7 +77,7 @@ void Core::greaterThanImmediate(Core* inst) {
 	int32_t val;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) > val ? 1 : 0);
+	inst->registerSetInt(r1, inst->registerAsInt(r1) > val ? 1 : 0);
 	inst->_registers[ProgramCounter] += 6;
 	printf("GT %i %i\n", r1, val);
 }
@@ -87,7 +87,7 @@ void Core::lessThanImmediate(Core* inst) {
 	int32_t val;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) < val ? 1 : 0);
+	inst->registerSetInt(r1, inst->registerAsInt(r1) < val ? 1 : 0);
 	inst->_registers[ProgramCounter] += 6;
 	printf("LT %i %i\n", r1, val);
 }
@@ -96,7 +96,7 @@ void Core::addRegister(Core* inst) {
 	uint8_t r1, r2;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) + inst->rAsInt(r2));
+	inst->registerSetInt(r1, inst->registerAsInt(r1) + inst->registerAsInt(r2));
 	inst->_registers[ProgramCounter] += 3;
 	printf("ADD %i %i %i\n",r1, r2, inst->_registers[r1]);
 }
@@ -105,7 +105,7 @@ void Core::subtractRegister(Core* inst) {
 	uint8_t r1, r2;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) - inst->rAsInt(r2));
+	inst->registerSetInt(r1, inst->registerAsInt(r1) - inst->registerAsInt(r2));
 	inst->_registers[ProgramCounter] += 3;
 	printf("SUB %i %i %i\n",r1, r2, inst->_registers[r1]);
 }
@@ -114,7 +114,7 @@ void Core::multiplyRegister(Core* inst) {
 	uint8_t r1, r2;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) * inst->rAsInt(r2));
+	inst->registerSetInt(r1, inst->registerAsInt(r1) * inst->registerAsInt(r2));
 	inst->_registers[ProgramCounter] += 3;
 	printf("MUL %i %i %i\n",r1, r2, inst->_registers[r1]);
 }
@@ -123,7 +123,7 @@ void Core::divideRegister(Core* inst) {
 	uint8_t r1, r2;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) / inst->rAsInt(r2));
+	inst->registerSetInt(r1, inst->registerAsInt(r1) / inst->registerAsInt(r2));
 	inst->_registers[ProgramCounter] += 3;
 	printf("DIV %i %i %i\n",r1, r2, inst->_registers[r1]);
 }
@@ -132,7 +132,7 @@ void Core::greaterThanRegister(Core* inst) {
 	uint8_t r1, r2;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) > inst->rAsInt(r2));
+	inst->registerSetInt(r1, inst->registerAsInt(r1) > inst->registerAsInt(r2));
 	inst->_registers[ProgramCounter] += 3;
 	printf("GT %i %i %i\n",r1, r2, inst->_registers[r1]);
 }
@@ -141,7 +141,7 @@ void Core::lessThanRegister(Core* inst) {
 	uint8_t r1, r2;
 	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->rSetInt(r1, inst->rAsInt(r1) < inst->rAsInt(r2));
+	inst->registerSetInt(r1, inst->registerAsInt(r1) < inst->registerAsInt(r2));
 	inst->_registers[ProgramCounter] += 3;
 	printf("LT %i %i %i\n",r1, r2, inst->_registers[r1]);
 }

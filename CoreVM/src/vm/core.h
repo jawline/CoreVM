@@ -17,11 +17,11 @@ namespace VM {
 
 		void setupJumpTable();
 		
-		inline int rAsInt(unsigned int const& registerNumber) {
+		inline int registerAsInt(unsigned int const& registerNumber) {
 			return ((int*)&_registers[registerNumber])[0];
 		}
 
-		inline void rSetInt(unsigned int const& registerNumber, int const& val) {
+		inline void registerSetInt(unsigned int const& registerNumber, int const& val) {
 			((int*)&_registers[registerNumber])[0] = val;
 		}
 
