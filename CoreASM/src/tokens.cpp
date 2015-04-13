@@ -45,27 +45,30 @@ char const* Tokeniser::skipWhite(char const* input) {
 }
 
 Token Tokeniser::nextToken(char const*& input) {
-	size_t regexLen;
+	Token t = peekToken(input);
+	input += strlen(t.)
+}
+
+Token Tokeniser::peekToken(char const* input, size_t& len) {
 	Token result = Token(INVALID_TOKEN);
 	input = skipWhite(input);
 
 	if (*input == '\0') {
 		result = Token(TOKEN_EOF);
+		len = 0;
 	} else if (*input == ':') {
 		result = Token(COLON, input, 1);
-		input += 1;
+		len = 1;
 	} else if (strncmp(input, "jmp", 3) == 0) {
 		result = Token(JUMP, input, 3);
-		input += 3;
+		len = 3;
 	} else if (strncmp(input, "load", 3) == 0) {
 		result = Token(LOAD, input, 4);
-		input += 4;
-	} else if ((regexLen = nfaMatches(idRegex.start, input)) > 0) {
+		len = 4;
+	} else if ((len = nfaMatches(idRegex.start, input)) > 0) {
 		result = Token(ID, input, regexLen);
-		input += regexLen;
-	} else if ((regexLen = nfaMatches(intRegex.start, input)) > 0) {
+	} else if ((len = nfaMatches(intRegex.start, input)) > 0) {
 		result = Token(NUM, input, regexLen);
-		input += regexLen;
 	}
 
 	return result;
