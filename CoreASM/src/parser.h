@@ -7,11 +7,14 @@ namespace Assembler {
 	class Parser {
 	private:
 		Tokeniser _tokeniser;
+		bool parseLabel(char const*& input, ByteBuffer& buffer);
+		bool parseBlock(char const*& input, ByteBuffer& buffer);
+
 	public:
 		Parser();
 		~Parser();
 
-		void parse(char const* input, ByteBuffer& buffer);
+		bool parse(char const* input, ByteBuffer& buffer);
 	};
 }
 

@@ -41,6 +41,8 @@ namespace Assembler {
 	public:
 		Tokeniser();
 		~Tokeniser();
+		Token peekToken(char const* input, size_t& len);
+		Token peekToken(char const* input);
 		Token nextToken(char const*& input);
 	};
 }
