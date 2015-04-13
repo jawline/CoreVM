@@ -10,9 +10,7 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {}
 bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {}
 
 bool Parser::parse(char const* input, ByteBuffer& buffer) {
-	
 	parseBlock(input, buffer);
-	
 	Token next = _tokeniser.peekToken(input);
 	
 	if (_tokeniser.tokenId() == INVALID_TOKEN) {
