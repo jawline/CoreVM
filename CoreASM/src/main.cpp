@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <CoreVM/instructions.h>
-#include <CoreVM/registers.h>
 #include "utils/bytebuffer.h"
 #include "parser.h"
 

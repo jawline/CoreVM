@@ -1,4 +1,6 @@
 #include "parser.h"
+#include <CoreVM/instructions.h>
+#include <CoreVM/registers.h>
 #include <stdio.h>
 
 using namespace Assembler;
@@ -28,7 +30,16 @@ bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	Token location = _tokeniser.nextToken(input);
 
 	if (location.tokenId() == ID) {
-		printf("Jumping to %s\n", location.tokenString());
+		size_t labelPosition;
+		
+		if (!_labels.getLabel(location.tokenString(), labelPosition)) {
+			printf("Label %s does not exist\n", location.tokenString());
+			return false;
+		}
+
+		printf("Jumping to label %s (Adress: %li)\n", location.tokenString(), labelPosition);
+		buffer.insert((uint8_t) VM::JumpImmediate);
+		buffer.insert((uint32_t) labelPosition);
 	} else {
 		printf("Expected jump location (Adress or label) at %s, recieved %s\n", input, location.tokenString());
 	}
