@@ -14,7 +14,7 @@ namespace Assembler {
 		Parser();
 		~Parser();
 
-		void parse(char const* input, ByteBuffer& buffer);
+		bool parse(char const* input, ByteBuffer& buffer);
 	};
 }
 
