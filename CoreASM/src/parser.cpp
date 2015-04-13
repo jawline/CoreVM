@@ -7,7 +7,13 @@ Parser::Parser() {}
 Parser::~Parser() {}
 
 bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {}
+
 bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
+	Token next = _tokeniser.peekToken(input);
+	
+	if (next.tokenId() == ID) {
+		parseLabel(input, buffer);
+	}
 }
 
 bool Parser::parse(char const* input, ByteBuffer& buffer) {
