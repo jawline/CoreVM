@@ -35,6 +35,11 @@ namespace VM {
 		GreaterThanRegister,
 		LessThanRegister,
 
+		/**
+		 * Memory operations
+		 */
+		SetMemoryInt,
+		GetMemoryInt,
 
 		/**
 		 * Unconditional Jumps
@@ -48,7 +53,9 @@ namespace VM {
 		JumpEqualImmediate,
 		JumpNotEqualImmediate,
 		JumpEqualRegister,
-		JumpNotEqualRegister
+		JumpNotEqualRegister,
+
+		NumInstructions
 	};
 }
 

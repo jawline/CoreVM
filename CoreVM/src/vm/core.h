@@ -18,11 +18,11 @@ namespace VM {
 		void setupJumpTable();
 		
 		inline int rAsInt(unsigned int const& registerNumber) {
-			return *((int*)&_registers[registerNumber]);
+			return ((int*)&_registers[registerNumber])[0];
 		}
 
 		inline void rSetInt(unsigned int const& registerNumber, int const& val) {
-			*((int*)&_registers[registerNumber]) = val;
+			((int*)&_registers[registerNumber])[0] = val;
 		}
 
 	public:
@@ -32,8 +32,10 @@ namespace VM {
 		void setData(uint8_t* data, unsigned int dataSize);
 		void run();
 
+		/**
+		 * Instruction functions
+		 */
 		static void noOp(Core*);
-
 		static void loadImmediate(Core*);
 
 		/**
@@ -57,6 +59,12 @@ namespace VM {
 		static void lessThanRegister(Core*);
 
 		/**
+		 * Memory op implementations
+		 */
+		static void setMemoryInt(Core*);
+		static void getMemoryInt(Core*);
+
+		/**
 		 * Unconditional jumps
 		 */
 		static void jumpImmediate(Core*);
@@ -65,10 +73,10 @@ namespace VM {
 		/**
 		 * Branching conditions
 		 */
-		 static void jumpIfEqualImmediate(Core*);
-		 static void jumpIfNotEqualImmediate(Core*);
-		 static void jumpIfEqualRegister(Core*);
-		 static void jumpIfNotEqualRegister(Core*);
+		static void jumpIfEqualImmediate(Core*);
+		static void jumpIfNotEqualImmediate(Core*);
+		static void jumpIfEqualRegister(Core*);
+		static void jumpIfNotEqualRegister(Core*);
 	};
 }
 

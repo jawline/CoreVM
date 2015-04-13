@@ -3,7 +3,7 @@
 using namespace VM;
 
 Core::Core() {
-	_registers = new uint32_t[NUM_REGISTERS];
+	_registers = new uint32_t[NumRegisters];
 	setupJumpTable();
 }
 
@@ -13,7 +13,7 @@ Core::~Core() {
 }
 
 void Core::setupJumpTable() {
-	_jumpTable = new std::function<void(Core*)>[255];
+	_jumpTable = new std::function<void(Core*)>[NumInstructions];
 	
 	_jumpTable[NoOp] = &Core::noOp;
 	_jumpTable[LoadImmediate] = &Core::loadImmediate;
@@ -32,6 +32,9 @@ void Core::setupJumpTable() {
 	_jumpTable[GreaterThanRegister] = &Core::lessThanRegister;
 	_jumpTable[LessThanRegister] = &Core::greaterThanRegister;
 
+	_jumpTable[SetMemoryInt] = &Core::setMemoryInt;
+	_jumpTable[GetMemoryInt] = &Core::getMemoryInt;
+
 	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
 	_jumpTable[JumpRegister] = &Core::jumpRegister;
 
@@ -48,9 +51,7 @@ void Core::setData(uint8_t* data, unsigned int dataSize) {
 }
 
 void Core::run() {
-	
 	_registers[ProgramCounter] = 0;
-
 	while (_registers[ProgramCounter] < _maxData) {
 		_jumpTable[_data[_registers[ProgramCounter]]](this);
 	}

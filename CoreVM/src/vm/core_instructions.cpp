@@ -146,6 +146,27 @@ void Core::lessThanRegister(Core* inst) {
 	printf("LT %i %i %i\n",r1, r2, inst->_registers[r1]);
 }
 
+
+void Core::setMemoryInt(Core* inst) {
+	uint8_t reg;
+	uint32_t loc;
+	CoreUtils::byteFromBuffer(reg, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::uintFromBuffer(loc, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	((uint32_t*)&inst->_data[loc])[0] = inst->_registers[reg];
+	inst->_registers[ProgramCounter] += 6;
+	printf("SETM %i %i %i\n", reg, loc, ((uint32_t*)&inst->_data[loc])[0]);
+}
+
+void Core::getMemoryInt(Core* inst) {
+	uint8_t reg;
+	uint32_t loc;
+	CoreUtils::byteFromBuffer(reg, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::uintFromBuffer(loc, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	inst->_registers[reg] = ((uint32_t*)&inst->_data[loc])[0];
+	inst->_registers[ProgramCounter] += 6;
+	printf("GETM %i %i %i\n", reg, loc, ((uint32_t*)&inst->_data[loc])[0]);
+}
+
 void Core::jumpIfEqualImmediate(Core* inst) {
 	uint8_t r1, r2;
 	uint32_t dstReg;

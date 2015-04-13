@@ -8,7 +8,7 @@ namespace VM {
 		RegisterB,
 		RegisterC,
 		RegisterD,
-		NUM_REGISTERS
+		NumRegisters
 	};
 }
 
