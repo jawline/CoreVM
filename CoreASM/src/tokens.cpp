@@ -50,6 +50,11 @@ Token Tokeniser::nextToken(char const*& input) {
 	input += len;
 }
 
+Token Tokeniser::peekToken(char const* input) {
+	size_t len;
+	return peekToken(input, len);
+}
+
 Token Tokeniser::peekToken(char const* input, size_t& len) {
 	Token result = Token(INVALID_TOKEN);
 	input = skipWhite(input);
