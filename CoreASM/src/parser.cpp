@@ -6,6 +6,13 @@ using namespace Assembler;
 Parser::Parser() {}
 Parser::~Parser() {}
 
+bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
+	
+}
+
+bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
+}
+
 void Parser::parse(char const* input, ByteBuffer& buffer) {
 	Token next = Token(INVALID_TOKEN);
 	do {
