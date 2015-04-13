@@ -1,11 +1,13 @@
 #ifndef _LABEL_TABLE_DEF_H_
 #define _LABEL_TABLE_DEF_H_
+#include <string>
 #include <cstddef>
 #include <map>
 
 namespace Assembler {
   class LabelTable {
     private:
+      std::map<size_t, std::string> _currentUnresolvedReferences;
       std::map<std::string, size_t> _currentLabels;
 
     public:
