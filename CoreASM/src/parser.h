@@ -11,6 +11,7 @@ namespace Assembler {
 		LabelTable _labels;
 		bool parseLabel(char const*& input, ByteBuffer& buffer);
 		bool parseBlock(char const*& input, ByteBuffer& buffer);
+		bool parseNoOp(char const*& input, ByteBuffer& buffer);
 		bool parseJump(char const*& input, ByteBuffer& buffer);
 
 	public:

@@ -13,6 +13,7 @@ namespace Assembler {
 		NUM,
 		JUMP,
 		LOAD,
+		NOOP,
 		COLON,
 		TOKEN_EOF,
 		INVALID_TOKEN

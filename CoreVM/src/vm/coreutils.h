@@ -16,6 +16,9 @@ public:
   static inline void byteFromBuffer(uint8_t& dest, uint8_t* buffer) {
     dest = buffer[0];
   }
+  static inline void uintToBuffer(uint32_t const& src, uint8_t* buffer) {
+    ((uint32_t*)buffer)[0] = src;
+  }
 };
 
 #endif //_CORE_UTILS_DEF_H_

@@ -47,6 +47,12 @@ bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	return true;
 }
 
+bool Parser::parseNoOp(char const*& input, ByteBuffer& buffer) {
+	Token noop = _tokeniser.nextToken(input);
+	buffer.insert((uint8_t) VM::NoOp);
+	return true;
+}
+
 bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 	Token next = _tokeniser.peekToken(input);
 	
@@ -56,6 +62,10 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 		}
 	} else if (next.tokenId() == JUMP) {
 		if (!parseJump(input, buffer)) {
+			return false;
+		}
+	} else if (next.tokenId() == NOOP) {
+		if (!parseNoOp(input, buffer)) {
 			return false;
 		}
 	}

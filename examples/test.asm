@@ -1,3 +1,8 @@
+noop
+noop
+noop
+noop
+
 start:
 	jmp start
 end:
