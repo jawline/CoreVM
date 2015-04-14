@@ -7,7 +7,6 @@
 namespace Assembler {
   class LabelTable {
     private:
-      std::map<size_t, std::string> _currentUnresolvedReferences;
       std::map<std::string, size_t> _currentLabels;
 
     public:
