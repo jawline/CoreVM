@@ -8,6 +8,15 @@ namespace VM {
 		RegisterB,
 		RegisterC,
 		RegisterD,
+		RegisterE,
+		RegisterF,
+		RegisterG,
+		RegisterH,
+		RegisterI,
+		RegisterJ,
+		RegisterK,
+		RegisterL,
+		RegisterM
 		NumRegisters
 	} RegisterID;
 
