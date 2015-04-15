@@ -34,6 +34,25 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 	return true;
 }
 
+bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
+	Token load = _tokeniser.nextToken(input);
+	Token registerId = _tokeniser.nextToken(input);
+	
+	if (registerId.tokenId() != ID) {
+		printf("Expected ID near %s and not %s\n", input, registerId.tokenString());
+		return false;
+	}
+	
+	Token valueInt = _tokeniser.nextToken(input);
+	
+	if (registerId.tokenId() != NUM) {
+		printf("Expected NUM near %s and not %s\n", input, valueInt.tokenString());
+		return false;
+	}
+	
+	return true;
+}
+
 bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	Token jump = _tokeniser.nextToken(input);
 	Token location = _tokeniser.nextToken(input);
@@ -82,6 +101,10 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 		}
 	} else if (next.tokenId() == NOOP) {
 		if (!parseNoOp(input, buffer)) {
+			return false;
+		}
+	} else if (next.tokenId() == LOAD) {
+		if (!parseLoad(input, buffer)) {
 			return false;
 		}
 	}
