@@ -16,6 +16,8 @@ namespace Assembler {
 		LabelTable _labels;
 
 		void resolveLabels(ByteBuffer& buffer);
+		
+		void handleLabelReference(char const* input, ByteBuffer& buffer);
 
 		bool parseLabel(char const*& input, ByteBuffer& buffer);
 		bool parseBlock(char const*& input, ByteBuffer& buffer);
