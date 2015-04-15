@@ -36,16 +36,20 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 
 bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
 	Token load = _tokeniser.nextToken(input);
-	Token registerId = _tokeniser.nextToken(input);
+	Token registerName = _tokeniser.nextToken(input);
 	
-	if (registerId.tokenId() != ID) {
-		printf("Expected ID near %s and not %s\n", input, registerId.tokenString());
+	if (registerName.tokenId() != ID) {
+		printf("Expected ID near %s and not %s\n", input, registerName.tokenString());
 		return false;
 	}
 	
-	Token valueInt = _tokeniser.nextToken(input);
+	VM::RegisterID id = VM::RegisterUtils::getRegisterId(registerName.tokenString())
+	if (id == VM::InvalidRegister) {
+		printf("Register %s is not a valid register near %s\n", registerName.tokenString(), input);
+	}
 	
-	if (registerId.tokenId() != NUM) {
+	Token valueInt = _tokeniser.nextToken(input);
+	if (valueInt.tokenId() != NUM) {
 		printf("Expected NUM near %s and not %s\n", input, valueInt.tokenString());
 		return false;
 	}
