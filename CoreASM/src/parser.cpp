@@ -8,6 +8,14 @@ using namespace Assembler;
 Parser::Parser() {}
 Parser::~Parser() {}
 
+void Parser::handleLabelReference(char const* labelName, ByteBuffer& buffer) {
+	size_t labelPosition = 0;
+	if (!_labels.getLabel(labelName, labelPosition)) {
+		_unresolvedLabels.push_back(pair<size_t, string>(buffer.current(), labelName));
+	}
+	buffer.insert((uint32_t)labelPosition);
+}
+
 bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 
 	Token labelId = _tokeniser.nextToken(input);
@@ -31,19 +39,9 @@ bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	Token location = _tokeniser.nextToken(input);
 
 	if (location.tokenId() == ID) {
-		size_t labelPosition = 0;
-
 		buffer.insert((uint8_t) VM::JumpImmediate);
-
-		if (!_labels.getLabel(location.tokenString(), labelPosition)) {
-			printf("Unresolved\n");
-			_unresolvedLabels.push_back(pair<size_t, string>(buffer.current(), location.tokenString()));
-		}
-
-		buffer.insert((uint32_t) labelPosition);
-
-		printf("Jumping to label %s\n", location.tokenString());
-
+		handleLabelReference(location.tokenString(), buffer);
+		printf("Jump to label %s\n", location.tokenString());
 	} else {
 		printf("Expected jump location (Adress or label) at %s, recieved %s\n", input, location.tokenString());
 	}
