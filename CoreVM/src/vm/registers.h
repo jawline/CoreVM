@@ -16,8 +16,9 @@ namespace VM {
 		RegisterJ,
 		RegisterK,
 		RegisterL,
-		RegisterM
-		NumRegisters
+		RegisterM,
+		NumRegisters,
+		InvalidRegister
 	} RegisterID;
 
 	class RegisterUtils {
