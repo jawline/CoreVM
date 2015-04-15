@@ -54,6 +54,9 @@ bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
 		return false;
 	}
 	
+	buffer.insert((uint8_t) VM::LoadImmediate);
+	buffer.insert(static_cast<uint32_t>(atoi(valueInt.tokenString())));
+	
 	return true;
 }
 
@@ -61,13 +64,14 @@ bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	Token jump = _tokeniser.nextToken(input);
 	Token location = _tokeniser.nextToken(input);
 
-	if (location.tokenId() == ID) {
-		buffer.insert((uint8_t) VM::JumpImmediate);
-		handleLabelReference(location.tokenString(), buffer);
-		printf("Jump to label %s\n", location.tokenString());
-	} else {
+	if (location.tokenId() != ID) {
 		printf("Expected jump location (Adress or label) at %s, recieved %s\n", input, location.tokenString());
+		return false;
 	}
+	
+	buffer.insert((uint8_t) VM::JumpImmediate);
+	handleLabelReference(location.tokenString(), buffer);
+	printf("Jump to label %s\n", location.tokenString());
 
 	return true;
 }
