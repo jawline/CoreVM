@@ -57,7 +57,6 @@ void Parser::resolveLabels(ByteBuffer& buffer) {
 		if (_labels.getLabel(_unresolvedLabels[i].second, foundPos)) {
 			buffer.insert((uint32_t) foundPos, _unresolvedLabels[i].first);
 			_unresolvedLabels.erase(_unresolvedLabels.begin() + i);
-			printf("Resolved\n");
 		} else {
 			i++;
 		}
