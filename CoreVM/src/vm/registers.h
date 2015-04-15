@@ -9,7 +9,12 @@ namespace VM {
 		RegisterC,
 		RegisterD,
 		NumRegisters
-	};
+	} RegisterID;
+
+	class RegisterUtils {
+	public:
+		static RegisterID getRegisterId(char const* name);
+	}
 }
 
 #endif //_REGISTERS_DEF_H_
