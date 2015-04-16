@@ -111,10 +111,13 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 		if (!parseLoad(input, buffer)) {
 			return false;
 		}
-	} else if (next.tokenId() == ADD || next.tokenId() == SUBTRACT || next.tokenId() == DIVIDE || next.tokenId() == MULTIPLY) {
+	} else if (next.tokenId() == GREATER_THAN || next.tokenId() == LESS_THAN || next.tokenId() == ADD || next.tokenId() == SUBTRACT || next.tokenId() == DIVIDE || next.tokenId() == MULTIPLY) {
 		if (!parseArithmetic(input, buffer)) {
 			return false;
 		}
+	} else {
+		printf("Expected instruction or label near %s and not %s", input, next.tokenString());
+		return false;
 	}
 
 	return true;
@@ -156,6 +159,12 @@ bool Parser::parseArithmetic(char const*& input, ByteBuffer& buffer) {
 			break;
 		case DIVIDE:
 			buffer.insert((uint8_t) (immediate ? VM::DivideImmediate : VM::DivideRegister));
+			break;
+		case GREATER_THAN:
+			buffer.insert((uint8_t) (immediate ? VM::GreaterThanImmediate : VM::GreaterThanRegister));
+			break;
+		case LESS_THAN:
+			buffer.insert((uint8_t) (immediate ? VM::LessThanImmediate : VM::LessThanRegister));
 			break;
 		default:
 			printf("Expected arithmetic, not %s\n", instr.tokenString());

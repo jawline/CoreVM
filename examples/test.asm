@@ -20,3 +20,4 @@ start:
 	sub B B
 	mul C C
 	div D D
+	lt D D

@@ -89,6 +89,12 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	} else if (strncmp(input, "div", 3) == 0) {
 		result = Token(DIVIDE, input, 3);
 		len = 3;
+	} else if (strncmp(input, "gt", 2) == 0) {
+		result = Token(GREATER_THAN, input, 2);
+		len = 3;
+	} else if (strncmp(input, "lt", 2) == 0) {
+		result = Token(LESS_THAN, input, 2);
+		len = 3;
 	} else if ((len = nfaMatches(idRegex.start, input)) > 0) {
 		result = Token(ID, input, len);
 	} else if ((len = nfaMatches(intRegex.start, input)) > 0) {

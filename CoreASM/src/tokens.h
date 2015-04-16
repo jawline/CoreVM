@@ -19,6 +19,8 @@ namespace Assembler {
 		SUBTRACT,
 		MULTIPLY,
 		DIVIDE,
+		GREATER_THAN,
+		LESS_THAN,
 		TOKEN_EOF,
 		INVALID_TOKEN
 	} TOKEN_ID;
