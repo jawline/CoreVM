@@ -38,10 +38,10 @@ clean:
 
 #The executable rule compiles the set of objects into the target executable
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	
 $(LIBRARY): $(OBJECTS)
-	$(CC) $(LDFLAGS)  -shared  $(OBJECTS) -o $@
+	$(CC) -shared $(OBJECTS) $(LDFLAGS) -o $@
 
 #These rule tells the compiler to generate an object from the source code.
 $(OBJECTS) : $(OBJ_DIR)

@@ -32,9 +32,11 @@ install:
 
 remove:
 	@rm $(INSTALL_EXE_PATH)$(OUTPUT_FILE)
+	@rm $(INSTALL_LIB_PATH)$(OUTPUT_LIB)
+	@rm -r $(INSTALL_INCLUDE_PATH)
 
 clean:
-	-@rm -r $(OBJ_DIR) $(EXECUTABLE)
+	-@rm -r $(OBJ_DIR) $(EXECUTABLE) $(LIBRARY)
 
 #The executable rule compiles the set of objects into the target executable
 $(EXECUTABLE): $(OBJECTS)

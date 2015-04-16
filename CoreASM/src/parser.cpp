@@ -27,10 +27,7 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 	}
 
 	_labels.setLabel(labelId.tokenString(), buffer.current());
-
-	printf("Set label %s at %li\n", labelId.tokenString(), buffer.current());
 	resolveLabels(buffer);
-
 	return true;
 }
 
@@ -43,7 +40,7 @@ bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
 		return false;
 	}
 	
-	VM::RegisterID id = VM::RegisterUtils::getRegisterId(registerName.tokenString())
+	VM::RegisterID id = VM::RegisterUtils::getRegisterId(registerName.tokenString());
 	if (id == VM::InvalidRegister) {
 		printf("Register %s is not a valid register near %s\n", registerName.tokenString(), input);
 	}
@@ -54,8 +51,9 @@ bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
 		return false;
 	}
 	
-	buffer.insert((uint8_t) VM::LoadImmediate);
-	buffer.insert(static_cast<uint32_t>(atoi(valueInt.tokenString())));
+	buffer.insert((uint8_t)  VM::LoadImmediate);
+	buffer.insert((uint8_t)  id);
+	buffer.insert((uint32_t) atoi(valueInt.tokenString()));
 	
 	return true;
 }
@@ -71,8 +69,6 @@ bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	
 	buffer.insert((uint8_t) VM::JumpImmediate);
 	handleLabelReference(location.tokenString(), buffer);
-	printf("Jump to label %s\n", location.tokenString());
-
 	return true;
 }
 
@@ -142,7 +138,7 @@ bool Parser::parse(char const* input, ByteBuffer& buffer) {
 	}
 	
 	if (next.tokenId() == TOKEN_EOF) {
-		printf("Parse complete\n");
+		printf("Done\n");
 		return postParse(buffer);
 	}
 	

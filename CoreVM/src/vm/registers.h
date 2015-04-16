@@ -2,7 +2,7 @@
 #define _REGISTERS_DEF_H_
 
 namespace VM {
-	enum {
+	typedef enum {
 		ProgramCounter = 0,
 		RegisterA,
 		RegisterB,
@@ -24,7 +24,7 @@ namespace VM {
 	class RegisterUtils {
 	public:
 		static RegisterID getRegisterId(char const* name);
-	}
+	};
 }
 
 #endif //_REGISTERS_DEF_H_
