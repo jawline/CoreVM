@@ -7,6 +7,15 @@ all:
 	done;
 	@echo "Done!"
 
+install:
+	@for a in $$(ls); do \
+		if [ -d $$a ]; then \
+			echo "processing folder $$a"; \
+			$(MAKE) -C $$a install; \
+	fi; \
+	done;
+	@echo "Done!"
+
 clean:
 	@for a in $$(ls); do \
 		if [ -d $$a ]; then \
