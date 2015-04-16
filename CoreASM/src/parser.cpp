@@ -111,12 +111,16 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 		if (!parseLoad(input, buffer)) {
 			return false;
 		}
+	} else if (next.tokenId() == ADD || next.tokenId() == SUBTRACT || next.tokenId() == DIVIDE || next.tokenId() == MULTIPLY) {
+		if (!parseArithmetic(input, buffer)) {
+			return false;
+		}
 	}
 
 	return true;
 }
 
-bool Parser::parseArithmeticImmediate(char const*& input, ByteBuffer& buffer) {
+bool Parser::parseArithmetic(char const*& input, ByteBuffer& buffer) {
 	Token instr = _tokeniser.nextToken(input);
 	
 	Token registerName = _tokeniser.nextToken(input);
@@ -136,6 +140,27 @@ bool Parser::parseArithmeticImmediate(char const*& input, ByteBuffer& buffer) {
 		printf("Expected NUM near %s not %s\n", input, value.tokenString());
 		return false;
 	}
+
+	switch (instr.tokenId()) {
+		case ADD:
+			buffer.insert((uint8_t) VM::AddImmediate);
+			break;
+		case SUBTRACT:
+			buffer.insert((uint8_t) VM::SubtractImmediate);
+			break;
+		case MULTIPLY:
+			buffer.insert((uint8_t) VM::MultiplyImmediate);
+			break;
+		case DIVIDE:
+			buffer.insert((uint8_t) VM::DivideImmediate);
+			break;
+		default:
+			printf("Expected arithmetic, not %s\n", instr.tokenString());
+			return false;
+	}
+
+	buffer.insert((uint8_t) id);
+	buffer.insert((uint32_t) atoi(value.tokenString()));
 
 	return true;
 }
