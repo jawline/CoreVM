@@ -16,3 +16,7 @@ start:
 	div C 10
 	mul D 8
 	mul D 9
+	add A A
+	sub B B
+	mul C C
+	div D D

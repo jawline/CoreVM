@@ -136,23 +136,26 @@ bool Parser::parseArithmetic(char const*& input, ByteBuffer& buffer) {
 	}
 
 	Token value = _tokeniser.nextToken(input);
-	if (value.tokenId() != NUM) {
-		printf("Expected NUM near %s not %s\n", input, value.tokenString());
+	if (value.tokenId() != NUM && value.tokenId() != ID) {
+		printf("Expected NUM or ID near %s not %s\n", input, value.tokenString());
 		return false;
 	}
 
+	//If value is a NUM then its an immediate value if value is an ID then it is a register name
+	bool immediate = value.tokenId() == NUM;
+
 	switch (instr.tokenId()) {
 		case ADD:
-			buffer.insert((uint8_t) VM::AddImmediate);
+			buffer.insert((uint8_t) (immediate ? VM::AddImmediate : VM::AddRegister));
 			break;
 		case SUBTRACT:
-			buffer.insert((uint8_t) VM::SubtractImmediate);
+			buffer.insert((uint8_t) (immediate ? VM::SubtractImmediate : VM::SubtractRegister));
 			break;
 		case MULTIPLY:
-			buffer.insert((uint8_t) VM::MultiplyImmediate);
+			buffer.insert((uint8_t) (immediate ? VM::MultiplyImmediate : VM::MultiplyRegister));
 			break;
 		case DIVIDE:
-			buffer.insert((uint8_t) VM::DivideImmediate);
+			buffer.insert((uint8_t) (immediate ? VM::DivideImmediate : VM::DivideRegister));
 			break;
 		default:
 			printf("Expected arithmetic, not %s\n", instr.tokenString());
@@ -160,7 +163,17 @@ bool Parser::parseArithmetic(char const*& input, ByteBuffer& buffer) {
 	}
 
 	buffer.insert((uint8_t) id);
-	buffer.insert((uint32_t) atoi(value.tokenString()));
+
+	if (immediate) {
+		buffer.insert((uint32_t) atoi(value.tokenString()));
+	} else {
+		VM::RegisterID valueId = VM::RegisterUtils::getRegisterId(value.tokenString());
+		if (valueId == VM::InvalidRegister) {
+			printf("Register %s is not a valid register near %s\n", value.tokenString(), input);
+			return false;
+		}
+		buffer.insert((uint8_t) valueId);
+	}
 
 	return true;
 }
