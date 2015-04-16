@@ -23,6 +23,7 @@ namespace Assembler {
 		bool parseBlock(char const*& input, ByteBuffer& buffer);
 		bool parseLoad(char const*& input, ByteBuffer& buffer);
 		bool parseNoOp(char const*& input, ByteBuffer& buffer);
+		bool parseArithmeticImmediate(char const*& input, ByteBuffer& buffer);
 		bool parseJump(char const*& input, ByteBuffer& buffer);
 		bool postParse(ByteBuffer& buffer);
 

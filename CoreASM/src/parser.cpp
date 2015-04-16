@@ -116,6 +116,30 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 	return true;
 }
 
+bool Parser::parseArithmeticImmediate(char const*& input, ByteBuffer& buffer) {
+	Token instr = _tokeniser.nextToken(input);
+	
+	Token registerName = _tokeniser.nextToken(input);
+	if (registerName.tokenId() != ID) {
+		printf("Expected register ID near %s not %s\n", input, registerName.tokenString());
+		return false;
+	}
+
+	VM::RegisterID id = VM::RegisterUtils::getRegisterId(registerName.tokenString());
+	if (id == VM::InvalidRegister) {
+		printf("Register %s is not a valid register near %s\n", registerName.tokenString(), input);
+		return false;
+	}
+
+	Token value = _tokeniser.nextToken(input);
+	if (value.tokenId() != NUM) {
+		printf("Expected NUM near %s not %s\n", input, value.tokenString());
+		return false;
+	}
+
+	return true;
+}
+
 bool Parser::postParse(ByteBuffer& buffer) {
 	if (_unresolvedLabels.size() != 0) {
 		printf("Error: Unresolved labels exist\n");
