@@ -15,6 +15,10 @@ namespace Assembler {
 		LOAD,
 		NOOP,
 		COLON,
+		ADD,
+		SUBTRACT,
+		MULTIPLY,
+		DIVIDE,
 		TOKEN_EOF,
 		INVALID_TOKEN
 	} TOKEN_ID;

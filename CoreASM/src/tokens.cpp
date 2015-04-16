@@ -74,9 +74,21 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	} else if (strncmp(input, "load", 4) == 0) {
 		result = Token(LOAD, input, 4);
 		len = 4;
-	} else if (strncmp(input, "noop", 4) == 0) {
+	} else if (strncmp(input, "nop", 3) == 0) {
 		result = Token(NOOP, input, 4);
-		len = 4;
+		len = 3;
+	} else if (strncmp(input, "add", 3) == 0) {
+		result = Token(NOOP, input, 3);
+		len = 3;
+	} else if (strncmp(input, "sub", 3) == 0) {
+		result = Token(NOOP, input, 3);
+		len = 3;
+	} else if (strncmp(input, "mul", 3) == 0) {
+		result = Token(NOOP, input, 3);
+		len = 3;
+	} else if (strncmp(input, "div", 3) == 0) {
+		result = Token(NOOP, input, 3);
+		len = 3;
 	} else if ((len = nfaMatches(idRegex.start, input)) > 0) {
 		result = Token(ID, input, len);
 	} else if ((len = nfaMatches(intRegex.start, input)) > 0) {
