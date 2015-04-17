@@ -18,7 +18,6 @@ void Core::loadImmediate(Core* inst) {
 	printf("LOAD IMMEDIATE $%i:=%i\n", reg, val);
 }
 
-
 void Core::move(Core* inst) {
 	uint8_t dst, src;
 	CoreUtils::byteFromBuffer(dst, &inst->_data[inst->_registers[ProgramCounter]+1]);

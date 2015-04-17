@@ -35,6 +35,9 @@ void Core::setupJumpTable() {
 
 	_jumpTable[SetMemoryInt] = &Core::setMemoryInt;
 	_jumpTable[GetMemoryInt] = &Core::getMemoryInt;
+	
+	_jumpTable[SetMemoryIntRegister] = &Core::setMemoryIntRegister;
+	_jumpTable[GetMemoryIntRegister] = &Core::getMemoryIntRegister;
 
 	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
 	_jumpTable[JumpRegister] = &Core::jumpRegister;

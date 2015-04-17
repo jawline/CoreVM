@@ -95,12 +95,16 @@ bool Parser::parseMemoryOp(char const*& input, ByteBuffer& buffer) {
 		printf("Register %s is not a valid register near %s\n", regName.tokenString(), input);
 	}
 
+	Token addressToken = _tokeniser.nextToken(input);
+	VM::RegisterID address = VM::RegisterUtils::getRegisterId(addressToken.tokenString());
+	bool immediate = address == VM::InvalidRegister;
+
 	switch (memoryOp.tokenId()) {
 		case GET:
-			buffer.insert((uint8_t) VM::GetMemoryInt);
+			buffer.insert((uint8_t) (immediate ? VM::GetMemoryInt : VM::GetMemoryIntRegister));
 			break;
 		case SET:
-			buffer.insert((uint8_t) VM::SetMemoryInt);
+			buffer.insert((uint8_t) (immediate ? VM::SetMemoryInt : VM::SetMemoryIntRegister));
 			break;
 		default:
 			printf("Expected GET or SET\n");
@@ -109,9 +113,12 @@ bool Parser::parseMemoryOp(char const*& input, ByteBuffer& buffer) {
 
 	buffer.insert((uint8_t) reg);
 
-	Token address = _tokeniser.nextToken(input);
-	if (!handleAddress(address, input, buffer)) {
-		return false;
+	if (immediate) {
+		if (!handleAddress(addressToken, input, buffer)) {
+			return false;
+		}
+	} else {
+		buffer.insert((uint8_t) address);
 	}
 		
 	return true;
