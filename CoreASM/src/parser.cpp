@@ -150,7 +150,7 @@ bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	Token location = _tokeniser.nextToken(input);
 
 	VM::RegisterID id = VM::RegisterUtils::getRegisterId(location.tokenString());
-	bool immediate = id != VM::InvalidRegister;
+	bool immediate = id == VM::InvalidRegister;
 
 	if (immediate) {
 		buffer.insert((uint8_t) VM::JumpImmediate);
