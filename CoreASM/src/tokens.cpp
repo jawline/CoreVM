@@ -30,7 +30,7 @@ char const* Token::tokenString() const {
 }
 
 Tokeniser::Tokeniser() {
-	regexParse(&idRegex, "[a-zA-Z][a-zA-Z0-9]*");
+	regexParse(&idRegex, "[a-zA-Z][a-zA-Z0-9_]*");
 	regexParse(&intRegex, "-?[0-9]+");
 }
 
@@ -104,6 +104,9 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	} else if (strncmp(input, "mov", 3) == 0) {
 		result = Token(MOVE, input, 3);
 		len = 3;
+	} else if (strncmp(input, "db", 2) == 0) {
+		result = Token(DATA_BYTE, input, 2);
+		len = 2;
 	} else if ((len = nfaMatches(idRegex.start, input)) > 0) {
 		result = Token(ID, input, len);
 	} else if ((len = nfaMatches(intRegex.start, input)) > 0) {

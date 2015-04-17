@@ -1,11 +1,23 @@
+jmp start
+
+padding:
+	db 4
+
 start:
-	load A 0
-	set A 0
-	set A 4
-	set A 8
-	set A 12
-nop
-nop
-nop
-nop
-nop
+	load A 5
+	load B 10
+	set A min
+	set B max
+	jmp exit
+
+loop_forever:
+	jmp loop_forever
+
+min:
+	db 4
+padding:
+	db 2
+max:
+	db 4
+
+exit:

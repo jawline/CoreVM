@@ -8,12 +8,22 @@ using namespace Assembler;
 Parser::Parser() {}
 Parser::~Parser() {}
 
-void Parser::handleLabelReference(char const* labelName, ByteBuffer& buffer) {
+bool Parser::handleAddress(Token const& address, char const* input, ByteBuffer& buffer) {
 	size_t labelPosition = 0;
-	if (!_labels.getLabel(labelName, labelPosition)) {
-		_unresolvedLabels.push_back(pair<size_t, string>(buffer.current(), labelName));
+
+	if (address.tokenId() == NUM) {
+		labelPosition = atoi(address.tokenString());
+	} else if (address.tokenId() == ID) {
+		if (!_labels.getLabel(address.tokenString(), labelPosition)) {
+			_unresolvedLabels.push_back(pair<size_t, string>(buffer.current(), address.tokenString()));
+		}
+	} else {
+		printf("Expected valid address (NUM or label ID) near %s and not %s\n", input, address.tokenString());
+		return false;
 	}
+
 	buffer.insert((uint32_t)labelPosition);
+	return true;
 }
 
 bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
@@ -28,6 +38,24 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 
 	_labels.setLabel(labelId.tokenString(), buffer.current());
 	resolveLabels(buffer);
+	return true;
+}
+
+bool Parser::parseDataByte(char const*& input, ByteBuffer& buffer) {
+	Token db = _tokeniser.nextToken(input);
+	
+	Token numTk = _tokeniser.nextToken(input);
+	if (numTk.tokenId() != NUM) {
+		printf("Expected num near %s not %s\n", input, numTk.tokenString());
+		return false;
+	}
+
+	int num = atoi(numTk.tokenString());
+	
+	for (int i = 0; i < num; i++) {
+		buffer.insert((uint8_t) 0);
+	}
+
 	return true;
 }
 
@@ -65,8 +93,6 @@ bool Parser::parseMemoryOp(char const*& input, ByteBuffer& buffer) {
 		printf("Register %s is not a valid register near %s\n", regName.tokenString(), input);
 	}
 
-	Token address = _tokeniser.nextToken(input);
-
 	switch (memoryOp.tokenId()) {
 		case GET:
 			buffer.insert((uint8_t) VM::GetMemoryInt);
@@ -80,8 +106,12 @@ bool Parser::parseMemoryOp(char const*& input, ByteBuffer& buffer) {
 	}
 
 	buffer.insert((uint8_t) reg);
-	buffer.insert((uint32_t) atoi(address.tokenString()));
 
+	Token address = _tokeniser.nextToken(input);
+	if (!handleAddress(address, input, buffer)) {
+		return false;
+	}
+		
 	return true;
 }
 
@@ -115,15 +145,15 @@ bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
 
 bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	Token jump = _tokeniser.nextToken(input);
-	Token location = _tokeniser.nextToken(input);
-
-	if (location.tokenId() != ID) {
-		printf("Expected jump location (Adress or label) at %s, recieved %s\n", input, location.tokenString());
-		return false;
-	}
 	
 	buffer.insert((uint8_t) VM::JumpImmediate);
-	handleLabelReference(location.tokenString(), buffer);
+
+	Token location = _tokeniser.nextToken(input);
+	
+	if (!handleAddress(location, input, buffer)) {
+		return false;
+	}
+
 	return true;
 }
 
@@ -168,6 +198,10 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 		}
 	} else if (next.tokenId() == MOVE) {
 		if (!parseMove(input, buffer)) {
+			return false;
+		}
+	} else if (next.tokenId() == DATA_BYTE) {
+		if (!parseDataByte(input, buffer)) {
 			return false;
 		}
 	} else if (next.tokenId() == GET || next.tokenId() == SET) {

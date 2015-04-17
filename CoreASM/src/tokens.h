@@ -25,6 +25,7 @@ namespace Assembler {
 		GREATER_THAN,
 		LESS_THAN,
 		TOKEN_EOF,
+		DATA_BYTE,
 		INVALID_TOKEN
 	} TOKEN_ID;
 

@@ -16,8 +16,7 @@ namespace Assembler {
 		LabelTable _labels;
 
 		void resolveLabels(ByteBuffer& buffer);
-		
-		void handleLabelReference(char const* input, ByteBuffer& buffer);
+		bool handleAddress(Token const& address, char const* input, ByteBuffer& buffer);
 
 		bool parseMove(char const*& input, ByteBuffer& buffer);
 		bool parseLabel(char const*& input, ByteBuffer& buffer);
@@ -27,6 +26,7 @@ namespace Assembler {
 		bool parseMemoryOp(char const*& input, ByteBuffer& buffer);
 		bool parseArithmetic(char const*& input, ByteBuffer& buffer);
 		bool parseJump(char const*& input, ByteBuffer& buffer);
+		bool parseDataByte(char const*& input, ByteBuffer& buffer);
 		bool postParse(ByteBuffer& buffer);
 
 	public:

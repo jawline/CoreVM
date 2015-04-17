@@ -1,4 +1,4 @@
-#include "core.h"
+	#include "core.h"
 #include "coreutils.h"
 
 using namespace VM;
@@ -31,14 +31,14 @@ void Core::jumpImmediate(Core* inst) {
 	uint32_t val;
 	CoreUtils::uintFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	inst->_registers[ProgramCounter] = val;
-	printf("JMP %i\n", val);
+	//printf("JMP %i\n", val);
 }
 
 void Core::jumpRegister(Core* inst) {
 	uint8_t val;
 	CoreUtils::byteFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	inst->_registers[ProgramCounter] = inst->_registers[val];
-	printf("JMP %i\n", val);
+	//printf("JMP %i\n", val);
 }
 
 void Core::addImmediate(Core* inst) {
