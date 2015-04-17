@@ -132,28 +132,38 @@ bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
 		return false;
 	}
 	
-	Token valueInt = _tokeniser.nextToken(input);
-	if (valueInt.tokenId() != NUM) {
-		printf("Expected NUM near %s and not %s\n", input, valueInt.tokenString());
-		return false;
-	}
+	Token value = _tokeniser.nextToken(input);
 	
 	buffer.insert((uint8_t)  VM::LoadImmediate);
 	buffer.insert((uint8_t)  id);
-	buffer.insert((uint32_t) atoi(valueInt.tokenString()));
+
+	//Allows load to load either a label location or a number
+	if (!handleAddress(value, input, buffer)) {
+		return false;
+	}
 	
 	return true;
 }
 
 bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	Token jump = _tokeniser.nextToken(input);
-	
-	buffer.insert((uint8_t) VM::JumpImmediate);
-
 	Token location = _tokeniser.nextToken(input);
-	
-	if (!handleAddress(location, input, buffer)) {
-		return false;
+
+	VM::RegisterID id = VM::RegisterUtils::getRegisterId(location.tokenString());
+	bool immediate = id != VM::InvalidRegister;
+
+	if (immediate) {
+		buffer.insert((uint8_t) VM::JumpImmediate);
+	} else {
+		buffer.insert((uint8_t) VM::JumpRegister);
+	}
+
+	if (immediate) {
+		buffer.insert((uint8_t) id);
+	} else {
+		if (!handleAddress(location, input, buffer)) {
+			return false;
+		}
 	}
 
 	return true;

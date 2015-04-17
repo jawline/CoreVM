@@ -8,6 +8,8 @@ start:
 	load B 10
 	set A min
 	set B max
+	load C loop_forever
+	jmp C
 	jmp exit
 
 loop_forever:
