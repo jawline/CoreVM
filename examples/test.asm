@@ -1,7 +1,7 @@
 jmp start
 
 padding:
-	db 4
+	db 1024
 
 start:
 	load A 5

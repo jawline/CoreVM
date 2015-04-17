@@ -64,6 +64,10 @@ int main(int argc, char** argv) {
 
 	Assembler::ByteBuffer buffer;
 	Assembler::Parser parser;
-	parser.parse(inputSource, buffer);
+	if (!parser.parse(inputSource, buffer)) {
+		return -1;
+	}
+
+	printf("Done writing %li bytes\n", buffer.current());
 	return writeToFile(buffer, argv[2]);
 }

@@ -41,6 +41,8 @@ namespace VM {
 		 */
 		SetMemoryInt,
 		GetMemoryInt,
+		SetMemoryIntRegister,
+		GetMemoryIntRegister,
 
 		/**
 		 * Unconditional Jumps

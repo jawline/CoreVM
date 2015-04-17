@@ -14,9 +14,11 @@ bool Parser::handleAddress(Token const& address, char const* input, ByteBuffer& 
 	if (address.tokenId() == NUM) {
 		labelPosition = atoi(address.tokenString());
 	} else if (address.tokenId() == ID) {
+
 		if (!_labels.getLabel(address.tokenString(), labelPosition)) {
 			_unresolvedLabels.push_back(pair<size_t, string>(buffer.current(), address.tokenString()));
 		}
+
 	} else {
 		printf("Expected valid address (NUM or label ID) near %s and not %s\n", input, address.tokenString());
 		return false;
@@ -306,7 +308,6 @@ bool Parser::parse(char const* input, ByteBuffer& buffer) {
 	}
 	
 	if (next.tokenId() == TOKEN_EOF) {
-		printf("Done\n");
 		return postParse(buffer);
 	}
 	

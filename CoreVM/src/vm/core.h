@@ -64,6 +64,8 @@ namespace VM {
 		 */
 		static void setMemoryInt(Core*);
 		static void getMemoryInt(Core*);
+		static void setMemoryIntRegister(Core*);
+		static void getMemoryIntRegister(Core*);
 
 		/**
 		 * Unconditional jumps

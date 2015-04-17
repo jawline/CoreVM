@@ -31,14 +31,14 @@ void Core::jumpImmediate(Core* inst) {
 	uint32_t val;
 	CoreUtils::uintFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	inst->_registers[ProgramCounter] = val;
-	//printf("JMP %i\n", val);
+	printf("JMP %i\n", val);
 }
 
 void Core::jumpRegister(Core* inst) {
 	uint8_t val;
 	CoreUtils::byteFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+1]);
 	inst->_registers[ProgramCounter] = inst->_registers[val];
-	//printf("JMP %i\n", val);
+	printf("JMP %i\n", val);
 }
 
 void Core::addImmediate(Core* inst) {
@@ -155,7 +155,6 @@ void Core::lessThanRegister(Core* inst) {
 	printf("LT %i %i %i\n",r1, r2, inst->_registers[r1]);
 }
 
-
 void Core::setMemoryInt(Core* inst) {
 	uint8_t reg;
 	uint32_t loc;
@@ -174,6 +173,26 @@ void Core::getMemoryInt(Core* inst) {
 	CoreUtils::uintFromBuffer(inst->_registers[reg], &inst->_data[loc]);
 	inst->_registers[ProgramCounter] += 6;
 	printf("GETM %i %i %i\n", reg, loc, ((uint32_t*)&inst->_data[loc])[0]);
+}
+
+void Core::setMemoryIntRegister(Core* inst) {
+	uint8_t reg;
+	uint8_t locReg;
+	CoreUtils::byteFromBuffer(reg, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(locReg, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::uintToBuffer(inst->_registers[reg], &inst->_data[inst->_registers[locReg]]);
+	inst->_registers[ProgramCounter] += 3;
+	printf("SETM %i %i\n", reg, locReg);
+}
+
+void Core::getMemoryIntRegister(Core* inst) {
+	uint8_t reg;
+	uint8_t locReg;
+	CoreUtils::byteFromBuffer(reg, &inst->_data[inst->_registers[ProgramCounter]+1]);
+	CoreUtils::byteFromBuffer(locReg, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	CoreUtils::uintFromBuffer(inst->_registers[reg], &inst->_data[inst->_registers[locReg]]);
+	inst->_registers[ProgramCounter] += 3;
+	printf("GETM %i %i\n", reg, locReg);
 }
 
 void Core::jumpIfEqualImmediate(Core* inst) {
