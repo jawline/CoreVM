@@ -1,3 +1,3 @@
-jmp exit
+jmp start
+
 start:
-exit:

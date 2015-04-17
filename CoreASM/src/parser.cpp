@@ -159,11 +159,11 @@ bool Parser::parseJump(char const*& input, ByteBuffer& buffer) {
 	}
 
 	if (immediate) {
-		buffer.insert((uint8_t) id);
-	} else {
 		if (!handleAddress(location, input, buffer)) {
 			return false;
 		}
+	} else {
+		buffer.insert((uint8_t) id);	
 	}
 
 	return true;
