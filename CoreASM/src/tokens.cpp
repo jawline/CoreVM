@@ -91,9 +91,18 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 		len = 3;
 	} else if (strncmp(input, "gt", 2) == 0) {
 		result = Token(GREATER_THAN, input, 2);
-		len = 3;
+		len = 2;
 	} else if (strncmp(input, "lt", 2) == 0) {
 		result = Token(LESS_THAN, input, 2);
+		len = 2;
+	} else if (strncmp(input, "set", 3) == 0) {
+		result = Token(SET, input, 3);
+		len = 3;
+	} else if (strncmp(input, "get", 3) == 0) {
+		result = Token(GET, input, 3);
+		len = 3;
+	} else if (strncmp(input, "mov", 3) == 0) {
+		result = Token(MOVE, input, 3);
 		len = 3;
 	} else if ((len = nfaMatches(idRegex.start, input)) > 0) {
 		result = Token(ID, input, len);

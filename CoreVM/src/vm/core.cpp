@@ -17,6 +17,7 @@ void Core::setupJumpTable() {
 	
 	_jumpTable[NoOp] = &Core::noOp;
 	_jumpTable[LoadImmediate] = &Core::loadImmediate;
+	_jumpTable[Move] = &Core::move;
 
 	_jumpTable[AddImmediate] = &Core::addImmediate;
 	_jumpTable[SubtractImmediate] = &Core::subtractImmediate;

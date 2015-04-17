@@ -19,10 +19,12 @@ namespace Assembler {
 		
 		void handleLabelReference(char const* input, ByteBuffer& buffer);
 
+		bool parseMove(char const*& input, ByteBuffer& buffer);
 		bool parseLabel(char const*& input, ByteBuffer& buffer);
 		bool parseBlock(char const*& input, ByteBuffer& buffer);
 		bool parseLoad(char const*& input, ByteBuffer& buffer);
 		bool parseNoOp(char const*& input, ByteBuffer& buffer);
+		bool parseMemoryOp(char const*& input, ByteBuffer& buffer);
 		bool parseArithmetic(char const*& input, ByteBuffer& buffer);
 		bool parseJump(char const*& input, ByteBuffer& buffer);
 		bool postParse(ByteBuffer& buffer);

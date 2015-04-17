@@ -31,6 +31,60 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 	return true;
 }
 
+bool Parser::parseMove(char const*& input, ByteBuffer& buffer) {
+	Token move = _tokeniser.nextToken(input);
+	Token dstName = _tokeniser.nextToken(input);
+
+	VM::RegisterID dst = VM::RegisterUtils::getRegisterId(dstName.tokenString());
+	if (dst == VM::InvalidRegister) {
+		printf("Register %s is not a valid register near %s\n", dstName.tokenString(), input);
+	}
+
+	Token srcName = _tokeniser.nextToken(input);
+
+	VM::RegisterID src = VM::RegisterUtils::getRegisterId(srcName.tokenString());
+	if (src == VM::InvalidRegister) {
+		printf("Register %s is not a valid register near %s\n", srcName.tokenString(), input);
+		return false;
+	}
+
+	buffer.insert((uint8_t)  VM::Move);
+	buffer.insert((uint8_t)  dst);
+	buffer.insert((uint8_t)  src);
+
+	return true;
+}
+
+bool Parser::parseMemoryOp(char const*& input, ByteBuffer& buffer) {
+	
+	Token memoryOp = _tokeniser.nextToken(input);
+	Token regName = _tokeniser.nextToken(input);
+
+	VM::RegisterID reg = VM::RegisterUtils::getRegisterId(regName.tokenString());
+	if (reg == VM::InvalidRegister) {
+		printf("Register %s is not a valid register near %s\n", regName.tokenString(), input);
+	}
+
+	Token address = _tokeniser.nextToken(input);
+
+	switch (memoryOp.tokenId()) {
+		case GET:
+			buffer.insert((uint8_t) VM::GetMemoryInt);
+			break;
+		case SET:
+			buffer.insert((uint8_t) VM::SetMemoryInt);
+			break;
+		default:
+			printf("Expected GET or SET\n");
+			return false;
+	}
+
+	buffer.insert((uint8_t) reg);
+	buffer.insert((uint32_t) atoi(address.tokenString()));
+
+	return true;
+}
+
 bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
 	Token load = _tokeniser.nextToken(input);
 	Token registerName = _tokeniser.nextToken(input);
@@ -43,6 +97,7 @@ bool Parser::parseLoad(char const*& input, ByteBuffer& buffer) {
 	VM::RegisterID id = VM::RegisterUtils::getRegisterId(registerName.tokenString());
 	if (id == VM::InvalidRegister) {
 		printf("Register %s is not a valid register near %s\n", registerName.tokenString(), input);
+		return false;
 	}
 	
 	Token valueInt = _tokeniser.nextToken(input);
@@ -109,6 +164,14 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 		}
 	} else if (next.tokenId() == LOAD) {
 		if (!parseLoad(input, buffer)) {
+			return false;
+		}
+	} else if (next.tokenId() == MOVE) {
+		if (!parseMove(input, buffer)) {
+			return false;
+		}
+	} else if (next.tokenId() == GET || next.tokenId() == SET) {
+		if (!parseMemoryOp(input, buffer)) {
 			return false;
 		}
 	} else if (next.tokenId() == GREATER_THAN || next.tokenId() == LESS_THAN || next.tokenId() == ADD || next.tokenId() == SUBTRACT || next.tokenId() == DIVIDE || next.tokenId() == MULTIPLY) {

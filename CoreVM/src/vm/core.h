@@ -37,6 +37,7 @@ namespace VM {
 		 */
 		static void noOp(Core*);
 		static void loadImmediate(Core*);
+		static void move(Core*);
 
 		/**
 		 * Immediate op implementation

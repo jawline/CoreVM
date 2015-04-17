@@ -13,6 +13,7 @@ namespace VM {
 		 * Load a 32 bit value into a register
 		 */
 		LoadImmediate,
+		Move,
 
 		/**
 		 * Immediate operations take a register and apply a 32bit signed integer to them
