@@ -15,7 +15,7 @@ INSTALL_INCLUDE_PATH = /usr/local/include/CoreVM/
 #Compiler settings
 CC=g++
 CFLAGS=-c -std=c++11 -Wall -ggdb -fPIC
-LDFLAGS=-ggdb
+LDFLAGS=-lcorecs -ggdb
 
 #Rules to find source code - NOTE: Look for a better way to scan directories. Nonrecursive works but is a bit ugly
 SOURCES=$(shell find src/ -type f -name '*.cpp')
@@ -43,7 +43,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 	
 $(LIBRARY): $(OBJECTS)
-	$(CC) $(LDFLAGS)  -shared  $(OBJECTS) -o $@
+	$(CC)  -shared $(OBJECTS) $(LDFLAGS) -o $@
 
 #These rule tells the compiler to generate an object from the source code.
 $(OBJECTS) : $(OBJ_DIR)
