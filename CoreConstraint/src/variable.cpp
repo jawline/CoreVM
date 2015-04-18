@@ -8,6 +8,6 @@ Variable::Variable(unsigned int index) {
 
 Variable::~Variable() {}
 
-unsigned int Variable::getIndex() {
+unsigned int Variable::getIndex() const {
 	return _index;
 }

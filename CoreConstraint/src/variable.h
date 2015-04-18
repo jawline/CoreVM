@@ -3,14 +3,17 @@
 
 namespace Constraints {
 	class Variable {
+		friend class Problem;
 	private:
 		unsigned int _index;
 
-	public:
+	protected:
 		Variable(unsigned int index);
+
+	public:
 		~Variable();
 
-		unsigned int getIndex();
+		unsigned int getIndex() const;
 	};
 }
 
