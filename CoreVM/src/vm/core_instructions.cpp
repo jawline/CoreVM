@@ -205,6 +205,7 @@ void Core::jumpEqualImmediateImmediate(Core* inst) {
 	} else {
 		inst->_registers[ProgramCounter] += 10;
 	}
+	printf("JEQII\n");
 }
 
 void Core::jumpNotEqualImmediateImmediate(Core* inst) {
@@ -218,6 +219,7 @@ void Core::jumpNotEqualImmediateImmediate(Core* inst) {
 	} else {
 		inst->_registers[ProgramCounter] += 10;
 	}
+	printf("JNEII\n");
 }
 
 void Core::jumpEqualImmediateRegister(Core* inst) {
@@ -231,6 +233,7 @@ void Core::jumpEqualImmediateRegister(Core* inst) {
 	} else {
 		inst->_registers[ProgramCounter] += 7;
 	}
+	printf("JEQIR\n");
 }
 
 void Core::jumpNotEqualImmediateRegister(Core* inst) {
@@ -244,6 +247,7 @@ void Core::jumpNotEqualImmediateRegister(Core* inst) {
 	} else {
 		inst->_registers[ProgramCounter] += 7;
 	}
+	printf("JNEIR\n");
 }
 
 void Core::jumpEqualRegisterImmediate(Core* inst) {
@@ -257,7 +261,7 @@ void Core::jumpEqualRegisterImmediate(Core* inst) {
 	} else {
 		inst->_registers[ProgramCounter] += 7;
 	}
-	printf("JEQ\n");
+	printf("JEQRI\n");
 }
 
 void Core::jumpNotEqualRegisterImmediate(Core* inst) {

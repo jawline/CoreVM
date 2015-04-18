@@ -52,7 +52,7 @@ bool Parser::parseConditionalJump(char const*& input, ByteBuffer& buffer) {
 	}
 
 	Token comparedToken = _tokeniser.nextToken(input);
-	VM::RegisterID comparedId = VM::RegisterUtils::getRegisterId(regToken.tokenString());
+	VM::RegisterID comparedId = VM::RegisterUtils::getRegisterId(comparedToken.tokenString());
 	bool immediateComparison = comparedId == VM::InvalidRegister;
 
 	Token addressToken = _tokeniser.nextToken(input);
@@ -94,6 +94,8 @@ bool Parser::parseConditionalJump(char const*& input, ByteBuffer& buffer) {
 			printf("Error, not expecting %s at %s\n", jumpType.tokenString(), input);
 			return false;
 	}
+
+	buffer.insert((uint8_t) reg);
 
 	if (immediateComparison) {
 		if (!handleAddress(comparedToken, input, buffer)) {

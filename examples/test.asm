@@ -1,7 +1,9 @@
 load A 0
-load B 0
+jmp repeat
+
 repeat:
-	set A B
-	add B 4
-	jne B 20 repeat
+	add A 1
+	jeq A 5 exit
+	jmp repeat
+
 exit:
