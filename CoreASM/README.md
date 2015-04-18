@@ -1,4 +1,4 @@
-CoreVM Assembler
+#CoreVM Assembler
 
 Toy assembler for producing CoreVM machine code.
 
