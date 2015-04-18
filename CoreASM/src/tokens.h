@@ -26,6 +26,8 @@ namespace Assembler {
 		LESS_THAN,
 		TOKEN_EOF,
 		DATA_BYTE,
+		JUMP_EQUALS,
+		JUMP_NOT_EQUALS,
 		INVALID_TOKEN
 	} TOKEN_ID;
 

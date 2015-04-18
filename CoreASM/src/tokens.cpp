@@ -104,6 +104,12 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	} else if (strncmp(input, "mov", 3) == 0) {
 		result = Token(MOVE, input, 3);
 		len = 3;
+	} else if (strncmp(input, "jeq", 3) == 0) {
+		result = Token(JUMP_EQUALS, input, 3);
+		len = 3;
+	} else if (strncmp(input, "jne", 3) == 0) {
+		result = Token(JUMP_NOT_EQUALS, input, 3);
+		len = 3;
 	} else if (strncmp(input, "db", 2) == 0) {
 		result = Token(DATA_BYTE, input, 2);
 		len = 2;

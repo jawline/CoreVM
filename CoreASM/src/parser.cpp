@@ -29,7 +29,6 @@ bool Parser::handleAddress(Token const& address, char const* input, ByteBuffer& 
 }
 
 bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
-
 	Token labelId = _tokeniser.nextToken(input);
 	Token colon = _tokeniser.nextToken(input);
 
@@ -40,6 +39,78 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 
 	_labels.setLabel(labelId.tokenString(), buffer.current());
 	resolveLabels(buffer);
+	return true;
+}
+
+bool Parser::parseConditionalJump(char const*& input, ByteBuffer& buffer) {
+	Token jumpType = _tokeniser.nextToken(input);
+	Token regToken = _tokeniser.nextToken(input);
+
+	VM::RegisterID reg = VM::RegisterUtils::getRegisterId(regToken.tokenString());
+	if (reg == VM::InvalidRegister) {
+		printf("Register %s is not a valid register near %s\n", regToken.tokenString(), input);
+	}
+
+	Token comparedToken = _tokeniser.nextToken(input);
+	VM::RegisterID comparedId = VM::RegisterUtils::getRegisterId(regToken.tokenString());
+	bool immediateComparison = comparedId == VM::InvalidRegister;
+
+	Token addressToken = _tokeniser.nextToken(input);
+	VM::RegisterID addressId = VM::RegisterUtils::getRegisterId(addressToken.tokenString());
+	bool immediateAddress = addressId == VM::InvalidRegister;
+
+	switch (jumpType.tokenId()) {
+		case JUMP_EQUALS:
+			if (immediateComparison) {
+				if (immediateAddress) {
+					buffer.insert((uint8_t) VM::JumpEqualImmediateImmediate);
+				} else {
+					buffer.insert((uint8_t) VM::JumpEqualImmediateRegister);
+				}
+			} else {
+				if (immediateAddress) {
+					buffer.insert((uint8_t) VM::JumpEqualRegisterImmediate);
+				} else {
+					buffer.insert((uint8_t) VM::JumpEqualRegisterRegister);
+				}
+			}
+			break;
+		case JUMP_NOT_EQUALS:
+			if (immediateComparison) {
+				if (immediateAddress) {
+					buffer.insert((uint8_t) VM::JumpNotEqualImmediateImmediate);
+				} else {
+					buffer.insert((uint8_t) VM::JumpNotEqualImmediateRegister);
+				}
+			} else {
+				if (immediateAddress) {
+					buffer.insert((uint8_t) VM::JumpNotEqualRegisterImmediate);
+				} else {
+					buffer.insert((uint8_t) VM::JumpNotEqualRegisterRegister);
+				}
+			}
+			break;
+		default:
+			printf("Error, not expecting %s at %s\n", jumpType.tokenString(), input);
+			return false;
+	}
+
+	if (immediateComparison) {
+		if (!handleAddress(comparedToken, input, buffer)) {
+			return false;
+		}
+	} else {
+		buffer.insert((uint8_t) comparedId);
+	}
+
+	if (immediateAddress) {
+		if (!handleAddress(addressToken, input, buffer)) {
+			return false;
+		}
+	} else {
+		buffer.insert((uint8_t) addressId);
+	}
+
 	return true;
 }
 
@@ -229,6 +300,10 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 		}
 	} else if (next.tokenId() == GREATER_THAN || next.tokenId() == LESS_THAN || next.tokenId() == ADD || next.tokenId() == SUBTRACT || next.tokenId() == DIVIDE || next.tokenId() == MULTIPLY) {
 		if (!parseArithmetic(input, buffer)) {
+			return false;
+		}
+	} else if (next.tokenId() == JUMP_EQUALS || next.tokenId() == JUMP_NOT_EQUALS) {
+		if (!parseConditionalJump(input, buffer)) {
 			return false;
 		}
 	} else {

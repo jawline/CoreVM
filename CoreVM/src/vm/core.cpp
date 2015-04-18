@@ -42,11 +42,10 @@ void Core::setupJumpTable() {
 	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
 	_jumpTable[JumpRegister] = &Core::jumpRegister;
 
-	_jumpTable[JumpEqualImmediate] = &Core::jumpIfEqualImmediate;
-	_jumpTable[JumpNotEqualImmediate] = &Core::jumpIfNotEqualImmediate;
-
-	_jumpTable[JumpEqualRegister] = &Core::jumpIfEqualRegister;
-	_jumpTable[JumpNotEqualRegister] = &Core::jumpIfNotEqualRegister;
+	_jumpTable[JumpEqualImmediateImmediate] = jumpEqualImmediateImmediate;
+	_jumpTable[JumpNotEqualImmediateImmediate] = jumpNotEqualImmediateImmediate;
+	_jumpTable[JumpEqualRegisterImmediate] = jumpEqualRegisterImmediate;
+	_jumpTable[JumpNotEqualRegisterImmediate] = jumpNotEqualRegisterImmediate;
 }
 
 void Core::setData(uint8_t* data, unsigned int dataSize) {

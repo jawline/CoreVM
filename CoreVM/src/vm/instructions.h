@@ -53,10 +53,15 @@ namespace VM {
 		/**
 		 * Branching operations
 		 */
-		JumpEqualImmediate,
-		JumpNotEqualImmediate,
-		JumpEqualRegister,
-		JumpNotEqualRegister,
+		JumpEqualImmediateImmediate,
+		JumpNotEqualImmediateImmediate,
+		JumpEqualImmediateRegister,
+		JumpNotEqualImmediateRegister,
+
+		JumpEqualRegisterImmediate,
+		JumpNotEqualRegisterImmediate,
+		JumpEqualRegisterRegister,
+		JumpNotEqualRegisterRegister,
 
 		NumInstructions
 	};

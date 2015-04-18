@@ -76,10 +76,15 @@ namespace VM {
 		/**
 		 * Branching conditions
 		 */
-		static void jumpIfEqualImmediate(Core*);
-		static void jumpIfNotEqualImmediate(Core*);
-		static void jumpIfEqualRegister(Core*);
-		static void jumpIfNotEqualRegister(Core*);
+		static void jumpEqualImmediateImmediate(Core*);
+		static void jumpNotEqualImmediateImmediate(Core*);
+		static void jumpEqualRegisterImmediate(Core*);
+		static void jumpNotEqualRegisterImmediate(Core*);
+
+		static void jumpEqualImmediateRegister(Core*);
+		static void jumpNotEqualImmediateRegister(Core*);
+		static void jumpEqualRegisterRegister(Core*);
+		static void jumpNotEqualRegisterRegister(Core*);
 	};
 }
 
