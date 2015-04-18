@@ -9,10 +9,8 @@ namespace Constraints {
 
 	protected:
 		Variable(unsigned int index);
-
 	public:
 		~Variable();
-
 		unsigned int getIndex() const;
 	};
 }
