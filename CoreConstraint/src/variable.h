@@ -14,6 +14,7 @@ namespace Constraints {
 	public:
 		~Variable();
 		unsigned int getIndex() const;
+		std::string toString() const;
 	};
 }
 

@@ -19,3 +19,27 @@ void Constraint::addItem(Variable const& var, double multiplier) {
 void Constraint::setResult(unsigned int endValue) {
 	_value = endValue;
 }
+
+std::string Constraint::toString() const {
+	std::string result;
+	
+	if (_items.size()) {
+		for (unsigned int i = 0; i < _items.size(); i++) {
+
+			if (i) {
+				result += "+ ";
+			}
+
+			result += std::to_string(_items[i].second);
+			result += _items[i].first.toString();
+			result += " ";
+		}
+
+		result += "= ";
+		result += std::to_string(_value);
+	} else {
+		result = "Empty Constraint";
+	}
+
+	return result;
+}

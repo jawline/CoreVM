@@ -14,6 +14,8 @@ namespace Constraints {
 
 		Variable createVariable(std::string const& name);
 		void addConstraint(Constraint const& constraint);
+
+		std::string toString() const;
 	};
 }
 

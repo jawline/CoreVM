@@ -2,6 +2,7 @@
 #define _SOLVER_CONSTRAINT_DEF_H_
 #include "variable.h"
 #include <vector>
+#include <string>
 
 namespace Constraints {
 	typedef std::pair<Variable,double> ConstraintItem;
@@ -10,7 +11,6 @@ namespace Constraints {
 	private:
 		std::vector<ConstraintItem> _items;
 		unsigned int _value;
-
 	public:
 		Constraint();
 		Constraint(unsigned int value);
@@ -18,6 +18,8 @@ namespace Constraints {
 
 		void addItem(Variable const& var, double multiplier);
 		void setResult(unsigned int endValue);
+
+		std::string toString() const;
 	};
 };
 

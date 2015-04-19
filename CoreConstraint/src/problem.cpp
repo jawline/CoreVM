@@ -15,3 +15,14 @@ Variable Problem::createVariable(std::string const& name) {
 void Problem::addConstraint(Constraint const& constraint) {
 	_constraints.push_back(constraint);
 }
+
+std::string Problem::toString() const {
+	std::string result;
+	result = "Problem\n";
+
+	for (unsigned int i = 0; i < _constraints.size(); i++) {
+		result += _constraints[i].toString() + "\n";
+	}
+
+	return result;
+}

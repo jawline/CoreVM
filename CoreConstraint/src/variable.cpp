@@ -12,3 +12,7 @@ Variable::~Variable() {}
 unsigned int Variable::getIndex() const {
 	return _index;
 }
+
+std::string Variable::toString() const {
+	return _name;
+}
