@@ -11,10 +11,8 @@ namespace Constraints {
 
 	protected:
 		Variable(std::string const& name, unsigned int index);
-
 	public:
 		~Variable();
-
 		unsigned int getIndex() const;
 	};
 }
