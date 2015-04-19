@@ -10,15 +10,14 @@ namespace Constraints {
 	class Constraint {
 	private:
 		std::vector<ConstraintItem> _items;
-		unsigned int _value;
+		double _value;
 	public:
 		Constraint();
-		Constraint(unsigned int value);
+		Constraint(double value);
 		~Constraint();
 
 		void addItem(Variable const& var, double multiplier);
-		void setResult(unsigned int endValue);
-
+		void setResult(double endValue);
 		std::string toString() const;
 	};
 };
