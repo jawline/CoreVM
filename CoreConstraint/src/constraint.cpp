@@ -2,12 +2,16 @@
 
 using namespace Constraints;
 
+static const char* ComparisonTypeStrings[NumComparisonTypes] = {"=", "<=", ">="};
+
 Constraint::Constraint() {
 	_value = 0;
+	_type = Equals;
 }
 
 Constraint::Constraint(double value) {
 	_value = value;
+	_type = Equals;
 }
 
 Constraint::~Constraint() {}
@@ -18,6 +22,10 @@ void Constraint::addItem(Variable const& var, double multiplier) {
 
 void Constraint::setResult(double endValue) {
 	_value = endValue;
+}
+
+void Constraint::setComparisonType(ComparisonType const& type) {
+	_type = type;
 }
 
 std::string Constraint::toString() const {
@@ -31,7 +39,8 @@ std::string Constraint::toString() const {
 			result += _items[i].first.toString();
 			result += " ";
 		}
-		result += "= ";
+		result += ComparisonTypeStrings[_type];
+		result += " ";
 		result += std::to_string(_value);
 	} else {
 		result = "Empty Constraint";

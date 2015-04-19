@@ -5,11 +5,20 @@
 #include <string>
 
 namespace Constraints {
+
 	typedef std::pair<Variable,double> ConstraintItem;
+
+	typedef enum {
+		Equals,
+		LessThanOrEqual,
+		GreaterThanOrEqual,
+		NumComparisonTypes
+	} ComparisonType;
 
 	class Constraint {
 	private:
 		std::vector<ConstraintItem> _items;
+		ComparisonType _type;
 		double _value;
 	public:
 		Constraint();
@@ -18,6 +27,8 @@ namespace Constraints {
 
 		void addItem(Variable const& var, double multiplier);
 		void setResult(double endValue);
+		void setComparisonType(ComparisonType const& type);
+
 		std::string toString() const;
 	};
 };
