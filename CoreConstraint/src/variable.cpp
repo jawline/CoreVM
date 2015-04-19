@@ -2,7 +2,8 @@
 
 using namespace Constraints;
 
-Variable::Variable(unsigned int index) {
+Variable::Variable(std::string const& name, unsigned int index) {
+	_name = name;
 	_index = index;
 }
 

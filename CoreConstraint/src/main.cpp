@@ -1,6 +1,7 @@
+#include "solver.h"
 #include <stdio.h>
 
 int main(int argc, char** argv) {
-	printf("Hello World\n");
+	printf("CoreConstraints\n");
 	return -1;
 }

@@ -12,7 +12,7 @@ namespace Constraints {
 		Problem();
 		~Problem();
 
-		Variable createVariable();
+		Variable createVariable(std::string const& name);
 		void addConstraint(Constraint const& constraint);
 	};
 }

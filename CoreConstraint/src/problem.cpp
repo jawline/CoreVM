@@ -8,8 +8,8 @@ Problem::Problem() {
 
 Problem::~Problem() {}
 
-Variable Problem::createVariable() {
-	return Variable(_lastv++);
+Variable Problem::createVariable(std::string const& name) {
+	return Variable(name, _lastv++);
 }
 
 void Problem::addConstraint(Constraint const& constraint) {
