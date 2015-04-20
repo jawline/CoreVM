@@ -1,5 +1,4 @@
 load A 0
-jmp repeat
 
 repeat:
 	add A 1
