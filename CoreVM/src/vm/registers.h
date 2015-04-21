@@ -17,6 +17,10 @@ namespace VM {
 		RegisterK,
 		RegisterL,
 		RegisterM,
+		RegisterN,
+		RegisterO,
+		RegisterP,
+		RegisterQ,
 		NumRegisters,
 		InvalidRegister
 	} RegisterID;
