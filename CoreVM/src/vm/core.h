@@ -8,6 +8,9 @@
 namespace VM {
 	class Core {
 	private:
+		/**
+		 * Current register data
+		 */
 		uint32_t* _registers;
 
 		/**
@@ -28,12 +31,12 @@ namespace VM {
 	public:
 		Core();
 		~Core();
-		
+
 		inline int registerAsInt(unsigned int const& registerNumber) const;
 		inline void registerSetInt(unsigned int const& registerNumber, int const& val);
-
 		void setData(uint8_t* data, unsigned int dataSize);
 		void run();
+		void registerInterrupt(uint8_t interruptNumber, std::function<void(Core*)> callback);
 
 		/**
 		 * Instruction functions
