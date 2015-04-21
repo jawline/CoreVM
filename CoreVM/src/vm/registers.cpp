@@ -31,6 +31,14 @@ RegisterID RegisterUtils::getRegisterId(char const* name) {
       return RegisterL;
     case 'M':
       return RegisterM;
+    case 'N':
+      return RegisterN;
+    case 'O':
+      return RegisterO;
+    case 'P':
+      return RegisterP;
+    case 'Q':
+      return RegisterQ;
     default:
       return InvalidRegister;
   }
