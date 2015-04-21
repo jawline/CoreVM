@@ -32,8 +32,14 @@ namespace VM {
 		Core();
 		~Core();
 
-		inline int registerAsInt(unsigned int const& registerNumber) const;
-		inline void registerSetInt(unsigned int const& registerNumber, int const& val);
+		inline int registerAsInt(unsigned int const& registerNumber) const {
+			return ((int*)&_registers[registerNumber])[0];
+		}
+		
+		inline void registerSetInt(unsigned int const& registerNumber, int const& val) {
+			((int*)&_registers[registerNumber])[0] = val;
+		}
+
 		void setData(uint8_t* data, unsigned int dataSize);
 		void run();
 		void registerInterrupt(uint8_t interruptNumber, std::function<void(Core*)> callback);

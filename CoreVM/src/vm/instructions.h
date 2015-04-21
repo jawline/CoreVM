@@ -66,6 +66,7 @@ namespace VM {
 		/**
 		 * Interrupt
 		 */
+		Interrupt,
 
 		NumInstructions
 	};

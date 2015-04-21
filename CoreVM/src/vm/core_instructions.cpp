@@ -305,13 +305,15 @@ void Core::jumpNotEqualRegisterRegister(Core* inst) {
 }
 
 void Core::interrupt(Core* inst) {
-	uint8_t intNumber;
-	CoreUtils::byteFromBuffer(intNumber, inst->_registers[RegisterA]);
-	
-	if (inst->_intTable[intNumber]) {
-		_intTable[intNumber](inst);
+	uint8_t intNumber = inst->_registers[RegisterA];
+
+	if (intNumber < 256 && inst->_intTable[intNumber]) {
+		inst->_intTable[intNumber](inst);
 		printf("HANDLE INT %i\n", intNumber);
 	} else {
 		printf("NO INT HANDLER REGISTERED FOR %i\n", intNumber);
+		if (intNumber >= 256) {
+			printf("INTERRUPT NUMBER CANNOT EXCEED 256\n");
+		}
 	}
 }
