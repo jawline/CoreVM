@@ -10,12 +10,23 @@ namespace VM {
 	private:
 		uint32_t* _registers;
 
+		/**
+		 * Instruction jump table
+		 */
 		std::function<void(Core*)>* _jumpTable;
+		
+		/**
+		 * Instruction interrupt table
+		 */
+		std::function<void(Core*)>* _intTable;
 
 		uint8_t* _data;
 		unsigned int _maxData;
 
 		void setupJumpTable();
+	public:
+		Core();
+		~Core();
 		
 		inline int registerAsInt(unsigned int const& registerNumber) {
 			return ((int*)&_registers[registerNumber])[0];
@@ -24,10 +35,6 @@ namespace VM {
 		inline void registerSetInt(unsigned int const& registerNumber, int const& val) {
 			((int*)&_registers[registerNumber])[0] = val;
 		}
-
-	public:
-		Core();
-		~Core();
 
 		void setData(uint8_t* data, unsigned int dataSize);
 		void run();
