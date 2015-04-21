@@ -62,6 +62,10 @@ namespace VM {
 		JumpNotEqualRegisterImmediate,
 		JumpEqualRegisterRegister,
 		JumpNotEqualRegisterRegister,
+		
+		/**
+		 * Interrupt
+		 */
 
 		NumInstructions
 	};
