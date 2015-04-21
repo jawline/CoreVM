@@ -83,3 +83,7 @@ void Core::registerSetInt(unsigned int const& registerNumber, int const& val) {
 	((int*)&_registers[registerNumber])[0] = val;
 }
 
+
+void Core::registerInterrupt(uint8_t interruptNumber, std::function<void(Core*)> callback) {
+	_intTable[interruptNumber] = callback;
+}
