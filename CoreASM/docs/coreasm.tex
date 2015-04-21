@@ -10,12 +10,19 @@
 \maketitle
 
 \section* {Instruction}
+
 In order to make building code for the CoreVM virtual machine easier a simple assembler was constructed.
 
-Similarly to the VirtualMachine CoreASM supports an integer only syntax and instructions (No floats).
+Similarly to the VirtualMachine CoreASM supports an integer only syntax and instructions (no floats).
 
 The assembler itself uses a LL(1) grammar and subsequently has a very simple parser which is able to generate machine code for CoreVM in a single pass. 
+
 \section* {Syntax}
+
+The syntax of the assembly language is very simple, supporting only labels, data declarations and instructions.
+
+\section* {Usage}
+
 \section* {Implementation}
 \section* {Examples}
 \section* {Grammar}
@@ -27,8 +34,9 @@ NUM: [0-9]+
 ID: [a-zA-Z][a-zA-Z0-9]*
 
 Program: Block [Program]
-Block: Label | Instruction
+Block: Label | Instruction | Data
 Label: ID ':'
+Data: 'db' NUM
 Instruction:
 	Add | Sub | Mul | Div | Load | Move | Set | Get | JumpEqual | JumpNotEqual | Interrupt
 \end{verbatim}
