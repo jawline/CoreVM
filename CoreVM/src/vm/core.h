@@ -85,6 +85,8 @@ namespace VM {
 		static void jumpNotEqualImmediateRegister(Core*);
 		static void jumpEqualRegisterRegister(Core*);
 		static void jumpNotEqualRegisterRegister(Core*);
+		
+		static void interrupt(Core*);
 	};
 }
 
