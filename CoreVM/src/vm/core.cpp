@@ -5,11 +5,19 @@ using namespace VM;
 Core::Core() {
 	_registers = new uint32_t[NumRegisters];
 	setupJumpTable();
+	setupIntTable();
 }
 
 Core::~Core() {
 	delete[] _registers;
 	delete[] _jumpTable;
+}
+
+void Core::setupIntTable() {
+	_jumpTable = new std::function<void(Core*)>[256];
+	for (unsigned int i = 0; i < 256; i++) {
+		_jumpTable[i] = nullptr;
+	}
 }
 
 void Core::setupJumpTable() {
