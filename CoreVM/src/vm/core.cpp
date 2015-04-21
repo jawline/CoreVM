@@ -51,6 +51,8 @@ void Core::setupJumpTable() {
 	_jumpTable[JumpNotEqualImmediateRegister] = jumpNotEqualImmediateRegister;
 	_jumpTable[JumpEqualRegisterRegister] = jumpEqualRegisterRegister;
 	_jumpTable[JumpNotEqualRegisterRegister] = jumpNotEqualRegisterRegister;
+	
+	_jumpTable[Interrupt] = interrupt;
 }
 
 void Core::setData(uint8_t* data, unsigned int dataSize) {
