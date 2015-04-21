@@ -21,6 +21,24 @@ The assembler itself uses a LL(1) grammar and subsequently has a very simple par
 
 The syntax of the assembly language is very simple, supporting only labels, data declarations and instructions.
 
+Labels can be used to reference a point in the file. If a label is referenced before it is used then the address will be resolved when the label is defined. This allows for blocks of code like
+\begin {verbatim}
+jmp start
+start:
+\end{verbatim}
+to be valid.
+
+If a label is overwritten then any references to it after the point where it is redefined will reference the second label. This means that for code such as
+\begin{verbatim}
+jmp start
+
+start:
+	load A 5
+start:
+	jmp start
+\end{verbatim}
+The second jump will jump to the second label, but the first jump will still jump to the first label.
+
 Instructions follow the general pattern INSTRUCTION DEST OtherOperands, when applicable. With the conditional jump instructions
 such as JEQ and JNE they follow the pattern INSTRUCTION Register Operand (Register or value) DESTINATION.
 
