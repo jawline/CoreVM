@@ -5,16 +5,8 @@ It will also be useful as reference for anybody looking into simple parsers, vir
 
 CoreASM depends on CoreVM and Regex-Parser (https://github.com/mmjack/Regex-Parser).
 
-To build the project from the root directory execute
+To install the project -
+First ensure you have Regex-Parser (https://github.com/mmjack/Regex-Parser) installed.
+Then execute install.sh from the root directory to build all other dependancies.
 
-cd CoreVM
-make && sudo make install
-cd ../CoreASM
-make && sudo make install
-
-To compile a asm file into a Virtual machine binary execute
-
-coreasm Path/To/AsmFile Path/To/Outfile
-
-To execute it then type
-corevm Path/To/Outfile
+Any build after (To verify changes) can be done either using install.sh or with the make command from the root directory (Note: The make command will not install libraries so any changes to a dependancy will not reflect in an application until make install is executed).
