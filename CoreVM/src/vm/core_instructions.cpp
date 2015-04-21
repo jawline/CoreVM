@@ -307,5 +307,11 @@ void Core::jumpNotEqualRegisterRegister(Core* inst) {
 void Core::interrupt(Core* inst) {
 	uint8_t intNumber;
 	CoreUtils::byteFromBuffer(intNumber, inst->_registers[RegisterA]);
-	printf("HANDLE INT %i\n", intNumber);
+	
+	if (inst->_intTable[intNumber]) {
+		_intTable[intNumber](inst);
+		printf("HANDLE INT %i\n", intNumber);
+	} else {
+		printf("NO INT HANDLER REGISTERED FOR %i\n", intNumber);
+	}
 }
