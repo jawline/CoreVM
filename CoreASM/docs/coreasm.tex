@@ -24,6 +24,17 @@ The syntax of the assembly language is very simple, supporting only labels, data
 Instructions follow the general pattern INSTRUCTION DEST OtherOperands, when applicable. With the conditional jump instructions
 such as JEQ and JNE they follow the pattern INSTRUCTION Register Operand (Register or value) DESTINATION.
 
+The data instructions can be used to allocate space in the binary which can be used to store data at runtime using the GET and SET instructions.
+For example, the code
+\begin {verbatim}
+load A 5
+set A variable
+variable:
+db 4
+exit:
+\end{verbatim}
+sets the value of the memory allocated at label variable to 5. This can then be loaded into registers later using the GET instructions.
+
 \section* {Usage}
 
 \section* {Implementation}
