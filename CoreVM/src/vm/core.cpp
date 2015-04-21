@@ -74,3 +74,12 @@ void Core::run() {
 		_jumpTable[_data[_registers[ProgramCounter]]](this);
 	}
 }
+
+int Core::registerAsInt(unsigned int const& registerNumber) const {
+	return ((int*)&_registers[registerNumber])[0];
+}
+
+void Core::registerSetInt(unsigned int const& registerNumber, int const& val) {
+	((int*)&_registers[registerNumber])[0] = val;
+}
+
