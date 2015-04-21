@@ -303,3 +303,9 @@ void Core::jumpNotEqualRegisterRegister(Core* inst) {
 	}
 	printf("JNEQRR\n");
 }
+
+void Core::interrupt(Core* inst) {
+	uint8_t intNumber;
+	CoreUtils::byteFromBuffer(intNumber, inst->_registers[RegisterA]);
+	printf("HANDLE INT %i\n", intNumber);
+}
