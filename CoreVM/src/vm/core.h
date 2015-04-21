@@ -24,6 +24,7 @@ namespace VM {
 		unsigned int _maxData;
 
 		void setupJumpTable();
+		void setupIntTable();
 	public:
 		Core();
 		~Core();
