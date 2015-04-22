@@ -1,7 +1,10 @@
 #ifndef _CORE_STATE_DEF_H_
 #define _CORE_STATE_DEF_H_
 #include <cstdint>
+#include <memory>
 #include "registers.h"
+
+using namespace std;
 
 namespace VM {
   class CoreState {
@@ -9,12 +12,12 @@ namespace VM {
 	/**
 	 * Current register data
 	 */
-	uint32_t* _registers;
+	shared_ptr<uint32_t> _registers;
 		
 	/**
 	 * RAM contents
 	 */
-	uint8_t* _data;
+	shared_ptr<uint8_t> _data;
 	unsigned int _dataSize;
 	
 	/**
@@ -30,8 +33,6 @@ namespace VM {
     CoreState();
     CoreState(uint8_t* data, unsigned int size);
     CoreState(CoreState const& existing);
-    
-    void setData(uint8_t* data, unsigned int size);
 
     inline uint32_t getRegister(uint8_t registerId) const {
       return _registers[registerId];
