@@ -13,6 +13,14 @@ void printRam(uint8_t* data, size_t size) {
 	}
 }
 
+void printInterrupt(VM::Core* inst) {
+	printf("HIT PRINT INTERRUPT\n");
+}
+
+void makeSymbolInterrupt(VM::Core* inst) {
+	printf("MAKE SYMBOL INTERRUPT\n");
+}
+
 int main(int argc, char** argv) {
 
 	if (argc != 2) {
@@ -29,6 +37,10 @@ int main(int argc, char** argv) {
 	}
 
 	VM::Core c;
+
+	c.registerInterrupt(0, printInterrupt);
+	c.registerInterrupt(1, makeSymbolInterrupt);
+
 	c.setData(data, size);
 
 	/**
