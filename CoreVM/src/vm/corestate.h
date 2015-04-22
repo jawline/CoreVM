@@ -54,6 +54,14 @@ namespace VM {
     	}
     	_data[location] = val;
     }
+    
+    inline uint32_t getDataInt(size_t location) const {
+    	return *((uint32_t*) &_data[location]);
+    }
+    
+    inline void setDataInt(size_t location, uint32_t val) {
+    	*((uint32_t*) &_data[location]) = val;
+    }
   };
 }
 
