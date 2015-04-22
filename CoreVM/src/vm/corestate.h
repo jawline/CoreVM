@@ -48,7 +48,7 @@ namespace VM {
     	return _data[location];
     }
     
-    inline void setDataByte(size_t location, uint8_t val) const {
+    inline void setDataByte(size_t location, uint8_t val) {
     	if (_copyDataOnWrite) {
     		copyData();
     	}
