@@ -30,7 +30,6 @@ namespace VM {
 	void copyData();
 
   public:
-    CoreState();
     CoreState(uint8_t* data, unsigned int size);
     CoreState(CoreState const& existing);
 
