@@ -27,7 +27,7 @@ namespace VM {
 		void setupJumpTable();
 		void setupIntTable();
 	public:
-		Core();
+		Core(uint8_t* data, unsigned int dataSize);
 		~Core();
 
 		inline uint32_t getProgramCounter() {
@@ -38,7 +38,6 @@ namespace VM {
 			state->setRegisterUInt(pc);
 		}
 
-		void setState(CoreState* state);
 		CoreState* getState();
 		
 		void run();
