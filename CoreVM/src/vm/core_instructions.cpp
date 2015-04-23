@@ -1,4 +1,4 @@
-	#include "core.h"
+#include "core.h"
 #include "coreutils.h"
 
 using namespace VM;
@@ -141,13 +141,11 @@ void Core::setMemoryInt(Core* inst) {
 }
 
 void Core::getMemoryInt(Core* inst) {
-	uint8_t reg;
-	uint32_t loc;
-	CoreUtils::byteFromBuffer(reg, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::uintFromBuffer(loc, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	CoreUtils::uintFromBuffer(inst->_registers[reg], &inst->_data[loc]);
-	inst->_registers[ProgramCounter] += 6;
-	printf("GETM %i %i %i\n", reg, loc, ((uint32_t*)&inst->_data[loc])[0]);
+	uint8_t reg = state->getDataByte(getProgramCounter()+1);
+	uint32_t loc = state->getDataUInt(getProgramCounter()+2);
+	state->setRegisterUInt(reg, state->getDataUInt(loc));
+	setProgramCounter(getProgramCounter() + 6);
+	printf("GETM %i %i\n", reg, loc);
 }
 
 void Core::setMemoryIntRegister(Core* inst) {
