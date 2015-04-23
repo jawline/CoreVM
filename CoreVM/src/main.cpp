@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 	VM::Core c;
 	c.registerInterrupt(0, printInterrupt);
 	c.registerInterrupt(1, makeSymbolInterrupt);
-	c.setData(state);
+	c.setState(state);
 
 	c.run();
 
