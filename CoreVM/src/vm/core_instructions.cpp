@@ -11,7 +11,7 @@ void Core::noOp(Core* inst) {
 void Core::loadImmediate(Core* inst) {
 	uint8_t reg = _state->getDataByte(getProgramCounter()+1);
 	uint32_t val = _state->getDataUInt(getProgramCounter()+2);
-	inst->_registers[reg] = val;
+	_state->setRegisterUInt(reg, val);
 	setProgramCounter(getProgramCounter() + 6);
 	printf("LOAD IMMEDIATE $%i:=%i\n", reg, val);
 }
