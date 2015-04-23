@@ -310,6 +310,10 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 		if (!parseDataByte(input, buffer)) {
 			return false;
 		}
+	} else if (next.tokenId() == INTERRUPT) {
+		if (!parseInterrupt(input, buffer)) {
+			return false;
+		}
 	} else if (next.tokenId() == GET || next.tokenId() == SET) {
 		if (!parseMemoryOp(input, buffer)) {
 			return false;
