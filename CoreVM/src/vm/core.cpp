@@ -2,13 +2,15 @@
 
 using namespace VM;
 
-Core::Core() {
+Core::Core(uint8_t* data, unsigned int dataSize) {
+	_state = new CoreState(data, dataSize);
 	_registers = new uint32_t[NumRegisters];
 	setupJumpTable();
 	setupIntTable();
 }
 
 Core::~Core() {
+	delete _state;
 	delete[] _registers;
 	delete[] _jumpTable;
 }
@@ -61,10 +63,6 @@ void Core::setupJumpTable() {
 	_jumpTable[JumpNotEqualRegisterRegister] = jumpNotEqualRegisterRegister;
 	
 	_jumpTable[Interrupt] = interrupt;
-}
-
-void Core::setState(CoreState* state) {
-	_state = state;
 }
 
 CoreState* Core::getState() {
