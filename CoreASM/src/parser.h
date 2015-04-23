@@ -28,6 +28,7 @@ namespace Assembler {
 		bool parseJump(char const*& input, ByteBuffer& buffer);
 		bool parseDataByte(char const*& input, ByteBuffer& buffer);
 		bool parseConditionalJump(char const*& input, ByteBuffer& buffer);
+		bool parseInterrupt(char const*& input, ByteBuffer& buffer);
 		bool postParse(ByteBuffer& buffer);
 
 	public:
