@@ -69,22 +69,18 @@ void Core::divideImmediate(Core* inst) {
 }
 
 void Core::greaterThanImmediate(Core* inst) {
-	uint8_t r1;
-	int32_t val;
-	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->registerSetInt(r1, inst->registerAsInt(r1) > val ? 1 : 0);
-	inst->_registers[ProgramCounter] += 6;
+	uint8_t r1 = state->getDataByte(getProgramCounter()+1);
+	int32_t val = state->getDataInt(getProgramCounter()+2);
+	state->setRegisterInt(r1, state->getRegisterInt(r1) > val ? 1 : 0);
+	setProgramCounter(getProgramCounter() + 6);
 	printf("GT %i %i\n", r1, val);
 }
 
 void Core::lessThanImmediate(Core* inst) {
-	uint8_t r1;
-	int32_t val;
-	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->registerSetInt(r1, inst->registerAsInt(r1) < val ? 1 : 0);
-	inst->_registers[ProgramCounter] += 6;
+	uint8_t r1 = state->getDataByte(getProgramCounter()+1);
+	int32_t val = state->getDataInt(getProgramCounter()+2);
+	state->setRegisterInt(r1, state->getRegisterInt(r1) < val ? 1 : 0);
+	setProgramCounter(getProgramCounter() + 6);
 	printf("LT %i %i\n", r1, val);
 }
 
