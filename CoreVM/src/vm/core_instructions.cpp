@@ -9,21 +9,19 @@ void Core::noOp(Core* inst) {
 }
 
 void Core::loadImmediate(Core* inst) {
-	uint8_t reg;
-	uint32_t val;
-	CoreUtils::byteFromBuffer(reg, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::uintFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	uint8_t reg = state->getDataByte(getProgramCounter() + 1);
+	uint32_t val = state->getDataUInt(getProgramCounter() + 2);
 	inst->_registers[reg] = val;
 	inst->_registers[ProgramCounter] += 6;
 	printf("LOAD IMMEDIATE $%i:=%i\n", reg, val);
 }
 
 void Core::move(Core* inst) {
-	uint8_t dst, src;
-	CoreUtils::byteFromBuffer(dst, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::byteFromBuffer(src, &inst->_data[inst->_registers[ProgramCounter]+2]);
+	uint8_t dst = state->getDataByte(getProgramCounter() + 1);
+	uint8_t src = state->getDataByte(getProgramCounter() + 2);
 	inst->_registers[dst] = inst->_registers[src];
 	inst->_registers[ProgramCounter] += 3;
+	printf("MOVE %i %i\n", dst, src);
 }
 
 void Core::jumpImmediate(Core* inst) {
