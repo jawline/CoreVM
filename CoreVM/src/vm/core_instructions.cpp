@@ -165,15 +165,13 @@ void Core::getMemoryIntRegister(Core* inst) {
 }
 
 void Core::jumpEqualImmediateImmediate(Core* inst) {
-	uint8_t r1;
-	uint32_t val, dst;
-	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::uintFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	CoreUtils::uintFromBuffer(dst, &inst->_data[inst->_registers[ProgramCounter]+6]);
-	if (inst->_registers[r1] == val) {
-		inst->_registers[ProgramCounter] = dst;
+	uint8_t r1 = state->getDataByte(getProgramCounter() + 1);
+	uint32_t val = state->getDataUInt(getProgramCounter() + 2);
+	uint32_t dst = state->getDataUInt(getProgramCounter() + 6);
+	if (state->getRegisterUInt(r1) == val) {
+		setProgramCounter(dst);
 	} else {
-		inst->_registers[ProgramCounter] += 10;
+		setProgramCounter(getProgramCounter() + 10);
 	}
 	printf("JEQII\n");
 }
