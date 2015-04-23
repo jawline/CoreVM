@@ -15,9 +15,9 @@ Core::~Core() {
 }
 
 void Core::setupIntTable() {
-	_jumpTable = new std::function<void(Core*)>[256];
+	_intTable = new std::function<void(Core*)>[256];
 	for (unsigned int i = 0; i < 256; i++) {
-		_jumpTable[i] = nullptr;
+		_intTable[i] = nullptr;
 	}
 }
 
