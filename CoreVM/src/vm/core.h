@@ -38,7 +38,9 @@ namespace VM {
 			state->setRegisterUInt(pc);
 		}
 
-		void setData(CoreState* state);
+		void setState(CoreState* state);
+		CoreState* getState();
+		
 		void run();
 		void registerInterrupt(uint8_t interruptNumber, std::function<void(Core*)> callback);
 
