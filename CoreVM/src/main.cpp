@@ -36,11 +36,9 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	VM::CoreState* state = new VM::CoreState(data, size);
-	VM::Core c;
+	VM::Core c(data, size);
 	c.registerInterrupt(0, printInterrupt);
 	c.registerInterrupt(1, makeSymbolInterrupt);
-	c.setState(state);
 	
 	/**
 	 * Print VM ram at start of execution
