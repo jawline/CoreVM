@@ -80,7 +80,19 @@ namespace VM {
     
     	inline void setDataInt(size_t location, int32_t val) {
     		*((int32_t*) &_data.get()[location]) = val;
-    	}    
+    	}
+    	
+    	uint32_t const* getRegisters() {
+    		return _registers.get();
+    	}
+    	
+    	uint8_t const* getData() {
+    		return _data.get();
+    	}
+    	
+    	unsigned int getDataSize() {
+    		return _dataSize;
+    	}
   };
 }
 
