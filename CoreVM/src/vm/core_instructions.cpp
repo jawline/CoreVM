@@ -4,28 +4,28 @@
 using namespace VM;
 
 void Core::noOp(Core* inst) {
-	setProgramCounter(getProgramCounter() + 1);
+	setProgramCounter(getProgramCounter()+1);
 	printf("NOOP\n");
 }
 
 void Core::loadImmediate(Core* inst) {
-	uint8_t reg = _state->getDataByte(getProgramCounter() + 1);
-	uint32_t val = _state->getDataUInt(getProgramCounter() + 2);
+	uint8_t reg = _state->getDataByte(getProgramCounter()+1);
+	uint32_t val = _state->getDataUInt(getProgramCounter()+2);
 	inst->_registers[reg] = val;
 	setProgramCounter(getProgramCounter() + 6);
 	printf("LOAD IMMEDIATE $%i:=%i\n", reg, val);
 }
 
 void Core::move(Core* inst) {
-	uint8_t dst = _state->getDataByte(getProgramCounter() + 1);
-	uint8_t src = _state->getDataByte(getProgramCounter() + 2);
-	inst->_registers[dst] = inst->_registers[src];
-	setProgramCounter(getProgramCounter() + 3);
+	uint8_t dst = _state->getDataByte(getProgramCounter()+1);
+	uint8_t src = _state->getDataByte(getProgramCounter()+2);
+	_state->setRegisterUint(dst, _state->getRegisterUInt(src));
+	setProgramCounter(getProgramCounter()+3);
 	printf("MOVE %i %i\n", dst, src);
 }
 
 void Core::jumpImmediate(Core* inst) {
-	uint32_t val = _state->getDataUInt(getProgramCounter() + 1);
+	uint32_t val = _state->getDataUInt(getProgramCounter()+1);
 	setProgramCounter(val);
 	printf("JMP %i\n", val);
 }
