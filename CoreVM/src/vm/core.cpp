@@ -63,9 +63,8 @@ void Core::setupJumpTable() {
 	_jumpTable[Interrupt] = interrupt;
 }
 
-void Core::setData(uint8_t* data, unsigned int dataSize) {
-	_data = data;
-	_maxData = dataSize;
+void Core::setData(CoreState* state) {
+	_state = state;
 }
 
 void Core::run() {
