@@ -1,7 +1,7 @@
 #include "vm/core.h"
 #include "util/filehelper.h"
 
-void printRam(uint8_t* data, size_t size) {
+void printRam(uint8_t const* data, size_t size) {
 	for (unsigned int i = 0; i < size; i++) {
 		printf("%02x ", data[i]);
 		if (i != 0 && i % 24 == 0) {

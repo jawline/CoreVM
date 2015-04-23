@@ -4,14 +4,13 @@ using namespace VM;
 
 Core::Core(uint8_t* data, unsigned int dataSize) {
 	_state = new CoreState(data, dataSize);
-	_registers = new uint32_t[NumRegisters];
 	setupJumpTable();
 	setupIntTable();
 }
 
 Core::~Core() {
 	delete _state;
-	delete[] _registers;
+	delete[] _intTable;
 	delete[] _jumpTable;
 }
 
@@ -52,17 +51,17 @@ void Core::setupJumpTable() {
 	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
 	_jumpTable[JumpRegister] = &Core::jumpRegister;
 
-	_jumpTable[JumpEqualImmediateImmediate] = jumpEqualImmediateImmediate;
-	_jumpTable[JumpNotEqualImmediateImmediate] = jumpNotEqualImmediateImmediate;
-	_jumpTable[JumpEqualRegisterImmediate] = jumpEqualRegisterImmediate;
-	_jumpTable[JumpNotEqualRegisterImmediate] = jumpNotEqualRegisterImmediate;
+	_jumpTable[JumpEqualImmediateImmediate] = &jumpEqualImmediateImmediate;
+	_jumpTable[JumpNotEqualImmediateImmediate] = &jumpNotEqualImmediateImmediate;
+	_jumpTable[JumpEqualRegisterImmediate] = &jumpEqualRegisterImmediate;
+	_jumpTable[JumpNotEqualRegisterImmediate] = &jumpNotEqualRegisterImmediate;
 
-	_jumpTable[JumpEqualImmediateRegister] = jumpEqualImmediateRegister;
-	_jumpTable[JumpNotEqualImmediateRegister] = jumpNotEqualImmediateRegister;
-	_jumpTable[JumpEqualRegisterRegister] = jumpEqualRegisterRegister;
-	_jumpTable[JumpNotEqualRegisterRegister] = jumpNotEqualRegisterRegister;
+	_jumpTable[JumpEqualImmediateRegister] = &jumpEqualImmediateRegister;
+	_jumpTable[JumpNotEqualImmediateRegister] = &jumpNotEqualImmediateRegister;
+	_jumpTable[JumpEqualRegisterRegister] = &jumpEqualRegisterRegister;
+	_jumpTable[JumpNotEqualRegisterRegister] = &jumpNotEqualRegisterRegister;
 	
-	_jumpTable[Interrupt] = interrupt;
+	_jumpTable[Interrupt] = &interrupt;
 }
 
 CoreState* Core::getState() {
@@ -70,9 +69,9 @@ CoreState* Core::getState() {
 }
 
 void Core::run() {
-	_registers[ProgramCounter] = 0;
-	while (_registers[ProgramCounter] < _maxData) {
-		_jumpTable[_data[_registers[ProgramCounter]]](this);
+	setProgramCounter(0);
+	while (getProgramCounter() < _state->getDataSize()) {
+		_jumpTable[_state->getDataByte(getProgramCounter())](this);
 	}
 }
 

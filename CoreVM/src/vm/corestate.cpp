@@ -1,10 +1,11 @@
 #include "corestate.h"
+#include <string.h>
 
 using namespace VM;
 
 CoreState::CoreState(uint8_t* data, unsigned int size) {
-	_registers = make_shared<uint32_t>(new uint32_t[NumRegisters]);
-	_data = make_shared<uint8_t>(data);
+	_registers = shared_ptr<uint32_t>(new uint32_t[NumRegisters]);
+	_data = shared_ptr<uint8_t>(data);
 	_dataSize = size;
 	_copyRegistersOnWrite = false;
 	_copyDataOnWrite = false;
@@ -21,13 +22,13 @@ CoreState::CoreState(CoreState const& existing) {
 void CoreState::copyRegisters() {
 	uint32_t* registers = new uint32_t[NumRegisters];
 	memcpy(registers, _registers.get(), sizeof(uint32_t) * NumRegisters);
-	_registers = make_shared<uint32_t>(registers);
+	_registers = shared_ptr<uint32_t>(registers);
 	_copyRegistersOnWrite = false;
 }
 
 void CoreState::copyData() {
 	uint8_t* data = new uint8_t[_dataSize];
 	memcpy(data, _data.get(), _dataSize);
-	_data = make_shared<uint8_t>(data);
+	_data = shared_ptr<uint8_t>(data);
 	_copyDataOnWrite = false;
 }

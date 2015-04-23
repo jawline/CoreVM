@@ -42,17 +42,17 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 	return true;
 }
 
-bool parseInterrupt(char const*& input, ByteBuffer& buffer) {
+bool Parser::parseInterrupt(char const*& input, ByteBuffer& buffer) {
 	Token intToken = _tokeniser.nextToken(input);
 	Token intNum = _tokeniser.nextToken(input);
 
 	if (intNum.tokenId() != NUM) {
-		printf("Expected interrupt number near %s not %s\n", input, intNum.toString());
+		printf("Expected interrupt number near %s not %s\n", input, intNum.tokenString());
 		return false;
 	}
 	
 	buffer.insert((uint8_t) VM::Interrupt);
-	buffer.insert((uint8_t) atoi(intNum.toString()));
+	buffer.insert((uint8_t) atoi(intNum.tokenString()));
 	return true;
 }
 

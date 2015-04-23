@@ -31,11 +31,11 @@ namespace VM {
 		~Core();
 
 		inline uint32_t getProgramCounter() {
-			return state->getRegisterUInt(ProgramCounter);
+			return _state->getRegisterUInt(ProgramCounter);
 		}
 		
 		inline void setProgramCounter(uint32_t pc) {
-			state->setRegisterUInt(pc);
+			_state->setRegisterUInt(ProgramCounter, pc);
 		}
 
 		CoreState* getState();
