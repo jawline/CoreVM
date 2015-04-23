@@ -28,6 +28,7 @@ namespace Assembler {
 		DATA_BYTE,
 		JUMP_EQUALS,
 		JUMP_NOT_EQUALS,
+		INTERRUPT,
 		INVALID_TOKEN
 	} TOKEN_ID;
 
