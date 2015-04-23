@@ -31,9 +31,8 @@ void Core::jumpImmediate(Core* inst) {
 }
 
 void Core::jumpRegister(Core* inst) {
-	uint8_t val;
-	CoreUtils::byteFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	inst->_registers[ProgramCounter] = inst->_registers[val];
+	uint8_t reg = state->getDataByte(getProgramCounter()+1);
+	setProgramCounter(state->getRegisterUInt(reg));
 	printf("JMPR %i\n", val);
 }
 
