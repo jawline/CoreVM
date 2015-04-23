@@ -34,41 +34,41 @@ namespace VM {
     CoreState(CoreState const& existing);
 
     inline uint32_t getRegister(uint8_t registerId) const {
-      return _registers[registerId];
+      return _registers.get()[registerId];
     }
 
     inline void setRegister(uint8_t registerId, uint32_t value) {
     	if (_copyRegistersOnWrite) {
     		copyRegisters();
     	}
-    	_registers[registerId] = value;
+    	_registers.get()[registerId] = value;
     }
     
     inline uint8_t getDataByte(size_t location) const {
-    	return _data[location];
+    	return _data.get()[location];
     }
     
     inline void setDataByte(size_t location, uint8_t val) {
     	if (_copyDataOnWrite) {
     		copyData();
     	}
-    	_data[location] = val;
+    	_data.get()[location] = val;
     }
     
     inline uint32_t getDataUInt(size_t location) const {
-    	return *((uint32_t*) &_data[location]);
+    	return *((uint32_t*) &_data.get()[location]);
     }
     
     inline void setDataUInt(size_t location, uint32_t val) {
-    	*((uint32_t*) &_data[location]) = val;
+    	*((uint32_t*) &_data.get()[location]) = val;
     }
     
     inline int32_t getDataInt(size_t location) const {
-    	return *((int32_t*) &_data[location]);
+    	return *((int32_t*) &_data.get()[location]);
     }
     
     inline void setDataInt(size_t location, int32_t val) {
-    	*((int32_t*) &_data[location]) = val;
+    	*((int32_t*) &_data.get()[location]) = val;
     }    
   };
 }
