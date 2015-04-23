@@ -149,22 +149,18 @@ void Core::getMemoryInt(Core* inst) {
 }
 
 void Core::setMemoryIntRegister(Core* inst) {
-	uint8_t reg;
-	uint8_t locReg;
-	CoreUtils::byteFromBuffer(reg, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::byteFromBuffer(locReg, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	CoreUtils::uintToBuffer(inst->_registers[reg], &inst->_data[inst->_registers[locReg]]);
-	inst->_registers[ProgramCounter] += 3;
+	uint8_t reg = state->getDataByte(getProgramCounter()+1);
+	uint8_t locReg = state->getDataByte(getProgramCounter()+2);
+	state->setDataUInt(state->getRegisterUInt(locReg), state->getRegisterUInt(reg));
+	setProgramCounter(getProgramCounter() + 3);
 	printf("SETM %i %i\n", reg, locReg);
 }
 
 void Core::getMemoryIntRegister(Core* inst) {
-	uint8_t reg;
-	uint8_t locReg;
-	CoreUtils::byteFromBuffer(reg, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::byteFromBuffer(locReg, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	CoreUtils::uintFromBuffer(inst->_registers[reg], &inst->_data[inst->_registers[locReg]]);
-	inst->_registers[ProgramCounter] += 3;
+	uint8_t reg = state->getDataByte(getProgramCounter()+1);
+	uint8_t locReg = state->getDataByte(getProgramCounter()+2);
+	state->setRegisterUInt(reg, state->getDataUInt(state->getRegisterUInt(locReg)));
+	setProgramCounter(getProgramCounter() + 3);
 	printf("GETM %i %i\n", reg, locReg);
 }
 
