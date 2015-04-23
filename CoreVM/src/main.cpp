@@ -36,6 +36,7 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
+	//data is now 'owned' by the VMCore and will be freed by it at the end of execution
 	VM::Core c(data, size);
 	c.registerInterrupt(0, printInterrupt);
 	c.registerInterrupt(1, makeSymbolInterrupt);
@@ -54,8 +55,5 @@ int main(int argc, char** argv) {
 	printf("RAM at end of execution\n");
 	printRam(c.getState()->getData(), c.getState()->getDataSize());
 	
-	//The state takes ownership of 'data' when it is passed to it, and destroying state should free data
-	delete state;
-
 	return 0;
 }
