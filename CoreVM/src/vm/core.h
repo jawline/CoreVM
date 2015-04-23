@@ -4,14 +4,15 @@
 #include <functional>
 #include "instructions.h"
 #include "registers.h"
+#include "corestate.h"
 
 namespace VM {
 	class Core {
 	private:
 		/**
-		 * Current register data
+		 * The VM state
 		 */
-		uint32_t* _registers;
+		 CoreState* _state;
 
 		/**
 		 * Instruction jump table
@@ -23,21 +24,18 @@ namespace VM {
 		 */
 		std::function<void(Core*)>* _intTable;
 
-		uint8_t* _data;
-		unsigned int _maxData;
-
 		void setupJumpTable();
 		void setupIntTable();
 	public:
 		Core();
 		~Core();
 
-		inline int registerAsInt(unsigned int const& registerNumber) const {
-			return ((int*)&_registers[registerNumber])[0];
+		inline uint32_t getProgramCounter() {
+			return state->getRegisterUInt(ProgramCounter);
 		}
 		
-		inline void registerSetInt(unsigned int const& registerNumber, int const& val) {
-			((int*)&_registers[registerNumber])[0] = val;
+		inline void setProgramCounter(uint32_t pc) {
+			state->setRegisterUInt(pc);
 		}
 
 		void setData(uint8_t* data, unsigned int dataSize);
