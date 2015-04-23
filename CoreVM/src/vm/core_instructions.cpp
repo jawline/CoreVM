@@ -85,12 +85,11 @@ void Core::lessThanImmediate(Core* inst) {
 }
 
 void Core::addRegister(Core* inst) {
-	uint8_t r1, r2;
-	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->registerSetInt(r1, inst->registerAsInt(r1) + inst->registerAsInt(r2));
-	inst->_registers[ProgramCounter] += 3;
-	printf("ADD %i %i %i\n",r1, r2, inst->_registers[r1]);
+	uint8_t r1 = state->getDataByte(getProgramCounter()+1);
+	uint8_t r2 = state->getDataByte(getProgramCounter()+2);
+	state->setRegisterInt(state->getRegisterInt(r1) + state->getRegisterInt(r2));
+	setProgramCounter(getProgramCounter() + 3);
+	printf("ADD %i %i\n", r1, r2);
 }
 
 void Core::subtractRegister(Core* inst) {
