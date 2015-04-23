@@ -33,11 +33,22 @@ namespace VM {
     CoreState(uint8_t* data, unsigned int size);
     CoreState(CoreState const& existing);
 
-    inline uint32_t getRegister(uint8_t registerId) const {
+    inline uint32_t getRegisterUInt(uint8_t registerId) const {
       return _registers.get()[registerId];
     }
 
-    inline void setRegister(uint8_t registerId, uint32_t value) {
+    inline void setRegisterUInt(uint8_t registerId, uint32_t value) {
+    	if (_copyRegistersOnWrite) {
+    		copyRegisters();
+    	}
+    	_registers.get()[registerId] = value;
+    }
+    
+    inline int32_t getRegisterInt(int8_t registerId) const {
+      return _registers.get()[registerId];
+    }
+
+    inline void setRegisterInt(int8_t registerId, int32_t value) {
     	if (_copyRegistersOnWrite) {
     		copyRegisters();
     	}
