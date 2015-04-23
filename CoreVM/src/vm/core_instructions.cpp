@@ -4,7 +4,7 @@
 using namespace VM;
 
 void Core::noOp(Core* inst) {
-	inst->_registers[ProgramCounter] += 1;
+	setProgramCounter(getProgramCounter() + 1);
 	printf("NOOP\n");
 }
 
