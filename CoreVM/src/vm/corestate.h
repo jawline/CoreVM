@@ -30,57 +30,57 @@ namespace VM {
 	void copyData();
 
   public:
-    CoreState(uint8_t* data, unsigned int size);
-    CoreState(CoreState const& existing);
+	CoreState(uint8_t* data, unsigned int size);
+  	CoreState(CoreState const& existing);
 
-    inline uint32_t getRegisterUInt(uint8_t registerId) const {
-      return _registers.get()[registerId];
-    }
+  	inline uint32_t getRegisterUInt(uint8_t registerId) const {
+    		return _registers.get()[registerId];
+  	}
 
-    inline void setRegisterUInt(uint8_t registerId, uint32_t value) {
-    	if (_copyRegistersOnWrite) {
-    		copyRegisters();
+  	inline void setRegisterUInt(uint8_t registerId, uint32_t value) {
+  		if (_copyRegistersOnWrite) {
+    			copyRegisters();
+    		}
+    		_registers.get()[registerId] = value;
     	}
-    	_registers.get()[registerId] = value;
-    }
     
-    inline int32_t getRegisterInt(int8_t registerId) const {
-      return _registers.get()[registerId];
-    }
+    	inline int32_t getRegisterInt(int8_t registerId) const {
+      		return _registers.get()[registerId];
+    	}
 
-    inline void setRegisterInt(int8_t registerId, int32_t value) {
-    	if (_copyRegistersOnWrite) {
-    		copyRegisters();
+    	inline void setRegisterInt(int8_t registerId, int32_t value) {
+    		if (_copyRegistersOnWrite) {
+    			copyRegisters();
+    		}
+    		_registers.get()[registerId] = value;
     	}
-    	_registers.get()[registerId] = value;
-    }
     
-    inline uint8_t getDataByte(size_t location) const {
-    	return _data.get()[location];
-    }
-    
-    inline void setDataByte(size_t location, uint8_t val) {
-    	if (_copyDataOnWrite) {
-    		copyData();
+	inline uint8_t getDataByte(size_t location) const {
+    		return _data.get()[location];
     	}
-    	_data.get()[location] = val;
-    }
     
-    inline uint32_t getDataUInt(size_t location) const {
-    	return *((uint32_t*) &_data.get()[location]);
-    }
+    	inline void setDataByte(size_t location, uint8_t val) {
+    		if (_copyDataOnWrite) {
+    			copyData();
+    		}
+    		_data.get()[location] = val;
+    	}
     
-    inline void setDataUInt(size_t location, uint32_t val) {
-    	*((uint32_t*) &_data.get()[location]) = val;
-    }
+    	inline uint32_t getDataUInt(size_t location) const {
+    		return *((uint32_t*) &_data.get()[location]);
+    	}
     
-    inline int32_t getDataInt(size_t location) const {
-    	return *((int32_t*) &_data.get()[location]);
-    }
+    	inline void setDataUInt(size_t location, uint32_t val) {
+    		*((uint32_t*) &_data.get()[location]) = val;
+    	}
     
-    inline void setDataInt(size_t location, int32_t val) {
-    	*((int32_t*) &_data.get()[location]) = val;
-    }    
+    	inline int32_t getDataInt(size_t location) const {
+    		return *((int32_t*) &_data.get()[location]);
+	}
+    
+    	inline void setDataInt(size_t location, int32_t val) {
+    		*((int32_t*) &_data.get()[location]) = val;
+    	}    
   };
 }
 
