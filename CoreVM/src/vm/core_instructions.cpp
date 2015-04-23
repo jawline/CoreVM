@@ -237,27 +237,25 @@ void Core::jumpNotEqualRegisterImmediate(Core* inst) {
 }
 
 void Core::jumpEqualRegisterRegister(Core* inst) {
-	uint8_t r1, r2, dstReg;
-	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	CoreUtils::byteFromBuffer(dstReg, &inst->_data[inst->_registers[ProgramCounter]+3]);
-	if (inst->_registers[r1] == inst->_registers[r2]) {
-		inst->_registers[ProgramCounter] = inst->_registers[dstReg];
+	uint8_t r1 = state->getDataByte(getProgramCounter()+1);
+	uint8_t r2 = state->getDataByte(getProgramCounter()+2);
+	uint8_t dst = state->getDataByte(getProgramCounter()+3);
+	if (state->getRegisterUInt(r1) == state->getRegisterUInt(r2)) {
+		setProgramCounter(state->getRegisterUInt(dst));
 	} else {
-		inst->_registers[ProgramCounter] += 4;
+		setProgramCounter(getProgramCounter()+4);
 	}
 	printf("JEQRR\n");
 }
 
 void Core::jumpNotEqualRegisterRegister(Core* inst) {
-	uint8_t r1, r2, dstReg;
-	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::byteFromBuffer(r2, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	CoreUtils::byteFromBuffer(dstReg, &inst->_data[inst->_registers[ProgramCounter]+3]);
-	if (inst->_registers[r1] != inst->_registers[r2]) {
-		inst->_registers[ProgramCounter] = inst->_registers[dstReg];
+	uint8_t r1 = state->getDataByte(getProgramCounter()+1);
+	uint8_t r2 = state->getDataByte(getProgramCounter()+2);
+	uint8_t dst = state->getDataByte(getProgramCounter()+3);
+	if (state->getRegisterUInt(r1) != state->getRegisterUInt(r2)) {
+		setProgramCounter(state->getRegisterUInt(dst));
 	} else {
-		inst->_registers[ProgramCounter] += 4;
+		setProgramCounter(getProgramCounter()+4);
 	}
 	printf("JNEQRR\n");
 }
