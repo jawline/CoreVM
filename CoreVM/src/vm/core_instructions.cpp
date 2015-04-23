@@ -37,12 +37,10 @@ void Core::jumpRegister(Core* inst) {
 }
 
 void Core::addImmediate(Core* inst) {
-	uint8_t r1;
-	int32_t val;
-	CoreUtils::byteFromBuffer(r1, &inst->_data[inst->_registers[ProgramCounter]+1]);
-	CoreUtils::intFromBuffer(val, &inst->_data[inst->_registers[ProgramCounter]+2]);
-	inst->registerSetInt(r1, inst->registerAsInt(r1) + val);
-	inst->_registers[ProgramCounter] += 6;
+	uint8_t r1 = state->getDataByte(getProgramCounter()+1);
+	int32_t val = state->getDataInt(getProgramCounter()+2);
+	state->setRegisterInt(r1, state->getRegisterInt(r1) + val);
+	setProgramCounter(getProgramCounter() + 6);
 	printf("ADD %i %i\n", r1, val);
 }
 
