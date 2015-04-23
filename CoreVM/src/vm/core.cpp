@@ -63,8 +63,12 @@ void Core::setupJumpTable() {
 	_jumpTable[Interrupt] = interrupt;
 }
 
-void Core::setData(CoreState* state) {
+void Core::setState(CoreState* state) {
 	_state = state;
+}
+
+CoreState* Core::getState() {
+	return _state;
 }
 
 void Core::run() {
