@@ -17,7 +17,7 @@ namespace VM {
 		/**
 		 * Instruction jump table
 		 */
-		std::function<void(Core*)>* _jumpTable;
+		std::function<void()>* _jumpTable;
 		
 		/**
 		 * Instruction interrupt table
@@ -46,58 +46,58 @@ namespace VM {
 		/**
 		 * Instruction functions
 		 */
-		static void noOp(Core*);
-		static void loadImmediate(Core*);
-		static void move(Core*);
+		void noOp();
+		void loadImmediate();
+		void move();
 
 		/**
 		 * Immediate op implementation
 		 */
-		static void addImmediate(Core*);
-		static void subtractImmediate(Core*);
-		static void multiplyImmediate(Core*);
-		static void divideImmediate(Core*);
-		static void greaterThanImmediate(Core*);
-		static void lessThanImmediate(Core*);
+		void addImmediate();
+		void subtractImmediate();
+		void multiplyImmediate();
+		void divideImmediate();
+		void greaterThanImmediate();
+		void lessThanImmediate();
 
 		/**
 		 * Register op implementations
 		 */
-		static void addRegister(Core*);
-		static void subtractRegister(Core*);
-		static void multiplyRegister(Core*);
-		static void divideRegister(Core*);
-		static void greaterThanRegister(Core*);
-		static void lessThanRegister(Core*);
+		void addRegister();
+		void subtractRegister();
+		void multiplyRegister();
+		void divideRegister();
+		void greaterThanRegister();
+		void lessThanRegister();
 
 		/**
 		 * Memory op implementations
 		 */
-		static void setMemoryInt(Core*);
-		static void getMemoryInt(Core*);
-		static void setMemoryIntRegister(Core*);
-		static void getMemoryIntRegister(Core*);
+		void setMemoryInt();
+		void getMemoryInt();
+		void setMemoryIntRegister();
+		void getMemoryIntRegister();
 
 		/**
 		 * Unconditional jumps
 		 */
-		static void jumpImmediate(Core*);
-		static void jumpRegister(Core*);
+		void jumpImmediate();
+		void jumpRegister();
 
 		/**
 		 * Branching conditions
 		 */
-		static void jumpEqualImmediateImmediate(Core*);
-		static void jumpNotEqualImmediateImmediate(Core*);
-		static void jumpEqualRegisterImmediate(Core*);
-		static void jumpNotEqualRegisterImmediate(Core*);
+		void jumpEqualImmediateImmediate();
+		void jumpNotEqualImmediateImmediate();
+		void jumpEqualRegisterImmediate();
+		void jumpNotEqualRegisterImmediate();
 
-		static void jumpEqualImmediateRegister(Core*);
-		static void jumpNotEqualImmediateRegister(Core*);
-		static void jumpEqualRegisterRegister(Core*);
-		static void jumpNotEqualRegisterRegister(Core*);
+		void jumpEqualImmediateRegister();
+		void jumpNotEqualImmediateRegister();
+		void jumpEqualRegisterRegister();
+		void jumpNotEqualRegisterRegister();
 		
-		static void interrupt(Core*);
+		void interrupt();
 	};
 }
 

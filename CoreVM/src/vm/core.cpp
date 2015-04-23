@@ -1,6 +1,7 @@
 #include "core.h"
 
 using namespace VM;
+using namespace std::placeholders;
 
 Core::Core(uint8_t* data, unsigned int dataSize) {
 	_state = new CoreState(data, dataSize);
@@ -22,46 +23,46 @@ void Core::setupIntTable() {
 }
 
 void Core::setupJumpTable() {
-	_jumpTable = new std::function<void(Core*)>[NumInstructions];
+	_jumpTable = new std::function<void()>[NumInstructions];
 	
-	_jumpTable[NoOp] = &Core::noOp;
-	_jumpTable[LoadImmediate] = &Core::loadImmediate;
-	_jumpTable[Move] = &Core::move;
+	_jumpTable[NoOp] = std::bind(&Core::noOp, this);
+	_jumpTable[LoadImmediate] = std::bind(&Core::loadImmediate, this);
+	_jumpTable[Move] = std::bind(&Core::move, this);
 
-	_jumpTable[AddImmediate] = &Core::addImmediate;
-	_jumpTable[SubtractImmediate] = &Core::subtractImmediate;
-	_jumpTable[MultiplyImmediate] = &Core::multiplyImmediate;
-	_jumpTable[DivideImmediate] = &Core::divideImmediate;
-	_jumpTable[GreaterThanImmediate] = &Core::greaterThanImmediate;
-	_jumpTable[LessThanImmediate] = &Core::lessThanImmediate;
+	_jumpTable[AddImmediate] = std::bind(&Core::addImmediate, this);
+	_jumpTable[SubtractImmediate] = std::bind(&Core::subtractImmediate, this);
+	_jumpTable[MultiplyImmediate] = std::bind(&Core::multiplyImmediate, this);
+	_jumpTable[DivideImmediate] = std::bind(&Core::divideImmediate, this);
+	_jumpTable[GreaterThanImmediate] = std::bind(&Core::greaterThanImmediate, this);
+	_jumpTable[LessThanImmediate] = std::bind(&Core::lessThanImmediate, this);
 
-	_jumpTable[AddRegister] = &Core::addRegister;
-	_jumpTable[SubtractRegister] = &Core::subtractRegister;
-	_jumpTable[MultiplyRegister] = &Core::multiplyRegister;
-	_jumpTable[DivideRegister] = &Core::divideRegister;
-	_jumpTable[GreaterThanRegister] = &Core::lessThanRegister;
-	_jumpTable[LessThanRegister] = &Core::greaterThanRegister;
+	_jumpTable[AddRegister] = std::bind(&Core::addRegister, this);
+	_jumpTable[SubtractRegister] = std::bind(&Core::subtractRegister, this);
+	_jumpTable[MultiplyRegister] = std::bind(&Core::multiplyRegister, this);
+	_jumpTable[DivideRegister] = std::bind(&Core::divideRegister, this);
+	_jumpTable[GreaterThanRegister] = std::bind(&Core::lessThanRegister, this);
+	_jumpTable[LessThanRegister] = std::bind(&Core::greaterThanRegister, this);
 
-	_jumpTable[SetMemoryInt] = &Core::setMemoryInt;
-	_jumpTable[GetMemoryInt] = &Core::getMemoryInt;
+	_jumpTable[SetMemoryInt] = std::bind(&Core::setMemoryInt, this);
+	_jumpTable[GetMemoryInt] = std::bind(&Core::getMemoryInt, this);
 	
-	_jumpTable[SetMemoryIntRegister] = &Core::setMemoryIntRegister;
-	_jumpTable[GetMemoryIntRegister] = &Core::getMemoryIntRegister;
+	_jumpTable[SetMemoryIntRegister] = std::bind(&Core::setMemoryIntRegister, this);
+	_jumpTable[GetMemoryIntRegister] = std::bind(&Core::getMemoryIntRegister, this);
 
-	_jumpTable[JumpImmediate] = &Core::jumpImmediate;
-	_jumpTable[JumpRegister] = &Core::jumpRegister;
+	_jumpTable[JumpImmediate] = std::bind(&Core::jumpImmediate, this);
+	_jumpTable[JumpRegister] = std::bind(&Core::jumpRegister, this);
 
-	_jumpTable[JumpEqualImmediateImmediate] = &jumpEqualImmediateImmediate;
-	_jumpTable[JumpNotEqualImmediateImmediate] = &jumpNotEqualImmediateImmediate;
-	_jumpTable[JumpEqualRegisterImmediate] = &jumpEqualRegisterImmediate;
-	_jumpTable[JumpNotEqualRegisterImmediate] = &jumpNotEqualRegisterImmediate;
+	_jumpTable[JumpEqualImmediateImmediate] = std::bind(&Core::jumpEqualImmediateImmediate, this);
+	_jumpTable[JumpNotEqualImmediateImmediate] = std::bind(&Core::jumpNotEqualImmediateImmediate, this);
+	_jumpTable[JumpEqualRegisterImmediate] = std::bind(&Core::jumpEqualRegisterImmediate, this);
+	_jumpTable[JumpNotEqualRegisterImmediate] = std::bind(&Core::jumpNotEqualRegisterImmediate, this);
 
-	_jumpTable[JumpEqualImmediateRegister] = &jumpEqualImmediateRegister;
-	_jumpTable[JumpNotEqualImmediateRegister] = &jumpNotEqualImmediateRegister;
-	_jumpTable[JumpEqualRegisterRegister] = &jumpEqualRegisterRegister;
-	_jumpTable[JumpNotEqualRegisterRegister] = &jumpNotEqualRegisterRegister;
+	_jumpTable[JumpEqualImmediateRegister] = std::bind(&Core::jumpEqualImmediateRegister, this);
+	_jumpTable[JumpNotEqualImmediateRegister] = std::bind(&Core::jumpNotEqualImmediateRegister, this);
+	_jumpTable[JumpEqualRegisterRegister] = std::bind(&Core::jumpEqualRegisterRegister, this);
+	_jumpTable[JumpNotEqualRegisterRegister] = std::bind(&Core::jumpNotEqualRegisterRegister, this);
 	
-	_jumpTable[Interrupt] = &interrupt;
+	_jumpTable[Interrupt] = std::bind(&Core::interrupt, this);
 }
 
 CoreState* Core::getState() {
@@ -71,7 +72,7 @@ CoreState* Core::getState() {
 void Core::run() {
 	setProgramCounter(0);
 	while (getProgramCounter() < _state->getDataSize()) {
-		_jumpTable[_state->getDataByte(getProgramCounter())](this);
+		_jumpTable[_state->getDataByte(getProgramCounter())]();
 	}
 }
 
