@@ -275,7 +275,7 @@ void Core::jumpNotEqualRegisterRegister(Core* inst) {
 }
 
 void Core::interrupt(Core* inst) {
-	uint8_t intNumber = inst->_registers[RegisterA];
+	uint8_t intNumber = state->getDataByte(getProgramCounter() + 1);
 
 	if (intNumber < 256 && inst->_intTable[intNumber]) {
 		inst->_intTable[intNumber](inst);
@@ -286,4 +286,6 @@ void Core::interrupt(Core* inst) {
 			printf("INTERRUPT NUMBER CANNOT EXCEED 256\n");
 		}
 	}
+	
+	setProgramCounter(getProgramCounter() + 2);
 }
