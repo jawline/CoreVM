@@ -35,19 +35,18 @@ int main(int argc, char** argv) {
 		printf("error reading file\n");
 		return -1;
 	}
+
+	VM::CoreState* state = new VM::CoreState(data, size);
+	VM::Core c;
+	c.registerInterrupt(0, printInterrupt);
+	c.registerInterrupt(1, makeSymbolInterrupt);
+	c.setState(state);
 	
 	/**
 	 * Print VM ram at start of execution
 	 */
 	printf("RAM at start of execution\n");
-	printRam(data, size);
-
-	VM::CoreState* state = new VM::CoreState(data, size);
-
-	VM::Core c;
-	c.registerInterrupt(0, printInterrupt);
-	c.registerInterrupt(1, makeSymbolInterrupt);
-	c.setState(state);
+	printRam(c.getState()->getData(), c.getState()->getDataSize());
 
 	c.run();
 
@@ -55,7 +54,7 @@ int main(int argc, char** argv) {
 	 * Print VM ram at end of execution
 	 */
 	printf("RAM at end of execution\n");
-	printRam(data, size);
+	printRam(c.getState()->getData(), c.getState()->getDataSize());
 	
 	//The state takes ownership of 'data' when it is passed to it, and destroying state should free data
 	delete state;
