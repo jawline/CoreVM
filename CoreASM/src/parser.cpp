@@ -42,6 +42,20 @@ bool Parser::parseLabel(char const*& input, ByteBuffer& buffer) {
 	return true;
 }
 
+bool parseInterrupt(char const*& input, ByteBuffer& buffer) {
+	Token intToken = _tokeniser.nextToken(input);
+	Token intNum = _tokeniser.nextToken(input);
+
+	if (intNum.tokenId() != NUM) {
+		printf("Expected interrupt number near %s not %s\n", input, intNum.toString());
+		return false;
+	}
+	
+	buffer.insert((uint8_t) VM::Interrupt);
+	buffer.insert((uint8_t) atoi(intNum.toString()));
+	return true;
+}
+
 bool Parser::parseConditionalJump(char const*& input, ByteBuffer& buffer) {
 	Token jumpType = _tokeniser.nextToken(input);
 	Token regToken = _tokeniser.nextToken(input);
