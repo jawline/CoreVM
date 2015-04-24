@@ -1,6 +1,7 @@
 #ifndef _VM_CORE_DEF_H_
 #define _VM_CORE_DEF_H_
 #include <cstdint>
+#include <vector>
 #include <functional>
 #include "instructions.h"
 #include "registers.h"
@@ -9,10 +10,16 @@
 namespace VM {
 	class Core {
 	private:
+
 		/**
 		 * The VM state
 		 */
 		 CoreState* _state;
+
+		/**
+		 * List of VM states waiting to be processed
+		 */
+		std::vector<CoreState*> _states;
 
 		/**
 		 * Instruction jump table
@@ -26,16 +33,25 @@ namespace VM {
 
 		void setupJumpTable();
 		void setupIntTable();
+		void forkState(CoreState*& left, CoreState*& right);
 	public:
 		Core(uint8_t* data, unsigned int dataSize);
 		~Core();
 
-		inline uint32_t getProgramCounter() {
-			return _state->getRegisterUInt(ProgramCounter);
+		inline uint32_t getProgramCounter() const {
+			return getProgramCounter(_state);
 		}
 		
+		inline uint32_t getProgramCounter(CoreState* st) const {
+			return st->getRegisterUInt(ProgramCounter);
+		}
+
 		inline void setProgramCounter(uint32_t pc) {
-			_state->setRegisterUInt(ProgramCounter, pc);
+			setProgramCounter(_state, pc);
+		}
+
+		inline void setProgramCounter(CoreState* st, uint32_t pc) {
+			st->setRegisterUInt(ProgramCounter, pc);
 		}
 
 		CoreState* getState();

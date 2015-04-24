@@ -13,12 +13,8 @@ void printRam(uint8_t const* data, size_t size) {
 	}
 }
 
-void printInterrupt(VM::Core* inst) {
+void printInterrupt(VM::Core*) {
 	printf("HIT PRINT INTERRUPT\n");
-}
-
-void makeSymbolInterrupt(VM::Core* inst) {
-	printf("MAKE SYMBOL INTERRUPT\n");
 }
 
 int main(int argc, char** argv) {
@@ -39,7 +35,6 @@ int main(int argc, char** argv) {
 	//data is now 'owned' by the VMCore and will be freed by it at the end of execution
 	VM::Core c(data, size);
 	c.registerInterrupt(0, printInterrupt);
-	c.registerInterrupt(1, makeSymbolInterrupt);
 	
 	/**
 	 * Print VM ram at start of execution

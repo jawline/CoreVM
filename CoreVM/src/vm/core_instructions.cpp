@@ -168,11 +168,19 @@ void Core::jumpEqualImmediateImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter() + 1);
 	uint32_t val = _state->getDataUInt(getProgramCounter() + 2);
 	uint32_t dst = _state->getDataUInt(getProgramCounter() + 6);
-	if (_state->getRegisterUInt(r1) == val) {
-		setProgramCounter(dst);
-	} else {
-		setProgramCounter(getProgramCounter() + 10);
-	}
+
+	CoreState* left;
+	CoreState* right;
+
+	printf("FORKING\n");
+	forkState(left, right);
+
+	//left->setRegisterUInt(r1, val);
+	//other->setRegisterUInt(r1, other->getRegisterUInt(r1) - 1);
+
+	setProgramCounter(left, dst);
+	setProgramCounter(right, getProgramCounter(right) + 10);
+
 	printf("JEQII\n");
 }
 

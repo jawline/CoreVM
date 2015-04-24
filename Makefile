@@ -1,3 +1,4 @@
+.PHONY: all install remove clean preprocess execute_makefiles
 execute_makefiles:
 	@for a in $$(ls); do \
 		if [ -d $$a ]; then \
@@ -7,7 +8,6 @@ execute_makefiles:
 	done;
 	@echo "Done!"
 
-.PHONY: all install remove clean preprocess
 all: execute_makefiles
 
 install: MAKE_TARGET += install

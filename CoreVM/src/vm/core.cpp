@@ -74,8 +74,23 @@ void Core::run() {
 	while (getProgramCounter() < _state->getDataSize()) {
 		_jumpTable[_state->getDataByte(getProgramCounter())]();
 	}
+	while (_states.size()) {
+		printf("LOADING FORK\n");
+		_state = _states.back();
+		_states.pop_back();
+		while (getProgramCounter() < _state->getDataSize()) {
+			_jumpTable[_state->getDataByte(getProgramCounter())]();
+		}		
+	}
 }
 
 void Core::registerInterrupt(uint8_t interruptNumber, std::function<void(Core*)> callback) {
 	_intTable[interruptNumber] = callback;
+}
+
+void Core::forkState(CoreState*& left, CoreState*& right) {
+	CoreState* newState = new CoreState(_state);
+	_states.push_back(newState);
+	left = _state;
+	right = newState;
 }

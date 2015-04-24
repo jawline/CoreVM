@@ -1,3 +1,11 @@
 load A 10
-load B 20
-int 0
+
+jeq A 10 right
+
+left:
+	jmp exit
+
+right:
+	load A 20
+
+exit:
