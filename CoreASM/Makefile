@@ -22,6 +22,7 @@ SOURCES=$(shell find src/ -type f -name '*.cpp')
 HEADERS=$(shell find src/ -type f -name '*.h')
 OBJECTS=$(patsubst %.cpp,obj/%.o,$(SOURCES))
 
+.PHONY: all install remove clean preprocess
 all: preprocess $(SOURCES) $(EXECUTABLE) $(LIBRARY)
 
 install:

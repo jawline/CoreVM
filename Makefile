@@ -7,7 +7,7 @@ execute_makefiles:
 	done;
 	@echo "Done!"
 
-
+.PHONY: all install remove clean preprocess
 all: execute_makefiles
 
 install: MAKE_TARGET += install
