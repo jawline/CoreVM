@@ -13,8 +13,23 @@ void printRam(uint8_t const* data, size_t size) {
 	}
 }
 
-void printInterrupt(VM::Core*) {
+void printRegisters(uint32_t const* reg) {
+	for (unsigned int i = 0; i < VM::NumRegisters; i++) {
+		printf("%s:%u ", VM::RegisterUtils::getRegisterName(i), reg[i]);
+	}
+	printf("\n");
+}
+
+void printInterrupt(VM::Core* c) {
 	printf("HIT PRINT INTERRUPT\n");
+	printf("REGISTERS\n");
+	printRegisters(c->getState()->getRegisters());
+
+	/**
+	 * Print VM ram contents 
+	 */
+	printf("RAM contents execution\n");
+	printRam(c->getState()->getData(), c->getState()->getDataSize());
 }
 
 int main(int argc, char** argv) {
@@ -35,20 +50,7 @@ int main(int argc, char** argv) {
 	//data is now 'owned' by the VMCore and will be freed by it at the end of execution
 	VM::Core c(data, size);
 	c.registerInterrupt(0, printInterrupt);
-	
-	/**
-	 * Print VM ram at start of execution
-	 */
-	printf("RAM at start of execution\n");
-	printRam(c.getState()->getData(), c.getState()->getDataSize());
-
 	c.run();
-
-	/**
-	 * Print VM ram at end of execution
-	 */
-	printf("RAM at end of execution\n");
-	printRam(c.getState()->getData(), c.getState()->getDataSize());
 	
 	return 0;
 }

@@ -3,43 +3,36 @@
 
 using namespace VM;
 
+char const* mapping[] = {
+  "PC",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q"
+};
+
+char const* RegisterUtils::getRegisterName(unsigned int id) {
+  return mapping[id];
+}
+
 RegisterID RegisterUtils::getRegisterId(char const* name) {
-  switch (*name) {
-    case 'A':
-      return RegisterA;
-    case 'B':
-      return RegisterB;
-    case 'C':
-      return RegisterC;
-    case 'D':
-      return RegisterD;
-    case 'E':
-      return RegisterE;
-    case 'F':
-      return RegisterF;
-    case 'G':
-      return RegisterG;
-    case 'H':
-      return RegisterH;
-    case 'I':
-      return RegisterI;
-    case 'J':
-      return RegisterJ;
-    case 'K':
-      return RegisterK;
-    case 'L':
-      return RegisterL;
-    case 'M':
-      return RegisterM;
-    case 'N':
-      return RegisterN;
-    case 'O':
-      return RegisterO;
-    case 'P':
-      return RegisterP;
-    case 'Q':
-      return RegisterQ;
-    default:
-      return InvalidRegister;
+  for (unsigned int i = 0; i < NumRegisters; i++) {
+    if (strcmp(name, mapping[i]) == 0) {
+      return (RegisterID) i;
+    }
   }
+  return InvalidRegister;
 }

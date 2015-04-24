@@ -175,8 +175,8 @@ void Core::jumpEqualImmediateImmediate() {
 	printf("FORKING\n");
 	forkState(left, right);
 
-	//left->setRegisterUInt(r1, val);
-	//other->setRegisterUInt(r1, other->getRegisterUInt(r1) - 1);
+	left->setRegisterUInt(r1, val);
+	right->setRegisterUInt(r1, val + 1);
 
 	setProgramCounter(left, dst);
 	setProgramCounter(right, getProgramCounter(right) + 10);

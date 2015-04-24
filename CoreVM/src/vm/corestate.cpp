@@ -5,6 +5,7 @@ using namespace VM;
 
 CoreState::CoreState(uint8_t* data, unsigned int size) {
 	_registers = new uint32_t[NumRegisters];
+	memset(_registers, 0, sizeof(uint32_t) * NumRegisters);
 
 	_data = shared_ptr<uint8_t>(data);
 	_dataSize = size;
