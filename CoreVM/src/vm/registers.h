@@ -26,6 +26,8 @@ namespace VM {
 	} RegisterID;
 
 	class RegisterUtils {
+	private:
+		static char const* mapping[];
 	public:
 		static char const* getRegisterName(unsigned int id);
 		static RegisterID getRegisterId(char const* name);

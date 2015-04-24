@@ -3,7 +3,7 @@
 
 using namespace VM;
 
-char const* mapping[] = {
+char const* RegisterUtils::mapping[] = {
   "PC",
   "A",
   "B",
@@ -25,7 +25,7 @@ char const* mapping[] = {
 };
 
 char const* RegisterUtils::getRegisterName(unsigned int id) {
-  return mapping[id];
+  return id < NumRegisters ? mapping[id] : "invalid";
 }
 
 RegisterID RegisterUtils::getRegisterId(char const* name) {

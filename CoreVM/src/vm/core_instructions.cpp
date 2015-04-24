@@ -13,7 +13,7 @@ void Core::loadImmediate() {
 	uint32_t val = _state->getDataUInt(getProgramCounter()+2);
 	_state->setRegisterUInt(reg, val);
 	setProgramCounter(getProgramCounter() + 6);
-	printf("LOAD IMMEDIATE $%i:=%i\n", reg, val);
+	printf("LOAD IMMEDIATE %s=%i\n", RegisterUtils::getRegisterName(reg), val);
 }
 
 void Core::move() {
@@ -169,8 +169,7 @@ void Core::jumpEqualImmediateImmediate() {
 	uint32_t val = _state->getDataUInt(getProgramCounter() + 2);
 	uint32_t dst = _state->getDataUInt(getProgramCounter() + 6);
 
-	CoreState* left;
-	CoreState* right;
+	CoreState *left, *right;
 
 	printf("FORKING\n");
 	forkState(left, right);
@@ -271,14 +270,11 @@ void Core::jumpNotEqualRegisterRegister() {
 void Core::interrupt() {
 	uint8_t intNumber = _state->getDataByte(getProgramCounter() + 1);
 
-	if (intNumber < 256 && _intTable[intNumber]) {
+	if (_intTable[intNumber]) {
 		_intTable[intNumber](this);
 		printf("HANDLE INT %i\n", intNumber);
 	} else {
 		printf("NO INT HANDLER REGISTERED FOR %i\n", intNumber);
-		if (intNumber >= 256) {
-			printf("INTERRUPT NUMBER CANNOT EXCEED 256\n");
-		}
 	}
 	
 	setProgramCounter(getProgramCounter() + 2);

@@ -22,6 +22,10 @@ void printRegisters(uint32_t const* reg) {
 
 void printInterrupt(VM::Core* c) {
 	printf("HIT PRINT INTERRUPT\n");
+
+	/**
+	 * Print VM registers
+	 */
 	printf("REGISTERS\n");
 	printRegisters(c->getState()->getRegisters());
 

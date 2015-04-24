@@ -13,7 +13,7 @@ INSTALL_LIB_PATH = /usr/lib/
 INSTALL_INCLUDE_PATH = /usr/local/include/CoreVM/
 
 #Compiler settings
-CC=g++
+CC=clang++
 CFLAGS=-c -std=c++11 -Wall -ggdb -fPIC
 LDFLAGS=-lcorecs -ggdb
 
