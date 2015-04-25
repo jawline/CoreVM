@@ -48,6 +48,10 @@ namespace VM {
 
         void makeSymbolic(uint8_t registerId);
 
+        inline void moveRegister(uint8_t dstId, uint8_t srcId) {
+            _registers[dstId] = _registers[srcId];
+        }
+
       	inline uint32_t getRegisterUInt(uint8_t registerId) const {
         		return _registers[registerId].value;
       	}

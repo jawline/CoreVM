@@ -1,6 +1,7 @@
 load A 5
 int 1
 int 0
+mov F E
 jmp begin
 
 data:

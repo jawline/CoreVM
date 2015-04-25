@@ -19,7 +19,7 @@ void Core::loadImmediate() {
 void Core::move() {
 	uint8_t dst = _state->getDataByte(getProgramCounter()+1);
 	uint8_t src = _state->getDataByte(getProgramCounter()+2);
-	_state->setRegisterUInt(dst, _state->getRegisterUInt(src));
+	_state->moveRegister(dst, src);
 	setProgramCounter(getProgramCounter()+3);
 	printf("MOVE %i %i\n", dst, src);
 }
