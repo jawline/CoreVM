@@ -243,10 +243,37 @@ void Core::jumpEqualRegisterImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	uint8_t r2 = _state->getDataByte(getProgramCounter()+2);
 	uint32_t dst = _state->getDataUInt(getProgramCounter()+3);
-	if (_state->getRegisterUInt(r1) == _state->getRegisterUInt(r2)) {
-		setProgramCounter(dst);
+
+	if (_state->isSymbolic(r1) && _state->isSymbolic(r2)) {
+		printf("FORKING\n");
+		CoreState *left, *right;
+		forkState(left, right);
+		printf("TODO: LEFT CONSTRAINT  r1  = r2\n");
+		printf("TODO: RIGHT CONSTRAINT r1 != r2\n");
+
+		//Generate new constraints
+		Constraints::Constraint c1;
+		c1.addItem(left->getVariable(r1), 1);
+		c1.addItem(left->getVariable(r2), -1);
+		c1.setResult(0);
+		c1.setComparisonType(Constraints::Equal);
+		left->getProblem()->addConstraint(c1);
+
+		Constraints::Constraint c2;
+		c2.addItem(left->getVariable(r1), 1);
+		c2.addItem(left->getVariable(r2), -1);
+		c2.setResult(0);
+		c2.setComparisonType(Constraints::NotEqual);
+		right->getProblem()->addConstraint(c2);
+
+		setProgramCounter(left, dst);
+		setProgramCounter(right, getProgramCounter(right) + 7);
 	} else {
-		setProgramCounter(getProgramCounter()+7);
+		if (_state->getRegisterUInt(r1) == _state->getRegisterUInt(r2)) {
+			setProgramCounter(dst);
+		} else {
+			setProgramCounter(getProgramCounter()+7);
+		}
 	}
 	printf("JEQRI\n");
 }

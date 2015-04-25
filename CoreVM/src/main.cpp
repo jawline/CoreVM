@@ -46,6 +46,16 @@ void makeSymbolic(VM::Core* c) {
 	c->getState()->makeSymbolic(0xFF & c->getState()->getRegisterUInt(VM::RegisterA));
 }
 
+void failureState(VM::Core* c) {
+	printf("------------------------------------------------\n");
+	printf("-           FAILURE            STATE           -\n");
+	printf("------------------------------------------------\n");
+	printInterrupt(c);
+	printf("------------------------------------------------\n");
+	printf("-             END             STATE            -\n");
+	printf("------------------------------------------------\n");
+}
+
 int main(int argc, char** argv) {
 
 	if (argc != 2) {
@@ -65,6 +75,7 @@ int main(int argc, char** argv) {
 	VM::Core c(data, size);
 	c.registerInterrupt(0, printInterrupt);
 	c.registerInterrupt(1, makeSymbolic);
+	c.registerInterrupt(2, failureState);
 	c.run();
 	
 	return 0;
