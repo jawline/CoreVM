@@ -4,8 +4,8 @@
 using namespace VM;
 
 CoreState::CoreState(uint8_t* data, unsigned int size) {
-	_registers = new uint32_t[NumRegisters];
-	memset(_registers, 0, sizeof(uint32_t) * NumRegisters);
+	_registers = new RegisterState[NumRegisters];
+	memset(_registers, 0, sizeof(RegisterState) * NumRegisters);
 
 	_data = shared_ptr<uint8_t>(data);
 	_dataSize = size;
@@ -13,8 +13,8 @@ CoreState::CoreState(uint8_t* data, unsigned int size) {
 }
 
 CoreState::CoreState(CoreState* existing) {
-	_registers = new uint32_t[NumRegisters];
-	memcpy(_registers, existing->_registers, sizeof(uint32_t) * NumRegisters);
+	_registers = new RegisterState[NumRegisters];
+	memcpy(_registers, existing->_registers, sizeof(RegisterState) * NumRegisters);
 
 	_data = existing->_data;
 	_dataSize = existing->_dataSize;
@@ -27,8 +27,8 @@ CoreState::CoreState(CoreState* existing) {
 }
 
 CoreState::CoreState(CoreState& existing) {
-	_registers = new uint32_t[NumRegisters];
-	memcpy(_registers, existing._registers, sizeof(uint32_t) * NumRegisters);
+	_registers = new RegisterState[NumRegisters];
+	memcpy(_registers, existing._registers, sizeof(RegisterState) * NumRegisters);
 
 	_data = existing._data;
 	_dataSize = existing._dataSize;
@@ -42,6 +42,10 @@ CoreState::CoreState(CoreState& existing) {
 
 CoreState::~CoreState() {
 	delete _registers;
+}
+
+void CoreState::makeSymbolic(uint8_t registerId) {
+	_registers[registerId].symbolic = true;
 }
 
 void CoreState::copyData() {

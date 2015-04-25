@@ -13,9 +13,13 @@ void printRam(uint8_t const* data, size_t size) {
 	}
 }
 
-void printRegisters(uint32_t const* reg) {
+void printRegisters(VM::RegisterState const* reg) {
 	for (unsigned int i = 0; i < VM::NumRegisters; i++) {
-		printf("%s:%u ", VM::RegisterUtils::getRegisterName(i), reg[i]);
+		if (reg[i].symbolic) {
+			printf("%s:sym ", VM::RegisterUtils::getRegisterName(i));
+		} else {
+			printf("%s:%u ", VM::RegisterUtils::getRegisterName(i), reg[i].value);
+		}
 	}
 	printf("\n");
 }
@@ -36,6 +40,10 @@ void printInterrupt(VM::Core* c) {
 	printRam(c->getState()->getData(), c->getState()->getDataSize());
 }
 
+void makeSymbolic(VM::Core* c) {
+	c->getState()->makeSymbolic(0xFF & c->getState()->getRegisterUInt(VM::RegisterA));
+}
+
 int main(int argc, char** argv) {
 
 	if (argc != 2) {
@@ -54,6 +62,7 @@ int main(int argc, char** argv) {
 	//data is now 'owned' by the VMCore and will be freed by it at the end of execution
 	VM::Core c(data, size);
 	c.registerInterrupt(0, printInterrupt);
+	c.registerInterrupt(1, makeSymbolic);
 	c.run();
 	
 	return 0;

@@ -131,8 +131,9 @@ bool Parser::parseConditionalJump(char const*& input, ByteBuffer& buffer) {
 }
 
 bool Parser::parseDataByte(char const*& input, ByteBuffer& buffer) {
-	Token db = _tokeniser.nextToken(input);
-	
+	//Discard the db
+	_tokeniser.nextToken(input);
+
 	Token numTk = _tokeniser.nextToken(input);
 	if (numTk.tokenId() != NUM) {
 		printf("Expected num near %s not %s\n", input, numTk.tokenString());
@@ -278,7 +279,8 @@ void Parser::resolveLabels(ByteBuffer& buffer) {
 }
 
 bool Parser::parseNoOp(char const*& input, ByteBuffer& buffer) {
-	Token noop = _tokeniser.nextToken(input);
+	//Discard the noOp token
+	_tokeniser.nextToken(input);
 	buffer.insert((uint8_t) VM::NoOp);
 	return true;
 }
