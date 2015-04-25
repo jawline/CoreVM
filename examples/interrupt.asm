@@ -9,7 +9,7 @@ data:
 
 begin:
 	load A 10
-	jeq A 10 right
+	jeq E 10 right
 left:
 	set A data
 	jmp exit

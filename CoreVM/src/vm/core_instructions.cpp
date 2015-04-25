@@ -169,16 +169,22 @@ void Core::jumpEqualImmediateImmediate() {
 	uint32_t val = _state->getDataUInt(getProgramCounter() + 2);
 	uint32_t dst = _state->getDataUInt(getProgramCounter() + 6);
 
-	CoreState *left, *right;
-
-	printf("FORKING\n");
-	forkState(left, right);
-
-	left->setRegisterUInt(r1, val);
-	right->setRegisterUInt(r1, val + 1);
-
-	setProgramCounter(left, dst);
-	setProgramCounter(right, getProgramCounter(right) + 10);
+	//Symbolic jump
+	if (_state->isSymbolic(r1)) {
+		printf("FORKING\n");
+		CoreState *left, *right;
+		forkState(left, right);
+		printf("TODO: LEFT CONSTRAINT  r1  = %i\n", val);
+		printf("TODO: RIGHT CONSTRAINT r1 != %i\n", val);
+		setProgramCounter(left, dst);
+		setProgramCounter(right, getProgramCounter(right) + 10);
+	} else { //Not symbolic, do normal jump
+		if (_state->getRegisterUInt(r1) == val) {
+			setProgramCounter(dst);
+		} else {
+			setProgramCounter(getProgramCounter() + 10);
+		}
+	}
 
 	printf("JEQII\n");
 }

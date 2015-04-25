@@ -47,6 +47,10 @@ namespace VM {
         ~CoreState();
 
         void makeSymbolic(uint8_t registerId);
+        
+        inline bool isSymbolic(uint8_t registerId) {
+            return _registers[registerId].symbolic;
+        }
 
         inline void moveRegister(uint8_t dstId, uint8_t srcId) {
             _registers[dstId] = _registers[srcId];
