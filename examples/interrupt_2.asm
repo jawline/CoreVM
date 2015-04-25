@@ -8,7 +8,7 @@ entry:
 	jeq B C exit
 	jeq B 5 exit
 	jeq C 10 exit
-	jeq B C exit
+	jne B C exit
 fail:
 	int 2
 exit:
