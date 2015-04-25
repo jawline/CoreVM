@@ -9,7 +9,8 @@ namespace Constraints {
 	typedef std::pair<Variable,double> ConstraintItem;
 
 	typedef enum {
-		Equals,
+		Equal,
+		NotEqual,
 		LessThanOrEqual,
 		GreaterThanOrEqual,
 		NumComparisonTypes

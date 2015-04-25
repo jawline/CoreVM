@@ -176,6 +176,20 @@ void Core::jumpEqualImmediateImmediate() {
 		forkState(left, right);
 		printf("TODO: LEFT CONSTRAINT  r1  = %i\n", val);
 		printf("TODO: RIGHT CONSTRAINT r1 != %i\n", val);
+
+		//Generate new constraints
+		Constraints::Constraint c1;
+		c1.addItem(left->getVariable(r1), 1);
+		c1.setResult(val);
+		c1.setComparisonType(Constraints::Equal);
+		left->getProblem()->addConstraint(c1);
+
+		Constraints::Constraint c2;
+		c2.addItem(left->getVariable(r1), 1);
+		c2.setResult(val);
+		c2.setComparisonType(Constraints::NotEqual);
+		right->getProblem()->addConstraint(c2);
+
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 10);
 	} else { //Not symbolic, do normal jump

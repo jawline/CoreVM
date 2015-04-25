@@ -13,8 +13,13 @@ namespace VM {
      * RegisterState is used to store registers.
      */
     struct RegisterState {
+        RegisterState() {
+            value = 0;
+            symbolic = false;
+        }
         uint32_t value;
         bool symbolic;
+        Constraints::Variable variable;
     };
 
     class CoreState {
@@ -47,9 +52,17 @@ namespace VM {
         ~CoreState();
 
         void makeSymbolic(uint8_t registerId);
+
+        Constraints::Problem* getProblem() {
+            return &_symState;
+        }
         
         inline bool isSymbolic(uint8_t registerId) {
             return _registers[registerId].symbolic;
+        }
+
+        inline Constraints::Variable getVariable(uint8_t registerId) {
+            return _registers[registerId].variable;
         }
 
         inline void moveRegister(uint8_t dstId, uint8_t srcId) {

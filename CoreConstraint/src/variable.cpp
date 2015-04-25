@@ -2,6 +2,11 @@
 
 using namespace Constraints;
 
+Variable::Variable() {
+	_name = "INVALID";
+	_index = -1;
+}
+
 Variable::Variable(std::string const& name, unsigned int index) {
 	_name = name;
 	_index = index;

@@ -4,14 +4,12 @@
 
 namespace Constraints {
 	class Variable {
-		friend class Problem;
 	private:
 		std::string _name;
-		unsigned int _index;
-
-	protected:
-		Variable(std::string const& name, unsigned int index);
+		int _index;
 	public:
+		Variable();
+		Variable(std::string const& name, unsigned int index);
 		~Variable();
 		unsigned int getIndex() const;
 		std::string toString() const;

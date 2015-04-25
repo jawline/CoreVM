@@ -3,9 +3,10 @@
 
 using namespace VM;
 
+static unsigned int l_rId = 0;
+
 CoreState::CoreState(uint8_t* data, unsigned int size) {
 	_registers = new RegisterState[NumRegisters];
-	memset(_registers, 0, sizeof(RegisterState) * NumRegisters);
 
 	_data = shared_ptr<uint8_t>(data);
 	_dataSize = size;
@@ -14,11 +15,16 @@ CoreState::CoreState(uint8_t* data, unsigned int size) {
 
 CoreState::CoreState(CoreState* existing) {
 	_registers = new RegisterState[NumRegisters];
-	memcpy(_registers, existing->_registers, sizeof(RegisterState) * NumRegisters);
+
+	for (unsigned int i = 0; i < NumRegisters; i++) {
+		_registers[i] = existing->_registers[i];
+	}
 
 	_data = existing->_data;
 	_dataSize = existing->_dataSize;
 	_copyDataOnWrite = true;
+
+	_symState = existing->_symState;
 
 	//TODO: This makes the data copy if either state writes to data, ideally the other state
 	//would own the data and this state would watch for writes and make a copy then to save
@@ -28,11 +34,16 @@ CoreState::CoreState(CoreState* existing) {
 
 CoreState::CoreState(CoreState& existing) {
 	_registers = new RegisterState[NumRegisters];
-	memcpy(_registers, existing._registers, sizeof(RegisterState) * NumRegisters);
+	
+	for (unsigned int i = 0; i < NumRegisters; i++) {
+		_registers[i] = existing._registers[i];
+	}
 
 	_data = existing._data;
 	_dataSize = existing._dataSize;
 	_copyDataOnWrite = true;
+
+	_symState = existing._symState;
 
 	//TODO: This makes the data copy if either state writes to data, ideally the other state
 	//would own the data and this state would watch for writes and make a copy then to save
@@ -41,11 +52,12 @@ CoreState::CoreState(CoreState& existing) {
 }
 
 CoreState::~CoreState() {
-	delete _registers;
+	delete[] _registers;
 }
 
 void CoreState::makeSymbolic(uint8_t registerId) {
 	_registers[registerId].symbolic = true;
+	_registers[registerId].variable = getProblem()->createVariable("symreg" + std::to_string(l_rId++));
 }
 
 void CoreState::copyData() {

@@ -6,7 +6,6 @@ namespace Constraints {
 	class Problem {
 	private:
 		unsigned int _lastv;
-
 		std::vector<Variable> _variables;
 		std::vector<Constraint> _constraints;
 

@@ -38,6 +38,8 @@ void printInterrupt(VM::Core* c) {
 	 */
 	printf("RAM contents execution\n");
 	printRam(c->getState()->getData(), c->getState()->getDataSize());
+
+	printf("%s", c->getState()->getProblem()->toString().c_str());
 }
 
 void makeSymbolic(VM::Core* c) {

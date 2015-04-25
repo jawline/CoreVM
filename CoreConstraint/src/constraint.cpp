@@ -2,16 +2,16 @@
 
 using namespace Constraints;
 
-static const char* ComparisonTypeStrings[NumComparisonTypes] = {"=", "<=", ">="};
+static const char* ComparisonTypeStrings[NumComparisonTypes] = {"=", "!=", "<=", ">="};
 
 Constraint::Constraint() {
 	_value = 0;
-	_type = Equals;
+	_type = Equal;
 }
 
 Constraint::Constraint(double value) {
 	_value = value;
-	_type = Equals;
+	_type = Equal;
 }
 
 Constraint::~Constraint() {}
