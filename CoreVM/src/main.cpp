@@ -47,13 +47,19 @@ void makeSymbolic(VM::Core* c) {
 }
 
 void failureState(VM::Core* c) {
-	printf("------------------------------------------------\n");
-	printf("-           FAILURE            STATE           -\n");
-	printf("------------------------------------------------\n");
-	printInterrupt(c);
-	printf("------------------------------------------------\n");
-	printf("-             END             STATE            -\n");
-	printf("------------------------------------------------\n");
+	if (!c->getState()->getProblem()->isSatisfiable()) {
+		printf("------------------------------------------------\n");
+		printf("-           FAILURE            STATE           -\n");
+		printf("------------------------------------------------\n");
+		printInterrupt(c);
+		printf("------------------------------------------------\n");
+		printf("-             END             STATE            -\n");
+		printf("------------------------------------------------\n");
+	} else {
+		printf("------------------------------------------------\n");
+		printf("-             END             STATE            -\n");
+		printf("------------------------------------------------\n");
+	}
 }
 
 int main(int argc, char** argv) {

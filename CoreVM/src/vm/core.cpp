@@ -10,7 +10,9 @@ Core::Core(uint8_t* data, unsigned int dataSize) {
 }
 
 Core::~Core() {
-	delete _state;
+	if (!_state) {
+		delete _state;
+	}
 	delete[] _intTable;
 	delete[] _jumpTable;
 }
@@ -74,13 +76,19 @@ void Core::run() {
 	while (getProgramCounter() < _state->getDataSize()) {
 		_jumpTable[_state->getDataByte(getProgramCounter())]();
 	}
+	
+	delete _state;
+	_state = nullptr;
+
 	while (_states.size()) {
 		printf("LOADING FORK\n");
 		_state = _states.back();
 		_states.pop_back();
 		while (getProgramCounter() < _state->getDataSize()) {
 			_jumpTable[_state->getDataByte(getProgramCounter())]();
-		}		
+		}
+		delete _state;
+		_state = nullptr;
 	}
 }
 

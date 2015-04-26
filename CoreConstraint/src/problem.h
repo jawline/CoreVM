@@ -16,6 +16,7 @@ namespace Constraints {
 		Variable createVariable(std::string const& name);
 		void addConstraint(Constraint const& constraint);
 
+		bool isSatisfiable() const;
 		std::string toString() const;
 	};
 }

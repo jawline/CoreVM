@@ -68,6 +68,8 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
+	delete[] inputSource;
+
 	printf("Done writing %li bytes\n", buffer.current());
 	return writeToFile(buffer, argv[2]);
 }

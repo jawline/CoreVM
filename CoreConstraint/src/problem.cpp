@@ -17,6 +17,10 @@ void Problem::addConstraint(Constraint const& constraint) {
 	_constraints.push_back(constraint);
 }
 
+bool Problem::isSatisfiable() const {
+	return false;
+}
+
 std::string Problem::toString() const {
 	std::string result;
 
@@ -37,6 +41,8 @@ std::string Problem::toString() const {
 			result += _constraints[i].toString() + "\n";
 		}
 	}
+
+	printf("Satisfiable: %i\n", isSatisfiable());
 
 	return result;
 }
