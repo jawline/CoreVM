@@ -44,6 +44,7 @@ namespace Assembler {
 
 		TOKEN_ID tokenId() const;
 		char const* tokenString() const;
+		int tokenInt() const;
 	};
 
 	class Tokeniser {
