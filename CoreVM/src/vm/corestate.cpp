@@ -3,7 +3,7 @@
 
 using namespace VM;
 
-static unsigned int l_rId = 0;
+static unsigned long CoreState::_lastSymbol = 0;
 
 CoreState::CoreState(uint8_t* data, unsigned int size) {
 	_registers = new RegisterState[NumRegisters];
@@ -57,7 +57,7 @@ CoreState::~CoreState() {
 
 void CoreState::makeSymbolic(uint8_t registerId) {
 	_registers[registerId].symbolic = true;
-	_registers[registerId].variable = getProblem()->createVariable("symreg" + std::to_string(l_rId++));
+	_registers[registerId].variable = getProblem()->createVariable("symreg" + std::to_string(_lastSymbolic++));
 }
 
 void CoreState::copyData() {
