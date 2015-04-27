@@ -66,3 +66,15 @@ void CoreState::copyData() {
 	_data = shared_ptr<uint8_t>(data);
 	_copyDataOnWrite = false;
 }
+
+RegisterState const* CoreState::getRegisters() const {
+	return _registers;
+}
+        	
+uint8_t const* CoreState::getData() const {
+	return _data.get();
+}
+        	
+unsigned int CoreState::getDataSize() {
+	return _dataSize;
+}
