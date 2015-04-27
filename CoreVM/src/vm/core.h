@@ -31,8 +31,20 @@ namespace VM {
 		 */
 		std::function<void(Core*)>* _intTable;
 
+		/**
+		 * Setup the default jump table
+		 */
 		void setupJumpTable();
+		
+		/**
+		 * Setup the default interrupt table
+		 */
 		void setupIntTable();
+		
+		/**
+		 * Fork the current state into two states, place a pointer to
+		 * one state in left and another state in right
+		 */
 		void forkState(CoreState*& left, CoreState*& right);
 	public:
 		Core(uint8_t* data, unsigned int dataSize);
