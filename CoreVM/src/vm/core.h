@@ -50,25 +50,48 @@ namespace VM {
 		Core(uint8_t* data, unsigned int dataSize);
 		~Core();
 
+		/**
+		 * Get the program counter of the current state
+		 */
 		inline uint32_t getProgramCounter() const {
 			return getProgramCounter(_state);
 		}
 		
+		/**
+		 * Get the program counter from a given state
+		 */
 		inline uint32_t getProgramCounter(CoreState* st) const {
 			return st->getRegisterUInt(ProgramCounter);
 		}
 
+		/**
+		 * Set the program counter on the current state
+		 */
 		inline void setProgramCounter(uint32_t pc) {
 			setProgramCounter(_state, pc);
 		}
 
+		/**
+		 * Set the program counter on the current state
+		 */
 		inline void setProgramCounter(CoreState* st, uint32_t pc) {
 			st->setRegisterUInt(ProgramCounter, pc);
 		}
 
+		/**
+		 * Get the current state
+		 */
 		CoreState* getState();
 		
+		/**
+		 * Run the virtual machine
+		 */
 		void run();
+		
+		/**
+		 * Register an interrupt callback, whenever the interrupt number specified is given then
+		 * the callback function will be executed.
+		 */
 		void registerInterrupt(uint8_t interruptNumber, std::function<void(Core*)> callback);
 
 		/**
