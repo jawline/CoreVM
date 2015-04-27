@@ -25,7 +25,6 @@ void ByteBuffer::insert(uint8_t byte) {
 	if (bufferCurrentIter + 1 >= bufferCurrentSize) {
 		expandBuffer();
 	}
-
 	insert(byte, bufferCurrentIter);
 	bufferCurrentIter += 1;
 }
