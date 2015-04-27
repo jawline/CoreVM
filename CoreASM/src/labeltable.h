@@ -20,7 +20,7 @@ namespace Assembler {
        * If the label exists then returns true and sets position to the start of the label
        * If the label does not exist return false
        */
-      bool getLabel(std::string const& labelName, size_t& position) const;
+      bool getLabel(std::string const& labelName, size_t& position);
   };
 }
 
