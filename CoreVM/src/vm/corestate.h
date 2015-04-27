@@ -24,6 +24,11 @@ namespace VM {
 
     class CoreState {
     private:
+    
+        /**
+         * Last symbolic created
+         */
+        static unsigned long _lastSymbol;
 
     	/**
     	 * Current register data
