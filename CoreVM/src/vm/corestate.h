@@ -117,17 +117,9 @@ namespace VM {
         	*((int32_t*) &_data.get()[location]) = val;
         }
         	
-        RegisterState const* getRegisters() {
-        	return _registers;
-        }
-        	
-        uint8_t const* getData() {
-        	return _data.get();
-        }
-        	
-        unsigned int getDataSize() {
-        	return _dataSize;
-        }
+        RegisterState const* getRegisters() const;
+        uint8_t const* getData() const;
+        unsigned int getDataSize() const;
   };
 }
 
