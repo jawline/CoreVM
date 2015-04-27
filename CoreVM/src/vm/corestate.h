@@ -41,6 +41,9 @@ namespace VM {
     	 */
     	bool _copyDataOnWrite;
 
+        /**
+         * The current symbolic state
+         */
         Constraints::Problem _symState;
 
     	void copyData();
@@ -70,7 +73,7 @@ namespace VM {
         }
 
       	inline uint32_t getRegisterUInt(uint8_t registerId) const {
-        		return _registers[registerId].value;
+        	return _registers[registerId].value;
       	}
 
       	inline void setRegisterUInt(uint8_t registerId, uint32_t value) {
