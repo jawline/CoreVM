@@ -29,6 +29,10 @@ char const* Token::tokenString() const {
 	return _data.c_str();
 }
 
+int Token::tokenInt() const {
+	return atoi(_data.c_str());
+}
+
 Tokeniser::Tokeniser() {
 	regexParse(&idRegex, "[a-zA-Z][a-zA-Z0-9_]*");
 	regexParse(&intRegex, "-?[0-9]+");
