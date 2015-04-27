@@ -12,7 +12,7 @@ bool Parser::handleAddress(Token const& address, char const* input, ByteBuffer& 
 	size_t labelPosition = 0;
 
 	if (address.tokenId() == NUM) {
-		labelPosition = atoi(address.tokenString());
+		labelPosition = address.tokenInt();
 	} else if (address.tokenId() == ID) {
 		if (!_labels.getLabel(address.tokenString(), labelPosition)) {
 			_unresolvedLabels.push_back(pair<size_t, string>(buffer.current(), address.tokenString()));
@@ -50,7 +50,7 @@ bool Parser::parseInterrupt(char const*& input, ByteBuffer& buffer) {
 	}
 	
 	buffer.insert((uint8_t) VM::Interrupt);
-	buffer.insert((uint8_t) atoi(intNum.tokenString()));
+	buffer.insert((uint8_t) intNum.tokenInt());
 	return true;
 }
 
@@ -138,7 +138,7 @@ bool Parser::parseDataByte(char const*& input, ByteBuffer& buffer) {
 		return false;
 	}
 
-	int num = atoi(numTk.tokenString());
+	int num = numTk.tokenInt();
 	
 	for (int i = 0; i < num; i++) {
 		buffer.insert((uint8_t) 0);
@@ -385,7 +385,7 @@ bool Parser::parseArithmetic(char const*& input, ByteBuffer& buffer) {
 	buffer.insert((uint8_t) id);
 
 	if (immediate) {
-		buffer.insert((uint32_t) atoi(value.tokenString()));
+		buffer.insert((uint32_t) value.tokenInt());
 	} else {
 		VM::RegisterID valueId = VM::RegisterUtils::getRegisterId(value.tokenString());
 		if (valueId == VM::InvalidRegister) {
