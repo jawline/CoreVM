@@ -286,52 +286,41 @@ bool Parser::parseNoOp(char const*& input, ByteBuffer& buffer) {
 bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 	Token next = _tokeniser.peekToken(input);
 	
-	if (next.tokenId() == ID) {
-		if (!parseLabel(input, buffer)) {
+	switch (next.tokenId()) {
+		case NOOP:
+			return parseNoOp(input, buffer);
+		case ID:
+			return parseLabel(input, buffer);
+		case JUMP:
+			return parseJump(input, buffer);
+		case LOAD:
+			return parseLoad(input, buffer);
+		case MOVE:
+			return parseMove(input, buffer);
+		case DATA_BYTE:
+			return parseDataByte(input, buffer);
+		case INTERRUPT:
+			return parseInterrupt(input, buffer);
+		case GET:
+		case SET:
+			return parseMemoryOp(input, buffer);
+		case GREATER_THAN:
+		case LESS_THAN:
+		case ADD:
+		case SUBTRACT:
+		case DIVIDE:
+		case MULTIPLY:
+			return parseArithmetic(input, buffer);
+		case JUMP_EQUALS:
+		case JUMP_NOT_EQUALS:
+			return parseConditionalJump(input, buffer);
+		default:
+			printf("Expected instruction or label near %s and not %s", input, next.tokenString());
 			return false;
-		}
-	} else if (next.tokenId() == JUMP) {
-		if (!parseJump(input, buffer)) {
-			return false;
-		}
-	} else if (next.tokenId() == NOOP) {
-		if (!parseNoOp(input, buffer)) {
-			return false;
-		}
-	} else if (next.tokenId() == LOAD) {
-		if (!parseLoad(input, buffer)) {
-			return false;
-		}
-	} else if (next.tokenId() == MOVE) {
-		if (!parseMove(input, buffer)) {
-			return false;
-		}
-	} else if (next.tokenId() == DATA_BYTE) {
-		if (!parseDataByte(input, buffer)) {
-			return false;
-		}
-	} else if (next.tokenId() == INTERRUPT) {
-		if (!parseInterrupt(input, buffer)) {
-			return false;
-		}
-	} else if (next.tokenId() == GET || next.tokenId() == SET) {
-		if (!parseMemoryOp(input, buffer)) {
-			return false;
-		}
-	} else if (next.tokenId() == GREATER_THAN || next.tokenId() == LESS_THAN || next.tokenId() == ADD || next.tokenId() == SUBTRACT || next.tokenId() == DIVIDE || next.tokenId() == MULTIPLY) {
-		if (!parseArithmetic(input, buffer)) {
-			return false;
-		}
-	} else if (next.tokenId() == JUMP_EQUALS || next.tokenId() == JUMP_NOT_EQUALS) {
-		if (!parseConditionalJump(input, buffer)) {
-			return false;
-		}
-	} else {
-		printf("Expected instruction or label near %s and not %s", input, next.tokenString());
-		return false;
 	}
 
-	return true;
+	//Note: Not reachable
+	return false;
 }
 
 bool Parser::parseArithmetic(char const*& input, ByteBuffer& buffer) {
