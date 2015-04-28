@@ -26,7 +26,7 @@ namespace VM {
     private:
     
         /**
-         * Last symbolic created
+         * Last symbol created
          */
         static unsigned long _lastSymbol;
 
