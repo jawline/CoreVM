@@ -5,7 +5,7 @@ namespace VM {
 	enum {
 
 		/**
-		 * NoOp. Its traditional
+		 * NoOp. Its traditional (But not incredibly useful)
 		 */
 		NoOp = 0x0,
 
@@ -63,9 +63,6 @@ namespace VM {
 		JumpEqualRegisterRegister,
 		JumpNotEqualRegisterRegister,
 		
-		/**
-		 * Interrupt
-		 */
 		Interrupt,
 
 		NumInstructions
