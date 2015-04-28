@@ -7,6 +7,10 @@
 namespace Assembler {
   class LabelTable {
     private:
+
+      /**
+       * Mapping of current label names to locations
+       */
       std::map<std::string, size_t> _currentLabels;
 
     public:
