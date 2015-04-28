@@ -30,6 +30,9 @@ namespace VM {
 	 */
 	class RegisterUtils {
 	private:
+		/**
+		 * Mappings from RegisterID to string names
+		 */
 		static char const* mapping[];
 	public:
 		/**
