@@ -1,21 +1,15 @@
 #ifndef _COLUMN_DEF_H_
 #define _COLUMN_DEF_H_
-#include <stdlib.h>
-#include <stddef.h>
-#include <string.h>
+#include <string>
 
-typedef struct {
-  char* name;
-} column;
-
-/**
- * Initialise a column
- */
-void initialiseColumn(column* column, char const* name, size_t nameLength);
-
-/**
- * Free any memory associated with a column
- */
-void freeColumn(column* column);
+namespace Simplex {
+  class Column {
+    private:
+      std::string _name;
+    public:
+      Column(std::string const& name);
+      ~Column();
+  }
+}
 
 #endif //_COLUMN_DEF_H_
