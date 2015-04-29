@@ -2,6 +2,10 @@
 
 using namespace Simplex;
 
+Column::Column() {
+	_name = "INVALID";
+}
+
 Column::Column(std::string const& name) {
 	_name = name;
 }
