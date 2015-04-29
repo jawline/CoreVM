@@ -7,6 +7,7 @@ namespace Simplex {
     private:
       std::string _name;
     public:
+      Column();
       Column(std::string const& name);
       Column(char const* name, size_t len);
       ~Column();
