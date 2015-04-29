@@ -2,88 +2,38 @@
 #define _SIMPLEX_TABLAEU_DEF_H_
 #include "column.h"
 
-using namespace Simplex;
+namespace Simplex {
 
-typedef struct {
-  Column* columns;
-  double* rowData;
-  int numColumns;
-  int numRows;
-} table;
+	class Table {
+	private:
+		Column* _columns;
+		double* _rowData;
+		int _numColumns;
+		int _numRows;
 
-/**
- * Initialise all the table values
- */
-void initialiseTable(table* instance);
+		void expandRows(int numNewColumns);	
+	public:
+		Table();
+		~Table();
 
-/**
- * Free any memory associated with the table instance
- */
-void freeTable(table* instance);
+		int getColumnId(std::string const& name) const;
+		Column* getColumn(std::string const& name) const;
 
-/**
- * Get the index of the column in the table
- */
-int getTableColumnId(table* instance, char const* name);
-int getTableColumnIdWithLength(table* instance, char const* name, size_t nameLength);
+		void addColumn(char const* name, size_t length);
+		void addRow();
 
-/**
- * Get a columns information from the table
- */
-Column* getTableColumn(table* instance, char const* name);
+		unsigned int getCurrentRow() const;
+		double* getRowData(unsigned int row) const;
+		
+		double getField(unsigned int row, unsigned int col) const;
 
-/**
- * Add a new column to the table
- */
-int addTableColumn(table* instance, char const* name, size_t nameLength);
+		void setField(double d, unsigned int row, unsigned int col);
+		void setField(double d, unsigned int row, std::string const& column);
 
-/**
- * Add a new row to the table
- */
-void addTableRow(table* instance);
+		void swapColumn(unsigned int c1, unsigned int c2);
 
-/**
- * Expand all the rows after a column is added to the table
- */
-void expandRows(table* instance, int oldNumColumns, int newNumColumns);
-
-/**
- * Return the ID of the last row added
- */
-unsigned int getCurrentRow(table* instance);
-
-/**
- * Return a pointer to the row data for the specified row number
- */
-double* getRowData(table* instance, unsigned int rowNum);
-
-/**
- * Get the table data at a given field
- */
-double getTableField(table* instance, unsigned int row, unsigned int column);
-
-/**
- * Set the table data at a given field
- */
-void setTableField(table* instance, unsigned int row, unsigned int column, double val);
-
-/**
- * Get a table field from a column name and row number
- */
-double getTableFieldWithColumnName(table* instance, unsigned int row, char const* columnName);
-double getTableFieldWithColumnNameAndLength(table* instance, unsigned int row, char const* columnName, int length);
-
-/**
- * Set a table field from a column name and row number
- */
-void setTableFieldWithColumnName(table* instance, unsigned int row, char const* columnName, double val);
-void setTableFieldWithColumnNameAndLength(table* instance, unsigned int row, char const* columnName, int length, double val);
-
-void swapTableColumn(table* instance, unsigned int a, unsigned int b);
-
-/**
- * Print debug info about the table
- */
-void printTable(table* instance);
+		void print();
+	};
+}
 
 #endif //_SIMPLEX_TABLAEU_DEF_H_

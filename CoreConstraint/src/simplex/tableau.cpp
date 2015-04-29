@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+using namespace Simplex;
+
 void initialiseTable(table* instance) {
 	instance->columns = 0;
 	instance->numColumns = 0;

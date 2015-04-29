@@ -2,6 +2,8 @@
 #include "simplex/parser.h"
 #include "simplex/solver.h"
 
+using namespace Simplex;
+
 int main(int argc, char** argv) {
 
 	if (argc != 2) {
