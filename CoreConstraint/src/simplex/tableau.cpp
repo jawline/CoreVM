@@ -23,7 +23,7 @@ void freeTable(table* instance) {
 
 int getTableColumnId(table* instance, char const* name) {
 	for (int i = 0; i < instance->numColumns; i++) {
-		if (strcmp(instance->columns[i].name, name) == 0) {
+		if (strcmp(instance->columns[i].getName().c_str(), name) == 0) {
 			return i;
 		}
 	}
@@ -32,14 +32,14 @@ int getTableColumnId(table* instance, char const* name) {
 
 int getTableColumnIdWithLength(table* instance, char const* name, size_t nameLength) {
 	for (int i = 0; i < instance->numColumns; i++) {
-		if (strncmp(instance->columns[i].name, name, nameLength) == 0) {
+		if (strncmp(instance->columns[i].getName().c_str(), name, nameLength) == 0) {
 			return i;
 		}
 	}
 	return -1;
 }
 
-column* getTableColumn(table* instance, char const* name) {
+Column* getTableColumn(table* instance, char const* name) {
 	int temp;
 	if ((temp = getTableColumnId(instance, name)) != -1) {
 		return &instance->columns[temp];
@@ -53,14 +53,14 @@ int addTableColumn(table* instance, char const* name, size_t nameLength) {
 	}
 
 	//Allocate memory and copy existing columns
-	column* newColumns = new Column[instance->numColumns + 1];
+	Column* newColumns = new Column[instance->numColumns + 1];
 	for (unsigned int i = 0; i < instance->numColumns; i++) {
 		newColumns[i] = instance->columns[i];
 	}
 	
 	//Free existing data and set new data
 	if (instance->columns) {
-		delete[] instace->columns;
+		delete[] instance->columns;
 	}
 	instance->columns = newColumns;
 	
@@ -162,14 +162,14 @@ void swapTableColumn(table* instance, unsigned int a, unsigned int b) {
 		setTableField(instance, i, a, getTableField(instance, i, b));
 		setTableField(instance, i, b, temp);
 	}
-	column tempCol = instance->columns[a];
+	Column tempCol = instance->columns[a];
 	instance->columns[a] = instance->columns[b];
 	instance->columns[b] = tempCol;
 }
 
 void printTable(table* instance) {
 	for (unsigned int i = 0; i < instance->numColumns; i++) {
-		printf("| %s |", instance->columns[i].name);
+		printf("| %s |", instance->columns[i].getName().c_str());
 	}
 	printf("\n");
 	for (unsigned int row = 0; row < instance->numRows; row++) {

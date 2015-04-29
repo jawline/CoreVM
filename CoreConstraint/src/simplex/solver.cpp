@@ -1,5 +1,6 @@
 #include "solver.h"
 #include <stdio.h>
+#include <string.h>
 
 bool isBasic(table* instance, int col) {
 	unsigned int count = 0;
@@ -149,7 +150,7 @@ void solveTable(table* instance, simplex_result* results) {
 	for (unsigned int i = 0; i < instance->numRows; i++) {
 		if (rowBasicData[i] != -1) {
 			printf("%s: %f\n",
-				instance->columns[i].name, 
+				instance->columns[i].getName().c_str(), 
 				getTableField(instance, i, instance->numColumns - 1));
 		} else {
 			printf("Row %i unmapped\n", i);

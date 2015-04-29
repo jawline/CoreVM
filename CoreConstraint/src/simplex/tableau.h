@@ -2,8 +2,10 @@
 #define _SIMPLEX_TABLAEU_DEF_H_
 #include "column.h"
 
+using namespace Simplex;
+
 typedef struct {
-  column* columns;
+  Column* columns;
   double* rowData;
   int numColumns;
   int numRows;
@@ -28,7 +30,7 @@ int getTableColumnIdWithLength(table* instance, char const* name, size_t nameLen
 /**
  * Get a columns information from the table
  */
-column* getTableColumn(table* instance, char const* name);
+Column* getTableColumn(table* instance, char const* name);
 
 /**
  * Add a new column to the table

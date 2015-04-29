@@ -16,3 +16,7 @@ Column::Column(char const* name, size_t len) {
 
 Column::~Column() {
 }
+
+std::string Column::getName() const {
+	return _name;
+}
