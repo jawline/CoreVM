@@ -12,10 +12,7 @@ void initialiseTable(table* instance) {
 
 void freeTable(table* instance) {
 	if (instance->columns) {
-		for (unsigned int i = 0; i < instance->numColumns; i++) {
-			freeColumn(&instance->columns[i]);
-		}
-		free(instance->columns);
+		delete[] instance->columns;
 		instance->columns = 0;
 	}
 	if (instance->rowData) {
@@ -56,17 +53,19 @@ int addTableColumn(table* instance, char const* name, size_t nameLength) {
 	}
 
 	//Allocate memory and copy existing columns
-	column* newColumns = (column*) malloc(sizeof(column) * (instance->numColumns + 1));
-	memcpy(newColumns, instance->columns, sizeof(column) * instance->numColumns);
+	column* newColumns = new Column[instance->numColumns + 1];
+	for (unsigned int i = 0; i < instance->numColumns; i++) {
+		newColumns[i] = instance->columns[i];
+	}
 	
 	//Free existing data and set new data
 	if (instance->columns) {
-		free(instance->columns);
+		delete[] instace->columns;
 	}
 	instance->columns = newColumns;
 	
 	//Initialise new column
-	initialiseColumn(&instance->columns[instance->numColumns], name, nameLength);
+	instance->columns[instance->numColumns] = Column(name, nameLength);
 	
 	//Expand existing row data
 	expandRows(instance, instance->numColumns, instance->numColumns+1);
