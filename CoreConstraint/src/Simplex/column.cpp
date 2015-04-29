@@ -6,5 +6,9 @@ Column::Column(std::string const& name) {
 	_name = name;
 }
 
+Column::Column(char const* name, size_t len) {
+	_name = std::string(name, len);
+}
+
 Column::~Column() {
 }
