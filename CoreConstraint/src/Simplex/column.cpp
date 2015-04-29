@@ -1,11 +1,10 @@
 #include "column.h"
 
-void initialiseColumn(column* column, char const* name, size_t nameLength) {
-	column->name = (char*) malloc(nameLength + 1);
-	memcpy(column->name, name, nameLength);
-	column->name[nameLength] = '\0';
+using namespace Simplex;
+
+Column::Column(std::string const& name) {
+	_name = name;
 }
 
-void freeColumn(column* column) {
-	free(column->name);
+Column::~Column() {
 }
