@@ -5,21 +5,19 @@
 
 using namespace Simplex;
 
-void initialiseTable(table* instance) {
-	instance->columns = 0;
-	instance->numColumns = 0;
-	instance->rowData = 0;
-	instance->numRows = 1;
+Table::Table() {
+		_columns = nullptr;
+		_numColumns = 0;
+		_rowData = nullptr;
+		_numRows = 0;
 }
 
-void freeTable(table* instance) {
-	if (instance->columns) {
-		delete[] instance->columns;
-		instance->columns = 0;
+Table::~Table() {
+	if (_columns) {
+		delete[] _columns;
 	}
-	if (instance->rowData) {
-		free(instance->rowData);
-		instance->rowData = 0;
+	if (_rowData) {
+		delete[] _rowData;
 	}
 }
 
