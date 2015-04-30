@@ -21,9 +21,9 @@ Table::~Table() {
 	}
 }
 
-int getTableColumnId(table* instance, char const* name) {
+int Table::getColumnId(std::string const& name) {
 	for (int i = 0; i < instance->numColumns; i++) {
-		if (strcmp(instance->columns[i].getName().c_str(), name) == 0) {
+		if (instance->columns[i].getName().compare(name) == 0) {
 			return i;
 		}
 	}
