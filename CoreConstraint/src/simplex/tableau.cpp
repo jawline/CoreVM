@@ -38,7 +38,7 @@ Column* Table::getColumn(std::string const& name) {
 	return 0;
 }
 
-int Table::addColumn(std::string& name) {
+int Table::addColumn(std::string const& name) {
 
 	if (getColumnId(name) != -1) {
 		return getColumnId(name);

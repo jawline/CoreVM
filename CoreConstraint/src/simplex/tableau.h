@@ -22,7 +22,7 @@ namespace Simplex {
 		int getNumRows() const;
 		int getNumColumns() const;
 
-		void addColumn(char const* name, size_t length);
+		void addColumn(std::string const& column);
 		void addRow();
 
 		unsigned int getCurrentRow() const;
@@ -30,8 +30,8 @@ namespace Simplex {
 		
 		double getField(unsigned int row, unsigned int col) const;
 
-		void setField(double d, unsigned int row, unsigned int col);
-		void setField(double d, unsigned int row, std::string const& column);
+		void setField(unsigned int row, unsigned int col, double value);
+		void setField(unsigned int row, std::string const& column, double value);
 
 		void swapColumn(unsigned int c1, unsigned int c2);
 

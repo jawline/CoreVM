@@ -74,7 +74,7 @@ void parserInit() {
   regexParse(&numRegex, "[0-9]+(.[0-9]+)?");
 }
 
-char const* parseExpression(Table const& instance, char const* input, bool objective, int scale) {
+char const* parseExpression(Table& instance, char const* input, bool objective, int scale) {
   TOKEN token;
   size_t tokenSize;
   char const* tempInput;
@@ -129,7 +129,7 @@ char const* parseExpression(Table const& instance, char const* input, bool objec
   }
 }
 
-char const* parseConstraint(Table const& instance, char const* input) {
+char const* parseConstraint(Table& instance, char const* input) {
   TOKEN token;
   size_t tokenSize;
   char const* tokenStart;
@@ -170,12 +170,11 @@ char const* parseConstraint(Table const& instance, char const* input) {
     return 0;
   }
 
-  setTableFieldWithColumnName(instance, getCurrentRow(instance), "result", parsedValueAsNumber);
-
+  instance.setField(instance.getCurrentRow(), "result", parsedValueAsNumber);
   return input;
 }
 
-char const* parseConstraints(Table const& instance, char const* input) {
+char const* parseConstraints(Table& instance, char const* input) {
   TOKEN token;
   size_t tokenSize;
   char const* tempInput;
@@ -193,7 +192,7 @@ char const* parseConstraints(Table const& instance, char const* input) {
   }
 }
 
-bool postParseStep(Table const& instance) {
+bool postParseStep(Table& instance) {
   
   //Make results the last column (For formatting)
   for (unsigned int i = getTableColumnId(instance, "result"); i < instance->numColumns-1; i++) {
@@ -203,12 +202,12 @@ bool postParseStep(Table const& instance) {
   return true;
 }
 
-bool parseString(Table const& instance, char const* input) {
+bool parseString(Table& instance, char const* input) {
   TOKEN token;
   char const* tokenStart;
   size_t tokenSize;
   
-  instance.addColumn(instance, "result");
+  instance.addColumn("result");
   
   input = nextToken(&token, input, &tokenStart, &tokenSize);
   
@@ -232,8 +231,8 @@ bool parseString(Table const& instance, char const* input) {
     return false;
   }
 
-  instance.addColumn(instance, std::string(tokenStart, tokenSize));
-  setTableFieldWithColumnNameAndLength(instance, getCurrentRow(instance), tokenStart, tokenSize, 1);
+  instance.addColumn(std::string(tokenStart, tokenSize));
+  instance.setField(instance.getCurrentRow(), std::string(tokenStart, tokenSize), 1);
   
   input = nextToken(&token, input, &tokenStart, &tokenSize);
   
