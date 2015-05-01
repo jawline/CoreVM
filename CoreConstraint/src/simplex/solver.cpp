@@ -104,11 +104,14 @@ void makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 void solveTable(Table& instance, simplex_result* results) {
 	
 	//Find the initial basic variables (Only occur in one col)
-	int* rowBasicData = new int[instance.getNumRows()];
+	int* rowBasicData = new int[instance.getNumColumns()];
 	double* rowBasicSolution = new double[instance.getNumRows()];
 
-	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
+	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
 		rowBasicData[i] = 0;
+	}
+
+	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
 		rowBasicSolution[i] = 0;
 	}
 	

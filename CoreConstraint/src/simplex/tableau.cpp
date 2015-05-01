@@ -5,6 +5,13 @@
 
 using namespace Simplex;
 
+void assert(bool x, char const* s) {
+	if (!x) {
+		printf("ERROR ASSERTION FAILED %s\n", s);
+		exit(-1);
+	}
+}
+
 Table::Table() {
 		_columns = nullptr;
 		_numColumns = 0;
@@ -47,8 +54,8 @@ int Table::addColumn(std::string const& name) {
 	}
 
 	//Allocate memory and copy existing columns
-	Column* newColumns = new Column[_numColumns + 1];
-	for (unsigned int i = 0; i < _numColumns; i++) {
+	Column* newColumns = new Column[getNumColumns() + 1];
+	for (unsigned int i = 0; i < getNumColumns(); i++) {
 		newColumns[i] = _columns[i];
 	}
 	
@@ -59,20 +66,20 @@ int Table::addColumn(std::string const& name) {
 	_columns = newColumns;
 	
 	//Initialise new column
-	_columns[_numColumns] = Column(name);
+	_columns[getNumColumns()] = Column(name);
 	
 	//Expand existing row data
-	expandRows(_numColumns + 1);
+	expandRows(getNumColumns() + 1);
 	return _numColumns++;
 }
 
 void Table::addRow() {
 	
 	//Allocate memory and copy over existing rows
-	double* newRowData = new double[_numRows + 1 * _numColumns];
+	double* newRowData = new double[(getNumRows() + 1) * _numColumns];
 	
 	//Copy existing data over, null the rest
-	for (unsigned int i = 0; i < getNumRows() + 1 * getNumColumns(); i++) {
+	for (unsigned int i = 0; i < (getNumRows() + 1) * getNumColumns(); i++) {
 		newRowData[i] = i < getNumRows() * getNumColumns() ? _rowData[i] : 0;
 	}
 	
@@ -131,6 +138,8 @@ double Table::getField(unsigned int row, unsigned int column) const {
 }
 
 void Table::setField(unsigned int row, unsigned int column, double val) {
+	assert(row < getNumRows(), "Expect row < getNumRows at setField");
+	assert(column < getNumColumns(), "Expect col < getNumColumns at setField");
 	*(getRowData(row) + column) = val;
 }
 
