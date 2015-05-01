@@ -7,9 +7,10 @@ namespace Simplex {
 	/**
 	 * Structure to hold results of simplex solver run
 	 */
-	typedef struct {
-	  double value;
-	} simplex_result;
+	class SimplexResult {
+	public:
+		double result;
+	};
 
 	class Solver {
 	private:
@@ -21,7 +22,7 @@ namespace Simplex {
 		 * Solve the simplex tableau
 		 * NOTE: It is assumed that the last column in the table is the results column
 		 */
-		static void solveTable(Table& instance, simplex_result* results);
+		static void solveTable(Table& instance, SimplexResult& results);
 	};
 }
 

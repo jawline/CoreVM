@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 	}
 
 	Table instance;
-	simplex_result results;
+	SimplexResult results;
 	
 	parserInit();
 
@@ -22,9 +22,9 @@ int main(int argc, char** argv) {
 		printf("Failed to parse table. Exit\n");
 		return -1;
 	}
-	Solver::solveTable(instance, &results);
+	Solver::solveTable(instance, results);
 
-	printf("Results: %f\n", results.value);
+	printf("Results: %f\n", results.result);
 	parserFree();
 	return 0;
 }

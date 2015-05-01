@@ -103,7 +103,7 @@ void makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 	}
 }
 
-void Solver::solveTable(Table& instance, simplex_result* results) {
+void Solver::solveTable(Table& instance, SimplexResult& results) {
 	
 	//Find the initial basic variables (Only occur in one col)
 	int* rowBasicData = new int[instance.getNumRows()];
@@ -166,5 +166,5 @@ void Solver::solveTable(Table& instance, simplex_result* results) {
 
 	delete[] rowBasicData;
 	delete[] rowBasicSolution;
-	results->value = instance.getField(0, instance.getNumColumns() - 1);
+	results.result = instance.getField(0, instance.getNumColumns() - 1);
 }
