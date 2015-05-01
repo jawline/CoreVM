@@ -22,8 +22,8 @@ Table::~Table() {
 }
 
 int Table::getColumnId(std::string const& name) {
-	for (int i = 0; i < instance->numColumns; i++) {
-		if (instance->columns[i].getName().compare(name) == 0) {
+	for (int i = 0; i < _numColumns; i++) {
+		if (_columns[i].getName().compare(name) == 0) {
 			return i;
 		}
 	}
@@ -32,36 +32,36 @@ int Table::getColumnId(std::string const& name) {
 
 Column* Table::getColumn(std::string const& name) {
 	int temp;
-	if ((temp = getColumnId(instance, name)) != -1) {
-		return &instance->columns[temp];
+	if ((temp = getColumnId(name)) != -1) {
+		return &_columns[temp];
 	}
 	return 0;
 }
 
-int Table::addColumn(table* instance, std::string& name) {
+int Table::addColumn(std::string& name) {
 
 	if (getColumnId(name) != -1) {
-		return getColumnId(instance, name, nameLength);
+		return getColumnId(name);
 	}
 
 	//Allocate memory and copy existing columns
-	Column* newColumns = new Column[instance->numColumns + 1];
-	for (unsigned int i = 0; i < instance->numColumns; i++) {
-		newColumns[i] = instance->columns[i];
+	Column* newColumns = new Column[_numColumns + 1];
+	for (unsigned int i = 0; i < _numColumns; i++) {
+		newColumns[i] = _columns[i];
 	}
 	
 	//Free existing data and set new data
-	if (instance->columns) {
-		delete[] instance->columns;
+	if (_columns) {
+		delete[] _columns;
 	}
-	instance->columns = newColumns;
+	_columns = newColumns;
 	
 	//Initialise new column
-	instance->columns[instance->numColumns] = Column(name, nameLength);
+	_columns[_numColumns] = Column(name);
 	
 	//Expand existing row data
-	expandRows(instance, instance->numColumns, instance->numColumns+1);
-	return instance->numColumns++;
+	expandRows(_numColumns+1);
+	return _numColumns++;
 }
 
 void Table::addRow() {
@@ -129,7 +129,7 @@ double Table::getField(unsigned int row, std::string const& name) {
 void Table::setField(unsigned int row, std::string const& name, double val) {
 	int col = getColumnId(name);
 	//TODO: assert col != -1
-	setField(instance, row, col, val);
+	setField(row, col, val);
 }
 
 void Table::swapColumn(unsigned int a, unsigned int b) {
@@ -139,9 +139,9 @@ void Table::swapColumn(unsigned int a, unsigned int b) {
 		setField(i, a, getField(i, b));
 		setField(i, b, temp);
 	}
-	Column tempCol = instance->columns[a];
-	instance->columns[a] = instance->columns[b];
-	instance->columns[b] = tempCol;
+	Column tempCol = _columns[a];
+	_columns[a] = _columns[b];
+	_columns[b] = tempCol;
 }
 
 void Table::print() {
