@@ -112,12 +112,12 @@ double* Table::getRowData(unsigned int rowNum) {
 	return _rowData + (_numColumns * rowNum);
 }
 
-double Table::getField(unsigned int row, unsigned int column) {
+double Table::getField(unsigned int row, unsigned int column) const {
 	return *(getRowData(row) + column);
 }
 
-void setTableField(table* instance, unsigned int row, unsigned int column, double val) {
-	*(getRowData(instance, row) + column) = val;
+void Table::setTableField(unsigned int row, unsigned int column, double val) {
+	*(getRowData(row) + column) = val;
 }
 
 double getTableFieldWithColumnNameAndLength(table* instance, unsigned int row, char const* columnName, int length) {
