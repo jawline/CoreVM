@@ -120,13 +120,10 @@ void Table::setTableField(unsigned int row, unsigned int column, double val) {
 	*(getRowData(row) + column) = val;
 }
 
-double getTableFieldWithColumnNameAndLength(table* instance, unsigned int row, char const* columnName, int length) {
-	int col;
-	if ((col = getTableColumnIdWithLength(instance, columnName, length)) == -1) {
-		printf("Column %s does not exist\n", columnName);
-		return 0;
-	}
-	return getTableField(instance, row, col);	
+double Table::getField(unsigned int row, std::string const& name) {
+	int col = getColumnId(name);
+	//TODO: Assert col != -1
+	return getField(row, col);
 }
 
 void setTableFieldWithColumnNameAndLength(table* instance, unsigned int row, char const* columnName, int length, double val) {
