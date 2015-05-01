@@ -29,7 +29,7 @@ int Solver::findBasic(Table& instance, int row) {
 /**
  * Return the ID of the pivot column or -1 if there is not pivot column
  */
-int findPivotColumn(Table& instance) {
+int Solver::findPivotColumn(Table& instance) {
 
 	//Check there are at least three columns (At least one variable, the objective variable, and the results columns)
 	if (instance.getNumColumns() < 3) {
@@ -52,11 +52,11 @@ int findPivotColumn(Table& instance) {
 	return cPivotValue != 0 ? cPivot : -1;
 }
 
-double findRatio(Table& instance, int row, int column, int resCol) {
+double Solver::findRatio(Table& instance, int row, int column, int resCol) {
 	return instance.getField(row, resCol) / instance.getField(row, column);
 }
 
-int findPivotRow(Table& instance, int column) {
+int Solver::findPivotRow(Table& instance, int column) {
 
 	if (instance.getNumRows() < 2) {
 		printf("no pivot possible\n");
@@ -79,22 +79,20 @@ int findPivotRow(Table& instance, int column) {
 	return cPivot;
 }
 
-void makeRowUnit(Table& instance, int row, int col) {
-	
+void Solver::makeRowUnit(Table& instance, int row, int col) {
 	double ratio = 1.0 / instance.getField(row, col);
-
 	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
 		instance.setField(row, i, ratio * instance.getField(row, i));
 	}
 }
 
-void subtractRow(Table& instance, int rowToSub, int rowFrom, double ratio) {
+void Solver::subtractRow(Table& instance, int rowToSub, int rowFrom, double ratio) {
 	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
 		instance.setField(rowToSub, i, instance.getField(rowToSub, i) - (instance.getField(rowFrom, i) / ratio));
 	}
 }
 
-void makeOtherRowsUnit(Table& instance, int baseRow, int col) {
+void Solver::makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
 		if (i != baseRow && instance.getField(i, col) != 0) {
 			double ratioOfBaseRow = 1.0 / instance.getField(i, col);

@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
 		printf("Failed to parse table. Exit\n");
 		return -1;
 	}
+
 	Solver::solveTable(instance, results);
 
 	printf("Results: %f\n", results.result);
