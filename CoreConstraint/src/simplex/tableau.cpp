@@ -38,9 +38,10 @@ Column* Table::getColumn(std::string const& name) {
 	return 0;
 }
 
-int addTableColumn(table* instance, char const* name, size_t nameLength) {
-	if (getTableColumnIdWithLength(instance, name, nameLength) != -1) {
-		return getTableColumnIdWithLength(instance, name, nameLength);
+int Table::addColumn(table* instance, std::string& name) {
+
+	if (getColumnId(name) != -1) {
+		return getColumnId(instance, name, nameLength);
 	}
 
 	//Allocate memory and copy existing columns
