@@ -159,14 +159,14 @@ void swapTableColumn(table* instance, unsigned int a, unsigned int b) {
 	instance->columns[b] = tempCol;
 }
 
-void printTable(table* instance) {
-	for (unsigned int i = 0; i < instance->numColumns; i++) {
-		printf("| %s |", instance->columns[i].getName().c_str());
+void Table::print() {
+	for (unsigned int i = 0; i < _numColumns; i++) {
+		printf("| %s |", _columns[i].getName().c_str());
 	}
 	printf("\n");
-	for (unsigned int row = 0; row < instance->numRows; row++) {
-		for (unsigned int column = 0; column < instance->numColumns; column++) {
-			printf("| %f |", instance->rowData[row * instance->numColumns + column]);
+	for (unsigned int row = 0; row < _numRows; row++) {
+		for (unsigned int column = 0; column < _numColumns; column++) {
+			printf("| %f |", _rowData[row * _numColumns + column]);
 		}
 		printf("\n");
 	}
