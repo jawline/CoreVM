@@ -30,18 +30,9 @@ int Table::getColumnId(std::string const& name) {
 	return -1;
 }
 
-int getTableColumnIdWithLength(table* instance, char const* name, size_t nameLength) {
-	for (int i = 0; i < instance->numColumns; i++) {
-		if (strncmp(instance->columns[i].getName().c_str(), name, nameLength) == 0) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-Column* getTableColumn(table* instance, char const* name) {
+Column* Table::getColumn(std::string const& name) {
 	int temp;
-	if ((temp = getTableColumnId(instance, name)) != -1) {
+	if ((temp = getColumnId(instance, name)) != -1) {
 		return &instance->columns[temp];
 	}
 	return 0;
