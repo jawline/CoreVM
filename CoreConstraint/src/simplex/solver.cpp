@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-bool isBasic(Table& instance, int col) {
+using namespace Simplex;
+
+bool Solver::isBasic(Table& instance, int col) {
 	unsigned int count = 0;
 	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
 		if (instance.getField(i, col) != 0) {
@@ -13,7 +15,7 @@ bool isBasic(Table& instance, int col) {
 }
 
 //TODO: Could be more efficient. The row->col->row search could be turned into just a row->col search
-int findBasic(Table& instance, int row) {
+int Solver::findBasic(Table& instance, int row) {
 
 	//-1 excludes the result row
 	for (unsigned int i = 0; i < instance.getNumColumns() - 1; i++) {
@@ -101,7 +103,7 @@ void makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 	}
 }
 
-void solveTable(Table& instance, simplex_result* results) {
+void Solver::solveTable(Table& instance, simplex_result* results) {
 	
 	//Find the initial basic variables (Only occur in one col)
 	int* rowBasicData = new int[instance.getNumRows()];
