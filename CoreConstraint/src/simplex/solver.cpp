@@ -4,8 +4,8 @@
 
 bool isBasic(Table& instance, int col) {
 	unsigned int count = 0;
-	for (unsigned int i = 0; i < instance->numRows; i++) {
-		if (getTableField(instance, i, col) != 0) {
+	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
+		if (instance.getField(i, col) != 0) {
 			count++;
 		}
 	}
@@ -16,8 +16,8 @@ bool isBasic(Table& instance, int col) {
 int findBasic(Table& instance, int row) {
 
 	//-1 excludes the result row
-	for (unsigned int i = 0; i < instance->numColumns - 1; i++) {
-		if (isBasic(instance, i) && getTableField(instance, row, i) != 0) {
+	for (unsigned int i = 0; i < instance.getNumColumns() - 1; i++) {
+		if (isBasic(instance, i) && instance.getField(row, i) != 0) {
 			return i;
 		}
 	}
@@ -30,24 +30,24 @@ int findBasic(Table& instance, int row) {
 int findPivotColumn(Table& instance) {
 
 	//Check there are at least three columns (At least one variable, the objective variable, and the results columns)
-	if (instance->numColumns < 3) {
+	if (instance.getNumColumns() < 3) {
 		return -1;
 	}
 
 	//Don't grab the first column, it shouldn't changed
 	int cPivot = 1;
-	double cPivotValue = getTableField(instance, 0, 1);
+	double cPivotValue = instance.getField(0, 1);
 
 	//Never look at the first column, it shouldn't change
-	for (unsigned int i = 1; i < instance->numColumns - 1; i++) {
-		if (getTableField(instance, 0, i) != 0 && (getTableField(instance, 0, i) < cPivotValue || cPivotValue == 0)) {
+	for (unsigned int i = 1; i < instance.getNumColumns() - 1; i++) {
+		if (instance.getField(0, i) != 0 && (instance.getField(0, i) < cPivotValue || cPivotValue == 0)) {
 			cPivot = i;
-			cPivotValue = getTableField(instance, 0, i);
+			cPivotValue = instance.getField(0, i);
 		}
 	}
 
 	//If the columns objective value is >= 0 then it cannot be a pivot column
-	return getTableField(instance, 0, cPivot) != 0 ? cPivot : -1;
+	return cPivotValue != 0 ? cPivot : -1;
 }
 
 double findRatio(Table& instance, int row, int column, int resCol) {
