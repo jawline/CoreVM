@@ -107,8 +107,9 @@ unsigned int Table::getCurrentRow() {
 	return _numRows >= 1 ? _numRows - 1 : 0;
 }
 
-double* getRowData(table* instance, unsigned int rowNum) {
-	return instance->rowData + (instance->numColumns * rowNum);
+double* Table::getRowData(unsigned int rowNum) {
+	//TODO: Assert rowNum < _numRows ?
+	return _rowData + (_numColumns * rowNum);
 }
 
 double getTableField(table* instance, unsigned int row, unsigned int column) {
