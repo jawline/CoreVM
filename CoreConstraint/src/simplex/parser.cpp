@@ -134,7 +134,7 @@ char const* parseConstraint(Table& instance, char const* input) {
   size_t tokenSize;
   char const* tokenStart;
 
-  addTableRow(instance);
+  instance.addRow();
   
   input = parseExpression(instance, input, false, 1);
 
@@ -195,7 +195,7 @@ char const* parseConstraints(Table& instance, char const* input) {
 bool postParseStep(Table& instance) {
   
   //Make results the last column (For formatting)
-  for (unsigned int i = getTableColumnId(instance, "result"); i < instance->numColumns-1; i++) {
+  for (unsigned int i = instance.getColumnId("result"); i < instance.getNumColumns() - 1; i++) {
     instance.swapColumn(i, i+1);
   }
 

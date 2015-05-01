@@ -22,13 +22,14 @@ namespace Simplex {
 		int getNumRows() const;
 		int getNumColumns() const;
 
-		void addColumn(std::string const& column);
+		int addColumn(std::string const& column);
 		void addRow();
 
 		unsigned int getCurrentRow() const;
 		double* getRowData(unsigned int row) const;
 		
 		double getField(unsigned int row, unsigned int col) const;
+		double getField(unsigned int row, std::string const& column) const;
 
 		void setField(unsigned int row, unsigned int col, double value);
 		void setField(unsigned int row, std::string const& column, double value);

@@ -21,7 +21,7 @@ Table::~Table() {
 	}
 }
 
-int Table::getColumnId(std::string const& name) {
+int Table::getColumnId(std::string const& name) const {
 	for (int i = 0; i < _numColumns; i++) {
 		if (_columns[i].getName().compare(name) == 0) {
 			return i;
@@ -30,7 +30,7 @@ int Table::getColumnId(std::string const& name) {
 	return -1;
 }
 
-Column* Table::getColumn(std::string const& name) {
+Column* Table::getColumn(std::string const& name) const {
 	int temp;
 	if ((temp = getColumnId(name)) != -1) {
 		return &_columns[temp];
@@ -111,11 +111,11 @@ int Table::getNumColumns() const {
 	return _numColumns;
 }
 
-unsigned int Table::getCurrentRow() {
+unsigned int Table::getCurrentRow() const {
 	return _numRows >= 1 ? _numRows - 1 : 0;
 }
 
-double* Table::getRowData(unsigned int rowNum) {
+double* Table::getRowData(unsigned int rowNum) const {
 	//TODO: Assert rowNum < _numRows ?
 	return _rowData + (_numColumns * rowNum);
 }
@@ -124,11 +124,11 @@ double Table::getField(unsigned int row, unsigned int column) const {
 	return *(getRowData(row) + column);
 }
 
-void Table::setTableField(unsigned int row, unsigned int column, double val) {
+void Table::setField(unsigned int row, unsigned int column, double val) {
 	*(getRowData(row) + column) = val;
 }
 
-double Table::getField(unsigned int row, std::string const& name) {
+double Table::getField(unsigned int row, std::string const& name) const {
 	int col = getColumnId(name);
 	//TODO: Assert col != -1
 	return getField(row, col);
