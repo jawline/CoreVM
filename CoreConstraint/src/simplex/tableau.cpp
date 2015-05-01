@@ -64,21 +64,21 @@ int Table::addColumn(table* instance, std::string& name) {
 	return instance->numColumns++;
 }
 
-void addTableRow(table* instance) {
+void Table::addRow() {
 	
 	//Allocate memory and copy over existing rows
-	double* newRowData = (double*) malloc(sizeof(double) * (instance->numRows + 1) * instance->numColumns);
+	double* newRowData = new double[_numRows+1 * _numColumns];
 	memcpy(newRowData, instance->rowData, sizeof(double) * instance->numRows * instance->numColumns);
 	
 	//Set new rows to 0
 	memset(newRowData + (instance->numRows * instance->numColumns), 0, sizeof(double) * instance->numColumns);
 
 	//Free old data and set new row data
-	if (instance->rowData) {
-		free(instance->rowData);
+	if (_rowData) {
+		delete[] _rowData;
 	}
-	instance->rowData = newRowData;
-	instance->numRows++;
+	_rowData = newRowData;
+	_numRows++;
 }
 
 void expandRows(table* instance, int oldNumColumns, int newNumColumns) {
