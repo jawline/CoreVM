@@ -68,10 +68,10 @@ void Table::addRow() {
 	
 	//Allocate memory and copy over existing rows
 	double* newRowData = new double[_numRows+1 * _numColumns];
-	memcpy(newRowData, instance->rowData, sizeof(double) * instance->numRows * instance->numColumns);
+	memcpy(newRowData, _rowData, sizeof(double) * _numRows * _numColumns);
 	
 	//Set new rows to 0
-	memset(newRowData + (instance->numRows * instance->numColumns), 0, sizeof(double) * instance->numColumns);
+	memset(newRowData + (_numRows * _numColumns), 0, sizeof(double) * _numColumns);
 
 	//Free old data and set new row data
 	if (_rowData) {
