@@ -103,6 +103,14 @@ void Table::expandRows(int newNumColumns) {
 	_rowData = newRowData;
 }
 
+int Table::getNumRows() const {
+	return _numRows;
+}
+
+int Table::getNumColumns() const {
+	return _numColumns;
+}
+
 unsigned int Table::getCurrentRow() {
 	return _numRows >= 1 ? _numRows - 1 : 0;
 }

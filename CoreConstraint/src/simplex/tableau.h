@@ -19,6 +19,9 @@ namespace Simplex {
 		int getColumnId(std::string const& name) const;
 		Column* getColumn(std::string const& name) const;
 
+		int getNumRows() const;
+		int getNumColumns() const;
+
 		void addColumn(char const* name, size_t length);
 		void addRow();
 
