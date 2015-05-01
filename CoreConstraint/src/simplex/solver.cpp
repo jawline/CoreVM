@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-bool isBasic(table* instance, int col) {
+bool isBasic(Table& instance, int col) {
 	unsigned int count = 0;
 	for (unsigned int i = 0; i < instance->numRows; i++) {
 		if (getTableField(instance, i, col) != 0) {
@@ -13,7 +13,7 @@ bool isBasic(table* instance, int col) {
 }
 
 //TODO: Could be more efficient. The row->col->row search could be turned into just a row->col search
-int findBasic(table* instance, int row) {
+int findBasic(Table& instance, int row) {
 
 	//-1 excludes the result row
 	for (unsigned int i = 0; i < instance->numColumns - 1; i++) {
@@ -27,7 +27,7 @@ int findBasic(table* instance, int row) {
 /**
  * Return the ID of the pivot column or -1 if there is not pivot column
  */
-int findPivotColumn(table* instance) {
+int findPivotColumn(Table& instance) {
 
 	//Check there are at least three columns (At least one variable, the objective variable, and the results columns)
 	if (instance->numColumns < 3) {
@@ -50,11 +50,11 @@ int findPivotColumn(table* instance) {
 	return getTableField(instance, 0, cPivot) != 0 ? cPivot : -1;
 }
 
-double findRatio(table* instance, int row, int column, int resCol) {
+double findRatio(Table& instance, int row, int column, int resCol) {
 	return getTableField(instance, row, resCol) / getTableField(instance, row, column);
 }
 
-int findPivotRow(table* instance, int column) {
+int findPivotRow(Table& instance, int column) {
 
 	if (instance->numRows < 2) {
 		printf("no pivot possible\n");
@@ -77,7 +77,7 @@ int findPivotRow(table* instance, int column) {
 	return cPivot;
 }
 
-void makeRowUnit(table* instance, int row, int col) {
+void makeRowUnit(Table& instance, int row, int col) {
 	
 	double ratio = 1.0 / getTableField(instance, row, col);
 
@@ -86,13 +86,13 @@ void makeRowUnit(table* instance, int row, int col) {
 	}
 }
 
-void subtractRow(table* instance, int rowToSub, int rowFrom, double ratio) {
+void subtractRow(Table& instance, int rowToSub, int rowFrom, double ratio) {
 	for (unsigned int i = 0; i < instance->numColumns; i++) {
 		setTableField(instance, rowToSub, i, getTableField(instance, rowToSub, i) - (getTableField(instance, rowFrom, i) / ratio));
 	}
 }
 
-void makeOtherRowsUnit(table* instance, int baseRow, int col) {
+void makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 	for (unsigned int i = 0; i < instance->numRows; i++) {
 		if (i != baseRow && getTableField(instance, i, col) != 0) {
 			double ratioOfBaseRow = 1/getTableField(instance, i, col);
@@ -101,7 +101,7 @@ void makeOtherRowsUnit(table* instance, int baseRow, int col) {
 	}
 }
 
-void solveTable(table* instance, simplex_result* results) {
+void solveTable(Table& instance, simplex_result* results) {
 	
 	//Find the initial basic variables (Only occur in one col)
 	int* rowBasicData = new int[instance->numRows];
