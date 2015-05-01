@@ -99,8 +99,8 @@ char const* parseExpression(Table const& instance, char const* input, bool objec
   scalar *= scale;
   
   if (token == ID) {
-    addTableColumn(instance, tokenStart, tokenSize);
-    setTableFieldWithColumnNameAndLength(instance, getCurrentRow(instance), tokenStart, tokenSize, scalar);
+    instance.addColumn(std::string(tokenStart, tokenSize));
+    instance.setField(instance.getCurrentRow(), std::string(tokenStart, tokenSize), scalar);
   } else if (token == NUM) {
     double parsedValueAsNumber;
     
@@ -110,8 +110,8 @@ char const* parseExpression(Table const& instance, char const* input, bool objec
     }
 
     if ((tempInput = nextToken(&token, input, &tokenStart, &tokenSize)) && token == ID) {
-      addTableColumn(instance, tokenStart, tokenSize);
-      setTableFieldWithColumnNameAndLength(instance, getCurrentRow(instance), tokenStart, tokenSize, parsedValueAsNumber * scalar);
+      instance.addColumn(std::string(tokenStart, tokenSize));
+      instance.setField(instance.getCurrentRow(), std::string(tokenStart, tokenSize), parsedValueAsNumber * scalar);
       input = tempInput;
     } else {
       printf("Expected ID or NUM ID near \"%s\"", input);
@@ -193,11 +193,11 @@ char const* parseConstraints(Table const& instance, char const* input) {
   }
 }
 
-bool postParseStep(table* instance) {
+bool postParseStep(Table const& instance) {
   
   //Make results the last column (For formatting)
   for (unsigned int i = getTableColumnId(instance, "result"); i < instance->numColumns-1; i++) {
-    swapTableColumn(instance, i, i+1);
+    instance.swapColumn(i, i+1);
   }
 
   return true;
@@ -208,7 +208,7 @@ bool parseString(Table const& instance, char const* input) {
   char const* tokenStart;
   size_t tokenSize;
   
-  addTableColumn(instance, "result", 6);
+  instance.addColumn(instance, "result");
   
   input = nextToken(&token, input, &tokenStart, &tokenSize);
   
@@ -232,7 +232,7 @@ bool parseString(Table const& instance, char const* input) {
     return false;
   }
 
-  addTableColumn(instance, tokenStart, tokenSize);
+  instance.addColumn(instance, std::string(tokenStart, tokenSize));
   setTableFieldWithColumnNameAndLength(instance, getCurrentRow(instance), tokenStart, tokenSize, 1);
   
   input = nextToken(&token, input, &tokenStart, &tokenSize);
