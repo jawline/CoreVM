@@ -112,8 +112,8 @@ double* Table::getRowData(unsigned int rowNum) {
 	return _rowData + (_numColumns * rowNum);
 }
 
-double getTableField(table* instance, unsigned int row, unsigned int column) {
-	return *(getRowData(instance, row) + column);
+double Table::getField(unsigned int row, unsigned int column) {
+	return *(getRowData(row) + column);
 }
 
 void setTableField(table* instance, unsigned int row, unsigned int column, double val) {
