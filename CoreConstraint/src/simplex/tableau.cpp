@@ -62,19 +62,21 @@ int Table::addColumn(std::string const& name) {
 	_columns[_numColumns] = Column(name);
 	
 	//Expand existing row data
-	expandRows(_numColumns+1);
+	expandRows(_numColumns + 1);
 	return _numColumns++;
 }
 
 void Table::addRow() {
 	
 	//Allocate memory and copy over existing rows
-	double* newRowData = new double[_numRows+1 * _numColumns];
-	memcpy(newRowData, _rowData, sizeof(double) * _numRows * _numColumns);
+	double* newRowData = new double[_numRows + 1 * _numColumns];
+	
+	//Copy existing data over, null the rest
+	for (unsigned int i = 0; i < getNumRows() + 1 * getNumColumns(); i++) {
+		newRowData[i] = i < getNumRows() * getNumColumns() ? _rowData[i] : 0;
+	}
 	
 	//Set new rows to 0
-	memset(newRowData + (_numRows * _numColumns), 0, sizeof(double) * _numColumns);
-
 	//Free old data and set new row data
 	if (_rowData) {
 		delete[] _rowData;
@@ -86,14 +88,16 @@ void Table::addRow() {
 void Table::expandRows(int newNumColumns) {
 	
 	//Allocate new data
-	double* newRowData = new double[_numRows * newNumColumns];
-	double* oldRowData = _rowData;
-	memset(newRowData, 0, newNumColumns * _numRows * sizeof(double));
+	double* newRowData = new double[getNumRows() * newNumColumns];
 	
 	//Copy the existing rows
-	for (unsigned int column = 0; column < _numColumns; column++) {
-		for (unsigned int row = 0; row < _numRows; row++) {
-			newRowData[(row * newNumColumns) + column] = oldRowData[(row * _numColumns) + column];
+	for (unsigned int column = 0; column < newNumColumns; column++) {
+		for (unsigned int row = 0; row < getNumRows(); row++) {
+			if (column < getNumColumns()) {
+				newRowData[(row * newNumColumns) + column] = getField(row, column);
+			} else {
+				newRowData[(row * newNumColumns) + column] = 0;
+			}
 		}
 	}
 	

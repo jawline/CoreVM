@@ -208,6 +208,7 @@ bool parseString(Table& instance, char const* input) {
   size_t tokenSize;
   
   instance.addColumn("result");
+  instance.addRow();
   
   input = nextToken(&token, input, &tokenStart, &tokenSize);
   
