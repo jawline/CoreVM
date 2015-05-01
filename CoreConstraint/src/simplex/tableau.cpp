@@ -31,11 +31,13 @@ int Table::getColumnId(std::string const& name) const {
 }
 
 Column* Table::getColumn(std::string const& name) const {
-	int temp;
-	if ((temp = getColumnId(name)) != -1) {
-		return &_columns[temp];
-	}
-	return 0;
+	int temp = getColumnId(name);
+	//ASSERT temp != -1
+	return getColumn(temp);
+}
+
+Column* Table::getColumn(int i) const {
+	return &_columns[i];
 }
 
 int Table::addColumn(std::string const& name) {

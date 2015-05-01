@@ -51,17 +51,17 @@ int findPivotColumn(Table& instance) {
 }
 
 double findRatio(Table& instance, int row, int column, int resCol) {
-	return getTableField(instance, row, resCol) / getTableField(instance, row, column);
+	return instance.getField(row, resCol) / instance.getField(row, column);
 }
 
 int findPivotRow(Table& instance, int column) {
 
-	if (instance->numRows < 2) {
+	if (instance.getNumRows() < 2) {
 		printf("no pivot possible\n");
 		return -1;
 	}
 
-	int resultsColumn = instance->numColumns - 1;
+	int resultsColumn = instance.getNumColumns() - 1;
 	
 	int cPivot = 1;
 	double cPivotR = findRatio(instance, 1, column, resultsColumn);
@@ -79,23 +79,23 @@ int findPivotRow(Table& instance, int column) {
 
 void makeRowUnit(Table& instance, int row, int col) {
 	
-	double ratio = 1.0 / getTableField(instance, row, col);
+	double ratio = 1.0 / instance.getField(row, col);
 
-	for (unsigned int i = 0; i < instance->numColumns; i++) {
-		setTableField(instance, row, i, ratio * getTableField(instance, row, i));
+	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
+		instance.setField(row, i, ratio * instance.getField(row, i));
 	}
 }
 
 void subtractRow(Table& instance, int rowToSub, int rowFrom, double ratio) {
-	for (unsigned int i = 0; i < instance->numColumns; i++) {
-		setTableField(instance, rowToSub, i, getTableField(instance, rowToSub, i) - (getTableField(instance, rowFrom, i) / ratio));
+	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
+		instance.setField(rowToSub, i, instance.getField(rowToSub, i) - (instance.getField(rowFrom, i) / ratio));
 	}
 }
 
 void makeOtherRowsUnit(Table& instance, int baseRow, int col) {
-	for (unsigned int i = 0; i < instance->numRows; i++) {
-		if (i != baseRow && getTableField(instance, i, col) != 0) {
-			double ratioOfBaseRow = 1/getTableField(instance, i, col);
+	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
+		if (i != baseRow && instance.getField(i, col) != 0) {
+			double ratioOfBaseRow = 1.0 / instance.getField(i, col);
 			subtractRow(instance, i, baseRow, ratioOfBaseRow);
 		}
 	}
@@ -104,10 +104,10 @@ void makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 void solveTable(Table& instance, simplex_result* results) {
 	
 	//Find the initial basic variables (Only occur in one col)
-	int* rowBasicData = new int[instance->numRows];
-	double* rowBasicSolution = new double[instance->numRows];
+	int* rowBasicData = new int[instance.getNumRows()];
+	double* rowBasicSolution = new double[instance.getNumRows()];
 
-	for (unsigned int i = 0; i < instance->numRows; i++) {
+	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
 		rowBasicData[i] = 0;
 		rowBasicSolution[i] = 0;
 	}
@@ -115,18 +115,18 @@ void solveTable(Table& instance, simplex_result* results) {
 	printf("---------\n");
 
 	//First row is the objective function, should have no basic variables
-	for (unsigned int i = 1; i < instance->numRows; i++) {
+	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
 		rowBasicData[i] = findBasic(instance, i);
 		if (rowBasicData[i] == -1) {
 			printf("Failed to find basic variable for row %i\n", i);
 			rowBasicSolution = 0;
 		} else {
-			rowBasicSolution[i] = getTableField(instance, i, rowBasicData[i]) / getTableField(instance, i, instance->numColumns - 1);
+			rowBasicSolution[i] = instance.getField(i, rowBasicData[i]) / instance.getField(i, instance.getNumColumns() - 1);
 			printf("Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
 				i,
 				rowBasicData[i],
-				getTableField(instance, i, rowBasicData[i]),
-				getTableField(instance, i, instance->numColumns - 1),
+				instance.getField(i, rowBasicData[i]),
+				instance.getField(i, instance.getNumColumns() - 1),
 				rowBasicSolution[i]);
 		}
 	}
@@ -138,30 +138,31 @@ void solveTable(Table& instance, simplex_result* results) {
 	
 	while ((pivotC = findPivotColumn(instance)) != -1) {
 		int pivotR = findPivotRow(instance, pivotC);
-		double ratio = findRatio(instance, pivotR, pivotC, instance->numColumns-1);
+		double ratio = findRatio(instance, pivotR, pivotC, instance.getNumColumns() - 1);
 		printf("Operation Number: %i\n", i);
 		printf("Pivot Column: %i\n", pivotC);
 		printf("Pivot Row: %i\n", pivotR);
 		printf("Pivot Ratio: %f\n", ratio);
 		makeRowUnit(instance, pivotR, pivotC);
 		makeOtherRowsUnit(instance, pivotR, pivotC);
-		printTable(instance);
+		instance.print();
 		rowBasicData[pivotR] = pivotC;
 		i++;
 	}
 
 	printf("---------\n");
-	for (unsigned int i = 0; i < instance->numRows; i++) {
+	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
 		if (rowBasicData[i] != -1) {
 			printf("%s: %f\n",
-				instance->columns[i].getName().c_str(), 
-				getTableField(instance, i, instance->numColumns - 1));
+				instance.getColumn(i)->getName().c_str(), 
+				instance.getField(i, instance.getNumColumns() - 1));
 		} else {
 			printf("Row %i unmapped\n", i);
 		}
 	}
 	printf("---------\n");
 
-	free(rowBasicData);
-	results->value = getTableField(instance, 0, instance->numColumns - 1);
+	delete[] rowBasicData;
+	delete[] rowBasicSolution;
+	results->value = instance.getField(0, instance.getNumColumns() - 1);
 }
