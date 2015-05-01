@@ -103,11 +103,8 @@ void Table::expandRows(int newNumColumns) {
 	_rowData = newRowData;
 }
 
-unsigned int getCurrentRow(table* instance) {
-	if (!instance->rowData) {
-		return 0;
-	}
-	return instance->numRows - 1;
+unsigned int Table::getCurrentRow() {
+	return _numRows >= 1 ? _numRows - 1 : 0;
 }
 
 double* getRowData(table* instance, unsigned int rowNum) {
