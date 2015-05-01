@@ -81,25 +81,26 @@ void Table::addRow() {
 	_numRows++;
 }
 
-void expandRows(table* instance, int oldNumColumns, int newNumColumns) {
+void Table::expandRows(int newNumColumns) {
 	
 	//Allocate new data
-	double* newRowData = (double*) malloc(sizeof(double) * instance->numRows * newNumColumns);
-	double* oldRowData = instance->rowData;
-	memset(newRowData, 0, newNumColumns * instance->numRows * sizeof(double));
+	double* newRowData = new double[_numRows * newNumColumns];
+	double* oldRowData = _rowData;
+	memset(newRowData, 0, newNumColumns * _numRows * sizeof(double));
 	
 	//Copy the existing rows
-	for (unsigned int column = 0; column < oldNumColumns; column++) {
-		for (unsigned int row = 0; row < instance->numRows; row++) {
-			newRowData[(row * newNumColumns) + column] = oldRowData[(row * oldNumColumns) + column];
+	for (unsigned int column = 0; column < _numColumns; column++) {
+		for (unsigned int row = 0; row < _numRows; row++) {
+			newRowData[(row * newNumColumns) + column] = oldRowData[(row * _numColumns) + column];
 		}
 	}
 	
 	//Free old data and set new data
-	if (instance->rowData) {
-		free(instance->rowData);
+	if (_rowData) {
+		delete[] _rowData;
 	}
-	instance->rowData = newRowData;
+
+	_rowData = newRowData;
 }
 
 unsigned int getCurrentRow(table* instance) {
