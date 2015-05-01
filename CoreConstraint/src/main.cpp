@@ -11,23 +11,20 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	table instance;
+	Table instance;
 	simplex_result results;
 	
 	parserInit();
-	
-	initialiseTable(&instance);
-	if (parseString(&instance, argv[1])) {
-		printTable(&instance);
+
+	if (parseString(instance, argv[1])) {
+		instance.print();
 	} else {
 		printf("Failed to parse table. Exit\n");
 		return -1;
 	}
-	solveTable(&instance, &results);
+	solveTable(instance, &results);
 
 	printf("Results: %f\n", results.value);
-
-	freeTable(&instance);
 	parserFree();
 	return 0;
 }

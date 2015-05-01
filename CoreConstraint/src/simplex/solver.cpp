@@ -67,7 +67,7 @@ int findPivotRow(Table& instance, int column) {
 	double cPivotR = findRatio(instance, 1, column, resultsColumn);
 	
 	//Find the row to be used as the pivot, excluding the objective function
-	for (unsigned int i = 1; i < instance->numRows; i++) {
+	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
 		if (findRatio(instance, i, column, resultsColumn) < cPivotR) {
 			cPivot = i;
 			cPivotR = findRatio(instance, i, column, resultsColumn);
