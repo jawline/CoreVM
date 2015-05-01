@@ -74,7 +74,7 @@ void parserInit() {
   regexParse(&numRegex, "[0-9]+(.[0-9]+)?");
 }
 
-char const* parseExpression(table* instance, char const* input, bool objective, int scale) {
+char const* parseExpression(Table const& instance, char const* input, bool objective, int scale) {
   TOKEN token;
   size_t tokenSize;
   char const* tempInput;
@@ -129,7 +129,7 @@ char const* parseExpression(table* instance, char const* input, bool objective, 
   }
 }
 
-char const* parseConstraint(table* instance, char const* input) {
+char const* parseConstraint(Table const& instance, char const* input) {
   TOKEN token;
   size_t tokenSize;
   char const* tokenStart;
@@ -175,7 +175,7 @@ char const* parseConstraint(table* instance, char const* input) {
   return input;
 }
 
-char const* parseConstraints(table* instance, char const* input) {
+char const* parseConstraints(Table const& instance, char const* input) {
   TOKEN token;
   size_t tokenSize;
   char const* tempInput;
@@ -203,7 +203,7 @@ bool postParseStep(table* instance) {
   return true;
 }
 
-bool parseString(table* instance, char const* input) {
+bool parseString(Table const& instance, char const* input) {
   TOKEN token;
   char const* tokenStart;
   size_t tokenSize;

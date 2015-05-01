@@ -28,7 +28,7 @@ typedef enum {
 } TOKEN;
  
  void parserInit();
- bool parseString(table* instance, char const* input);
+ bool parseString(Table const& instance, char const* input);
  void parserFree();
 
 #endif //_SIMPLEX_PARSER_DEF_H_
