@@ -104,9 +104,13 @@ void makeOtherRowsUnit(table* instance, int baseRow, int col) {
 void solveTable(table* instance, simplex_result* results) {
 	
 	//Find the initial basic variables (Only occur in one col)
-	int* rowBasicData = (int*) malloc(sizeof(int) * instance->numRows);
-	double* rowBasicSolution = (double*) malloc(sizeof(double) * instance->numRows);
-	memset(rowBasicData, 0, sizeof(int) * instance->numRows);
+	int* rowBasicData = new int[instance->numRows];
+	double* rowBasicSolution = new double[instance->numRows];
+
+	for (unsigned int i = 0; i < instance->numRows; i++) {
+		rowBasicData[i] = 0;
+		rowBasicSolution[i] = 0;
+	}
 	
 	printf("---------\n");
 
