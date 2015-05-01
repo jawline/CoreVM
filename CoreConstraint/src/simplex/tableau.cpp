@@ -126,21 +126,10 @@ double Table::getField(unsigned int row, std::string const& name) {
 	return getField(row, col);
 }
 
-void setTableFieldWithColumnNameAndLength(table* instance, unsigned int row, char const* columnName, int length, double val) {
-	int col;
-	if ((col = getTableColumnIdWithLength(instance, columnName, length)) == -1) {
-		printf("Column %s does not exist\n", columnName);
-		return;
-	}
-	setTableField(instance, row, col, val);
-}
-
-double getTableFieldWithColumnName(table* instance, unsigned int row, char const* columnName) {
-	return getTableFieldWithColumnNameAndLength(instance, row, columnName, strlen(columnName));
-}
-
-void setTableFieldWithColumnName(table* instance, unsigned int row, char const* columnName, double val) {
-	setTableFieldWithColumnNameAndLength(instance, row, columnName, strlen(columnName), val);
+void Table::setField(unsigned int row, std::string const& name, double val) {
+	int col = getColumnId(name);
+	//TODO: assert col != -1
+	setField(instance, row, col, val);
 }
 
 void Table::swapColumn(unsigned int a, unsigned int b) {
