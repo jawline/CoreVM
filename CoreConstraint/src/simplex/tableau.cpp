@@ -143,12 +143,12 @@ void setTableFieldWithColumnName(table* instance, unsigned int row, char const* 
 	setTableFieldWithColumnNameAndLength(instance, row, columnName, strlen(columnName), val);
 }
 
-void swapTableColumn(table* instance, unsigned int a, unsigned int b) {
+void Table::swapColumn(unsigned int a, unsigned int b) {
 	double temp;
-	for (unsigned int i = 0; i < instance->numRows; i++) {
-		temp = getTableField(instance, i, a);
-		setTableField(instance, i, a, getTableField(instance, i, b));
-		setTableField(instance, i, b, temp);
+	for (unsigned int i = 0; i < _numRows; i++) {
+		temp = getField(i, a);
+		setField(i, a, getField(i, b));
+		setField(i, b, temp);
 	}
 	Column tempCol = instance->columns[a];
 	instance->columns[a] = instance->columns[b];
