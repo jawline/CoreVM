@@ -40,6 +40,9 @@ namespace Simplex {
 		void subtractRow(unsigned int r1, unsigned int r2, double scalar);
 		void subtractRow(unsigned int r1, unsigned int r2);
 
+		void multiplyRow(unsigned int r1, double scalar);
+		void divideRow(unsigned int r1, double divisor);
+
 		void print();
 	};
 }

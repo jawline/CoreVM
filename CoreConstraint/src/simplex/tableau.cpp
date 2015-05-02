@@ -186,6 +186,16 @@ void Table::subtractRow(unsigned int r1, unsigned int r2, double scalar) {
 	}
 }
 
+void Table::multiplyRow(unsigned int r1, double scalar) {
+	for (unsigned int i = 0; i < getNumColumns(); i++) {
+		setField(r1, i, getField(r1, i) * scalar);
+	}
+}
+
+void Table::divideRow(unsigned int r1, double divisor) {
+	multiplyRow(r1, 1.0 / divisor);
+}
+
 void Table::subtractRow(unsigned int r1, unsigned int r2) {
 	subtractRow(r1, r2, 1);
 }

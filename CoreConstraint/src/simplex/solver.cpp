@@ -80,10 +80,7 @@ int Solver::findPivotRow(Table& instance, int column) {
 }
 
 void Solver::makeRowUnit(Table& instance, int row, int col) {
-	double ratio = 1.0 / instance.getField(row, col);
-	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
-		instance.setField(row, i, ratio * instance.getField(row, i));
-	}
+	instance.divideRow(row, instance.getField(row, col));
 }
 
 void Solver::makeOtherRowsUnit(Table& instance, int baseRow, int col) {
