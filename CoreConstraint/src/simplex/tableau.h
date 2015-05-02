@@ -37,6 +37,9 @@ namespace Simplex {
 
 		void swapColumn(unsigned int c1, unsigned int c2);
 
+		void subtractRow(unsigned int r1, unsigned int r2, double scalar);
+		void subtractRow(unsigned int r1, unsigned int r2);
+
 		void print();
 	};
 }

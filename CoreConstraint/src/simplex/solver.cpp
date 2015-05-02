@@ -86,17 +86,10 @@ void Solver::makeRowUnit(Table& instance, int row, int col) {
 	}
 }
 
-void Solver::subtractRow(Table& instance, int rowToSub, int rowFrom, double ratio) {
-	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
-		instance.setField(rowToSub, i, instance.getField(rowToSub, i) - (instance.getField(rowFrom, i) / ratio));
-	}
-}
-
 void Solver::makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
 		if (i != baseRow && instance.getField(i, col) != 0) {
-			double ratioOfBaseRow = 1.0 / instance.getField(i, col);
-			subtractRow(instance, i, baseRow, ratioOfBaseRow);
+			instance.subtractRow(i, baseRow, instance.getField(i, col));
 		}
 	}
 }

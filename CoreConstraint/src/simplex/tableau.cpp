@@ -179,3 +179,13 @@ void Table::print() {
 		printf("\n");
 	}
 }
+
+void Table::subtractRow(unsigned int r1, unsigned int r2, double scalar) {
+	for (unsigned int i = 0; i < getNumColumns(); i++) {
+		setField(r1, i, getField(r1, i) - (getField(r2, i) * scalar));
+	}
+}
+
+void Table::subtractRow(unsigned int r1, unsigned int r2) {
+	subtractRow(r1, r2, 1);
+}

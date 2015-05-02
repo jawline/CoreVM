@@ -20,7 +20,6 @@ namespace Simplex {
 		static double findRatio(Table& instance, int row, int column, int resCol);
 		static int findPivotRow(Table& instance, int column);
 		static void makeRowUnit(Table& instance, int row, int col);
-		static void subtractRow(Table& instance, int rowToSub, int rowFrom, double ratio);
 		static void makeOtherRowsUnit(Table& instance, int baseRow, int col);
 
 	public:
