@@ -62,5 +62,9 @@ Simplex::Table Problem::toTable() const {
 	result.addColumn("result");
 	result.setField(result.getCurrentRow(), "result", 0);
 
+	for (unsigned int i = 0; i < _constraints.size(); i++) {
+		_constraints[i].addToTable(result);
+	}
+
 	return result;
 }
