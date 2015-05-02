@@ -2,7 +2,7 @@
 #define _CORE_STATE_DEF_H_
 #include <cstdint>
 #include <memory>
-#include <CoreCS/solver.h>
+#include <CoreCS/problem.h>
 #include "registers.h"
 
 using namespace std;

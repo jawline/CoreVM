@@ -1,7 +1,7 @@
 #ifndef _SOLVER_CONSTRAINT_DEF_H_
 #define _SOLVER_CONSTRAINT_DEF_H_
 #include "variable.h"
-#include "simplex/tableau.h"
+#include "tableau.h"
 #include <vector>
 #include <string>
 

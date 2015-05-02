@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 #include <stdio.h>
 #include <iostream>
 #include "problem.h"
-#include "simplex/solver.h"
+#include "solver.h"
 
 using namespace Constraints;
 
