@@ -30,9 +30,10 @@ int main(int argc, char** argv) {
 	return 0;
 }*/
 
-#include "solver.h"
 #include <stdio.h>
 #include <iostream>
+#include "problem.h"
+#include "simplex/solver.h"
 
 using namespace Constraints;
 
@@ -68,7 +69,11 @@ int main(int argc, char** argv) {
 
 	std::cout << p.toString();
 
-	p.toTable().print();
+	Simplex::SimplexResult res;
+	Simplex::Table table = p.toTable();
+	table.print();
+	Simplex::Solver::solveTable(table, res);
+	printf("%f\n", res.result);
 
 	return -1;
 }
