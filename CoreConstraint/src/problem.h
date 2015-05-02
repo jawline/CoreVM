@@ -1,6 +1,7 @@
 #ifndef _PROBLEM_DEF_H_
 #define _PROBLEM_DEF_H_
 #include "constraint.h"
+#include "simplex/tableau.h"
 
 namespace Constraints {
 	class Problem {
@@ -18,6 +19,7 @@ namespace Constraints {
 
 		bool isSatisfiable() const;
 		std::string toString() const;
+		Simplex::Table toTable() const;
 	};
 }
 

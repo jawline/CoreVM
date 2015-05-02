@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include "simplex/parser.h"
 #include "simplex/solver.h"
 
@@ -28,9 +28,9 @@ int main(int argc, char** argv) {
 	printf("Results: %f\n", results.result);
 	parserFree();
 	return 0;
-}
+}*/
 
-/*#include "solver.h"
+#include "solver.h"
 #include <stdio.h>
 #include <iostream>
 
@@ -70,4 +70,3 @@ int main(int argc, char** argv) {
 
 	return -1;
 }
-*/

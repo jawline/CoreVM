@@ -46,3 +46,16 @@ std::string Problem::toString() const {
 
 	return result;
 }
+
+Simplex::Table Problem::toTable() const {
+	Simplex::Table result;
+
+	result.addColumn("q");
+	for (unsigned int i = 0; i < _variables.size(); i++) {
+		result.addColumn(_variables[i].toString());
+	}
+	result.addColumn("result");
+	result.addRow();
+
+	return result;
+}
