@@ -109,9 +109,11 @@ void Solver::solveTable(Table& instance, SimplexResult& results) {
 		rowBasicData[i] = findBasic(instance, i);
 		if (rowBasicData[i] == -1) {
 			printf("Failed to find basic variable for row %i\n", i);
-			rowBasicSolution = 0;
+			rowBasicSolution[i] = 0;
 		} else {
-			rowBasicSolution[i] = instance.getField(i, rowBasicData[i]) / instance.getField(i, instance.getNumColumns() - 1);
+			double basicField = instance.getField(i, rowBasicData[i]);
+			double resultField = instance.getField(i, instance.getNumColumns() - 1);
+			rowBasicSolution[i] = basicField / resultField;
 			printf("Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
 				i,
 				rowBasicData[i],
