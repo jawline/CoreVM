@@ -59,8 +59,8 @@ int main(int argc, char** argv) {
 
 	q.addItem(a, 20);
 	q.addItem(c, 1);
-	q.setComparisonType(LessThanOrEqual);
-	q.setResult(40);
+	q.setComparisonType(LessThan);
+	q.setResult(41);
 
 	p.addConstraint(d);
 	p.addConstraint(r);

@@ -2,7 +2,8 @@
 
 using namespace Constraints;
 
-static const char* ComparisonTypeStrings[NumComparisonTypes] = {"=", "!=", "<=", ">="};
+static const char* ComparisonTypeStrings[NumComparisonTypes] = {"=", "!=", "<", ">"};
+unsigned int slackd = 0;
 
 Constraint::Constraint() {
 	_value = 0;
@@ -49,5 +50,31 @@ std::string Constraint::toString() const {
 }
 
 void Constraint::addToTable(Simplex::Table& table) const {
-	
+	table.addRow();
+	for (unsigned int i = 0; i < _items.size(); i++) {
+		table.addColumn(_items[i].first.toString());
+		table.setField(table.getCurrentRow(), _items[i].first.toString(), _items[i].second);
+	}
+
+	std::string name;
+
+	switch (_type) {
+		case Equal:
+			break;
+		case LessThan:
+			name = std::string("slack") + std::to_string(slackd++);
+			table.addColumn(name);
+			table.setField(table.getCurrentRow(), name, 1);
+			break;
+		case GreaterThan:
+			name = std::string("slack") + std::to_string(slackd++);
+			table.addColumn(name);
+			table.setField(table.getCurrentRow(), name, -1);
+			break;
+		default:
+			printf("%s NOT HANDLED YET\n", ComparisonTypeStrings[_type]);
+			break;
+	}
+
+	table.setField(table.getCurrentRow(), "result", _value);
 }

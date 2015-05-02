@@ -12,8 +12,8 @@ namespace Constraints {
 	typedef enum {
 		Equal,
 		NotEqual,
-		LessThanOrEqual,
-		GreaterThanOrEqual,
+		LessThan,
+		GreaterThan,
 		NumComparisonTypes
 	} ComparisonType;
 

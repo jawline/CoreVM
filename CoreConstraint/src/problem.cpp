@@ -66,5 +66,7 @@ Simplex::Table Problem::toTable() const {
 		_constraints[i].addToTable(result);
 	}
 
+	result.moveColumnToEnd("result");
+
 	return result;
 }
