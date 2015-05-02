@@ -1,6 +1,7 @@
 #ifndef _SOLVER_CONSTRAINT_DEF_H_
 #define _SOLVER_CONSTRAINT_DEF_H_
 #include "variable.h"
+#include "simplex/tableau.h"
 #include <vector>
 #include <string>
 
@@ -31,6 +32,7 @@ namespace Constraints {
 		void setComparisonType(ComparisonType const& type);
 
 		std::string toString() const;
+		void addToTable(Simplex::Table& table) const;
 	};
 };
 

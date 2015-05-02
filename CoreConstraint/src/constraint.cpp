@@ -47,3 +47,7 @@ std::string Constraint::toString() const {
 	}
 	return result;
 }
+
+void Constraint::addToTable(Simplex::Table& table) const {
+	
+}

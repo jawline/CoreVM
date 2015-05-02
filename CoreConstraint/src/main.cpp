@@ -68,5 +68,7 @@ int main(int argc, char** argv) {
 
 	std::cout << p.toString();
 
+	p.toTable().print();
+
 	return -1;
 }

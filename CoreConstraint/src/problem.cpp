@@ -50,12 +50,17 @@ std::string Problem::toString() const {
 Simplex::Table Problem::toTable() const {
 	Simplex::Table result;
 
+	result.addRow();
 	result.addColumn("q");
+	result.setField(result.getCurrentRow(), "q", 1);
+	
 	for (unsigned int i = 0; i < _variables.size(); i++) {
 		result.addColumn(_variables[i].toString());
+		result.setField(result.getCurrentRow(), _variables[i].toString(), -1);
 	}
+
 	result.addColumn("result");
-	result.addRow();
+	result.setField(result.getCurrentRow(), "result", 0);
 
 	return result;
 }
