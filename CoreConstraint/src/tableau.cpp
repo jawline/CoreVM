@@ -2,15 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 using namespace Simplex;
-
-void assert(bool x, char const* s) {
-	if (!x) {
-		printf("ERROR ASSERTION FAILED %s\n", s);
-		exit(-1);
-	}
-}
 
 Table::Table() {
 		_columns = nullptr;
@@ -129,7 +123,7 @@ unsigned int Table::getCurrentRow() const {
 }
 
 double* Table::getRowData(unsigned int rowNum) const {
-	//TODO: Assert rowNum < _numRows ?
+	assert(rowNum < _numRows);
 	return _rowData + (_numColumns * rowNum);
 }
 
@@ -138,20 +132,20 @@ double Table::getField(unsigned int row, unsigned int column) const {
 }
 
 void Table::setField(unsigned int row, unsigned int column, double val) {
-	assert(row < getNumRows(), "Expect row < getNumRows at setField");
-	assert(column < getNumColumns(), "Expect col < getNumColumns at setField");
+	assert(row < getNumRows());
+	assert(column < getNumColumns());
 	*(getRowData(row) + column) = val;
 }
 
 double Table::getField(unsigned int row, std::string const& name) const {
 	int col = getColumnId(name);
-	//TODO: Assert col != -1
+	assert(col != -1);
 	return getField(row, col);
 }
 
 void Table::setField(unsigned int row, std::string const& name, double val) {
 	int col = getColumnId(name);
-	//TODO: assert col != -1
+	assert(col != -1);
 	setField(row, col, val);
 }
 
@@ -208,6 +202,6 @@ void Table::moveColumnToEnd(unsigned int col) {
 
 void Table::moveColumnToEnd(std::string const& name) {
 	int col = getColumnId(name);
-	//TODO: assert col != -1
+	assert(col != -1);
 	moveColumnToEnd(col);
 }
