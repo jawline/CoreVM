@@ -20,7 +20,7 @@ void Problem::addConstraint(Constraint const& constraint) {
 
 bool Problem::isSatisfiable() const {
 	Simplex::Table table;
-	if (!toTable(result)) {
+	if (!toTable(table)) {
 		return false;
 	}
 	return false;
