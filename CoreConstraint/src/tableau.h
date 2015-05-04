@@ -46,6 +46,8 @@ namespace Simplex {
 		void moveColumnToEnd(unsigned int col);
 		void moveColumnToEnd(std::string const& name);
 
+		void empty();
+
 		void print();
 	};
 }

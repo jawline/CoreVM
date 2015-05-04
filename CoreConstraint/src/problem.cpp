@@ -47,9 +47,8 @@ std::string Problem::toString() const {
 	return result;
 }
 
-Simplex::Table Problem::toTable() const {
-	Simplex::Table result;
-
+bool Problem::toTable(Simplex::Table& result) const {
+	result.empty();
 	result.addRow();
 	result.addColumn("q");
 	result.setField(result.getCurrentRow(), "q", 1);
@@ -61,12 +60,11 @@ Simplex::Table Problem::toTable() const {
 
 	result.addColumn("result");
 	result.setField(result.getCurrentRow(), "result", 0);
-
+	
 	for (unsigned int i = 0; i < _constraints.size(); i++) {
 		_constraints[i].addToTable(result);
 	}
-
+	
 	result.moveColumnToEnd("result");
-
-	return result;
+	return true;
 }

@@ -61,7 +61,8 @@ int main(int argc, char** argv) {
 	std::cout << p.toString();
 
 	Simplex::SimplexResult res;
-	Simplex::Table table = p.toTable();
+	Simplex::Table table;
+	p.toTable(table);
 	table.print();
 	Simplex::Solver::solveTable(table, res);
 	printf("%f\n", res.result);

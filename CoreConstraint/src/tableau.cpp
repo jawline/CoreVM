@@ -14,12 +14,7 @@ Table::Table() {
 }
 
 Table::~Table() {
-	if (_columns) {
-		delete[] _columns;
-	}
-	if (_rowData) {
-		delete[] _rowData;
-	}
+	empty();
 }
 
 int Table::getColumnId(std::string const& name) const {
@@ -204,4 +199,17 @@ void Table::moveColumnToEnd(std::string const& name) {
 	int col = getColumnId(name);
 	assert(col != -1);
 	moveColumnToEnd(col);
+}
+
+void Table::empty() {
+	_numRows = 0;
+	_numColumns = 0;
+	if (_rowData) {
+		delete[] _rowData;
+		_rowData = nullptr;
+	}
+	if (_columns) {
+		delete[] _columns;
+		_columns = nullptr;
+	}
 }
