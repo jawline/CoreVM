@@ -1,4 +1,5 @@
 #include "constraint.h"
+#include "problem_constants.h"
 
 using namespace Constraints;
 
@@ -76,5 +77,5 @@ void Constraint::addToTable(Simplex::Table& table) const {
 			break;
 	}
 
-	table.setField(table.getCurrentRow(), "result", _value);
+	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, _value);
 }

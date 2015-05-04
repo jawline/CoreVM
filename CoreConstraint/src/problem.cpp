@@ -1,4 +1,5 @@
 #include "problem.h"
+#include "problem_constants.h"
 
 using namespace Constraints;
 
@@ -50,21 +51,21 @@ std::string Problem::toString() const {
 bool Problem::toTable(Simplex::Table& result) const {
 	result.empty();
 	result.addRow();
-	result.addColumn("q");
-	result.setField(result.getCurrentRow(), "q", 1);
+	result.addColumn("objective_value");
+	result.setField(result.getCurrentRow(), "objective_value", 1);
 	
 	for (unsigned int i = 0; i < _variables.size(); i++) {
 		result.addColumn(_variables[i].toString());
 		result.setField(result.getCurrentRow(), _variables[i].toString(), -1);
 	}
 
-	result.addColumn("result");
-	result.setField(result.getCurrentRow(), "result", 0);
+	result.addColumn(ProblemConstants::cResultColumnName);
+	result.setField(result.getCurrentRow(), ProblemConstants::cResultColumnName, 0);
 	
 	for (unsigned int i = 0; i < _constraints.size(); i++) {
 		_constraints[i].addToTable(result);
 	}
 	
-	result.moveColumnToEnd("result");
+	result.moveColumnToEnd(ProblemConstants::cResultColumnName);
 	return true;
 }
