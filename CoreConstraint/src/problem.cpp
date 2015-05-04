@@ -50,9 +50,11 @@ std::string Problem::toString() const {
 
 bool Problem::toTable(Simplex::Table& result) const {
 	result.empty();
+	
 	result.addRow();
-	result.addColumn("objective_value");
-	result.setField(result.getCurrentRow(), "objective_value", 1);
+
+	result.addColumn(ProblemConstants::cObjectColumnName);
+	result.setField(result.getCurrentRow(), ProblemConstants::cObjectColumnName, 1);
 	
 	for (unsigned int i = 0; i < _variables.size(); i++) {
 		result.addColumn(_variables[i].toString());

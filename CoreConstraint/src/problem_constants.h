@@ -4,6 +4,7 @@
 namespace Constraints {
 	class ProblemConstants {
 	public:
+		static char const* cObjectColumnName;
 		static char const* cResultColumnName;
 	};
 }

@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "problem_constants.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -170,7 +171,7 @@ char const* parseConstraint(Table& instance, char const* input) {
     return 0;
   }
 
-  instance.setField(instance.getCurrentRow(), "result", parsedValueAsNumber);
+  instance.setField(instance.getCurrentRow(), Constraints::ProblemConstants::cResultColumnName, parsedValueAsNumber);
   return input;
 }
 
@@ -195,7 +196,7 @@ char const* parseConstraints(Table& instance, char const* input) {
 bool postParseStep(Table& instance) {
   
   //Make results the last column (For formatting)
-  for (unsigned int i = instance.getColumnId("result"); i < instance.getNumColumns() - 1; i++) {
+  for (unsigned int i = instance.getColumnId(Constraints::ProblemConstants::cResultColumnName); i < instance.getNumColumns() - 1; i++) {
     instance.swapColumn(i, i+1);
   }
 
@@ -207,7 +208,7 @@ bool parseString(Table& instance, char const* input) {
   char const* tokenStart;
   size_t tokenSize;
   
-  instance.addColumn("result");
+  instance.addColumn(Constraints::ProblemConstants::cResultColumnName);
   instance.addRow();
   
   input = nextToken(&token, input, &tokenStart, &tokenSize);
