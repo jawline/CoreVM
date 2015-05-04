@@ -19,6 +19,10 @@ void Problem::addConstraint(Constraint const& constraint) {
 }
 
 bool Problem::isSatisfiable() const {
+	Simplex::Table table;
+	if (!toTable(result)) {
+		return false;
+	}
 	return false;
 }
 
