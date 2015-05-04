@@ -37,17 +37,19 @@
   
   \node[graphnode, join] {CoreASM};
   \node[graphnode, join] {CoreVM};
-  
-  \node [graphnode, join] (Solver) {Solver};
+
   \node[graphnode, join] (Problem) {Problem};
   \begin{scope}[start branch=venstre]
         \node[graphnode, on chain=going left, join] (Symbol) {Symbol};
   \end{scope}
-  	\begin{scope}[start branch=venstre]        
-  		\node[graphnode, on chain=going right, join] (Constraint) {Constraint};
+  \begin{scope}[start branch=venstre]        
+  	\node[graphnode, on chain=going right, join] (Constraint) {Constraint};
   \end{scope}
+
+  \node[graphnode, join] (Solver) {Solver};
+
   \draw[hsplit] let
-    \p1=(Symbol.west), \p2=(Constraint.east), \p3=(Solver.north) in
+    \p1=(Symbol.west), \p2=(Constraint.east), \p3=(Problem.north) in
     ($(\x1,\y3+.75em)$) -- ($(\x2,\y3+.75em)$) node[above, right]  {Constraint Solver};
   \end{tikzpicture}
 \end{document}
