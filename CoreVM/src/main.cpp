@@ -47,7 +47,7 @@ void makeSymbolic(VM::Core* c) {
 }
 
 void failureState(VM::Core* c) {
-	if (!c->getState()->getProblem()->isSatisfiable()) {
+	if (c->getState()->getProblem()->isSatisfiable()) {
 		printf("------------------------------------------------\n");
 		printf("-           FAILURE            STATE           -\n");
 		printf("------------------------------------------------\n");
@@ -57,7 +57,7 @@ void failureState(VM::Core* c) {
 		printf("------------------------------------------------\n");
 	} else {
 		printf("------------------------------------------------\n");
-		printf("-             END             STATE            -\n");
+		printf("-              NO             FAIL             -\n");
 		printf("------------------------------------------------\n");
 	}
 }
