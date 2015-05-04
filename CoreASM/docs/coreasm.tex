@@ -69,9 +69,12 @@ out to a file after parsing.
 
 The tokenizer takes an array of characters as an input and turns them into Assembler::Token elements which can be used to identify what to do next by the Parser.
 
-
+The tokenizer works by comparing the start of the input string (after whitespace is discarded) to a set of known strings or regular expressions and then marking the type of token when there is a match.
 
 \subsection* {Parser}
+
+The CoreASM parser is a simple, handwritten LL(1) parser. 
+
 \subsection* {ByteBuffer}
 
 \section* {Grammar}
