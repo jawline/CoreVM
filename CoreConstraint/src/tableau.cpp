@@ -7,10 +7,10 @@
 using namespace Simplex;
 
 Table::Table() {
-		_columns = nullptr;
-		_numColumns = 0;
-		_rowData = nullptr;
-		_numRows = 0;
+	_columns = nullptr;
+	_numColumns = 0;
+	_rowData = nullptr;
+	_numRows = 0;
 }
 
 Table::~Table() {
@@ -27,9 +27,9 @@ int Table::getColumnId(std::string const& name) const {
 }
 
 Column* Table::getColumn(std::string const& name) const {
-	int temp = getColumnId(name);
-	//ASSERT temp != -1
-	return getColumn(temp);
+	int col = getColumnId(name);
+	assert(col != -1);
+	return getColumn(col);
 }
 
 Column* Table::getColumn(int i) const {
