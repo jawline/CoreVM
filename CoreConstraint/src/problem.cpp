@@ -47,7 +47,7 @@ std::string Problem::toString() const {
 	return result;
 }
 
-bool Problem::toTable(Simplex::Table& result) const {
+bool Problem::toTable(Simplex::Table& result, std::vector<int> artificialColumns) const {
 	result.empty();
 	result.addRow();
 	result.addColumn("q");
@@ -62,7 +62,7 @@ bool Problem::toTable(Simplex::Table& result) const {
 	result.setField(result.getCurrentRow(), "result", 0);
 	
 	for (unsigned int i = 0; i < _constraints.size(); i++) {
-		_constraints[i].addToTable(result);
+		_constraints[i].addToTable(result, artificialColumns);
 	}
 	
 	result.moveColumnToEnd("result");
