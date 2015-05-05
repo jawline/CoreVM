@@ -21,6 +21,9 @@ A constraint solver is a piece of software that can take a set of constraints (S
 The CoreConstraint constraint solver only has to be able to be able to verify linear, integer only constraints. In order to do this the constraints problem is modeled as a optimization problem and then solved using the Simplex algorithm.
 
 \chapter {Implementation}
+
+The constraints solver comes in two parts, the simplified interface used to construct a problem definition (Constraints::Problem) and the solver (Simplex::Table, Simplex::Solver).
+
 \chapter {Results}
 \chapter {Conclusion}
 
