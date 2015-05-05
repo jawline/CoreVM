@@ -19,7 +19,6 @@ namespace Constraints {
 
 		bool isSatisfiable() const;
 		std::string toString() const;
-		bool artificialTable(Simplex::Table& emptyTable) const;
 		bool toTable(Simplex::Table& emptyTable) const;
 	};
 }
