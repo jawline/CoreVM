@@ -19,7 +19,7 @@ namespace Constraints {
 
 		bool isSatisfiable() const;
 		std::string toString() const;
-		bool toTable(Simplex::Table& emptyTable, std::vector<int> artificialColumns) const;
+		bool toTable(Simplex::Table& emptyTable, std::vector<int>& artificialColumns) const;
 	};
 }
 
