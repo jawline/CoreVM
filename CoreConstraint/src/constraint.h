@@ -14,6 +14,8 @@ namespace Constraints {
 		NotEqual,
 		LessThan,
 		GreaterThan,
+		GreaterThanOrEqual,
+		LessThanOrEqual,
 		NumComparisonTypes
 	} ComparisonType;
 
