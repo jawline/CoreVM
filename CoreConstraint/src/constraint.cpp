@@ -66,7 +66,7 @@ void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialC
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, 1);
 			name = std::string("artificial") + std::to_string(slackd++);
-			artificialColumns.push_back(table.addColumn(name));)
+			artificialColumns.push_back(table.addColumn(name));
 			table.setField(table.getCurrentRow(), name, 1);
 			break;
 		case GreaterThan:
@@ -74,7 +74,7 @@ void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialC
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, -1);
 			name = std::string("artificial") + std::to_string(slackd++);
-			artificialColumns.push_back(table.addColumn(name));)
+			artificialColumns.push_back(table.addColumn(name));
 			table.setField(table.getCurrentRow(), name, 1);
 			break;
 		default:
