@@ -21,6 +21,7 @@ namespace Constraints {
 
 	class Constraint {
 	private:
+		static const char* ComparisonTypeStrings;
 		std::vector<ConstraintItem> _items;
 		ComparisonType _type;
 		double _value;
