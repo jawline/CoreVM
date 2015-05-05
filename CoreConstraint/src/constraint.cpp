@@ -60,22 +60,37 @@ void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialC
 
 	switch (_type) {
 		case Equal:
+			//No slack - Add an artificial variable with the same sign as the result
+			name = std::string("artificial") + std::to_string(slackd);
+			artificialColumns.push_back(table.addColumn(name));
+			table.setField(table.getCurrentRow(), name, _value > 0 ? 1 : -1);
+			slackd++;
 			break;
 		case LessThan:
 			name = std::string("slack") + std::to_string(slackd);
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, 1);
-			name = std::string("artificial") + std::to_string(slackd++);
-			artificialColumns.push_back(table.addColumn(name));
-			table.setField(table.getCurrentRow(), name, 1);
+			
+			//If the slack doesn't have the same sign as the result add an artificial variable
+			if (_value < 0) {
+				name = std::string("artificial") + std::to_string(slackd);
+				artificialColumns.push_back(table.addColumn(name));
+				table.setField(table.getCurrentRow(), name, -1);
+			}
+			slackd++;
 			break;
 		case GreaterThan:
 			name = std::string("slack") + std::to_string(slackd);
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, -1);
-			name = std::string("artificial") + std::to_string(slackd++);
-			artificialColumns.push_back(table.addColumn(name));
-			table.setField(table.getCurrentRow(), name, 1);
+			
+			//If the slack doesn't have the same sign as the result add an artificial variable
+			if (_value > 0) {
+				name = std::string("artificial") + std::to_string(slackd);
+				artificialColumns.push_back(table.addColumn(name));
+				table.setField(table.getCurrentRow(), name, 1);
+			}
+			slackd++;
 			break;
 		default:
 			printf("%s NOT HANDLED YET\n", ComparisonTypeStrings[_type]);
