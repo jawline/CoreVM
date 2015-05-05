@@ -55,6 +55,26 @@ The CoreConstraint constraint solver only has to be able to be able to verify li
 
 The constraints solver comes in two parts, the simplified interface used to construct a problem definition (Constraints::Problem) and the solver (Simplex::Table, Simplex::Solver).
 
+\begin{tikzpicture}
+  [node distance=.8cm,
+  start chain=going below,]
+  \node[graphnode, join] {Caller};
+  \node[graphnode, join] (Problem) {Problem};
+  \begin{scope}[start branch=venstre]
+    \node[graphnode, on chain=going left, join] (Symbol) {Symbol};
+  \end{scope}
+  \begin{scope}[start branch=venstre]        
+    \node[graphnode, on chain=going right, join] (Constraint) {Constraint};
+  \end{scope}
+
+  \node[graphnode, join] (Simplex) {Simplex};
+  \node[graphnode, join] (Solver) {Solver};
+  \node[graphnode, join] (Table) {Table};
+
+  \draw[hsplit] let
+    \p1=(Symbol.west), \p2=(Constraint.east), \p3=(Problem.north) in ($(\x1,\y3+.75em)$) -- ($(\x2,\y3+.75em)$) node[above, right]  {Constraint Solver};
+\end{tikzpicture}
+
 \chapter {Results}
 \chapter {Conclusion}
 
