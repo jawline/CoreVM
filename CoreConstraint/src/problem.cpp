@@ -47,7 +47,7 @@ std::string Problem::toString() const {
 	return result;
 }
 
-bool Problem::toTable(Simplex::Table& result, std::vector<int> artificialColumns) const {
+bool Problem::toTable(Simplex::Table& result, std::vector<int>& artificialColumns) const {
 	result.empty();
 	result.addRow();
 	result.addColumn("q");
