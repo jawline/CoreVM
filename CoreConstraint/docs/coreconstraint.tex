@@ -75,6 +75,7 @@ The constraints solver comes in two parts, the simplified interface used to cons
     \p1=(Symbol.west), \p2=(Constraint.east), \p3=(Problem.north) in ($(\x1,\y3+.75em)$) -- ($(\x2,\y3+.75em)$) node[above, right]  {Constraint Solver};
 \end{tikzpicture}
 
+\subsection {API}
 The Problem and Constraint classes are designed to make the process of describing a constraint satisfaction problem pragmatically easier.
 
 The problem class acts as a root problem definition, keeping track of how many variables there are as well as a list of constraints.
@@ -84,6 +85,10 @@ The problem class acts as a root problem definition, keeping track of how many v
 The constraint class allows a developer to define constraints on the given problem through a simplified interface. Each constraint takes a list of variables (with multipliers), a comparison type (Equals, >=, >, etc) and a result.
 
 //TODO: Insert example and equivilent
+
+\subsection {Solving / Simplex Solver}
+
+Underneith the simplified interface provided by Constraints::Problem there is the core solver, defined within the Simplex namespace.
 
 \chapter {Results}
 \chapter {Conclusion}
