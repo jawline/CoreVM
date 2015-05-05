@@ -49,7 +49,7 @@ std::string Constraint::toString() const {
 	return result;
 }
 
-void Constraint::addToTable(Simplex::Table& table) const {
+void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialColumns) const {
 	table.addRow();
 	for (unsigned int i = 0; i < _items.size(); i++) {
 		table.addColumn(_items[i].first.toString());
@@ -62,14 +62,20 @@ void Constraint::addToTable(Simplex::Table& table) const {
 		case Equal:
 			break;
 		case LessThan:
-			name = std::string("slack") + std::to_string(slackd++);
+			name = std::string("slack") + std::to_string(slackd);
 			table.addColumn(name);
+			table.setField(table.getCurrentRow(), name, 1);
+			name = std::string("artificial") + std::to_string(slackd++);
+			artificialColumns.push_back(table.addColumn(name));)
 			table.setField(table.getCurrentRow(), name, 1);
 			break;
 		case GreaterThan:
-			name = std::string("slack") + std::to_string(slackd++);
+			name = std::string("slack") + std::to_string(slackd);
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, -1);
+			name = std::string("artificial") + std::to_string(slackd++);
+			artificialColumns.push_back(table.addColumn(name));)
+			table.setField(table.getCurrentRow(), name, 1);
 			break;
 		default:
 			printf("%s NOT HANDLED YET\n", ComparisonTypeStrings[_type]);
