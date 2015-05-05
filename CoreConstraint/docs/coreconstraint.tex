@@ -68,8 +68,8 @@ The constraints solver comes in two parts, the simplified interface used to cons
   \end{scope}
 
   \node[graphnode, join] (Simplex) {Simplex};
-  \node[graphnode, join] (Solver) {Solver};
   \node[graphnode, join] (Table) {Table};
+  \node[graphnode, join] (Solver) {Solver};
 
   \draw[hsplit] let
     \p1=(Symbol.west), \p2=(Constraint.east), \p3=(Problem.north) in ($(\x1,\y3+.75em)$) -- ($(\x2,\y3+.75em)$) node[above, right]  {Constraint Solver};
