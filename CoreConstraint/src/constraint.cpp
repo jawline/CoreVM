@@ -2,7 +2,7 @@
 
 using namespace Constraints;
 
-static const char* ComparisonTypeStrings[NumComparisonTypes] = {"=", "!=", "<", ">", ">=", "<="};
+const char* Constraint::ComparisonTypeStrings[NumComparisonTypes] = {"=", "!=", "<", ">", ">=", "<="};
 unsigned int slackd = 0;
 
 Constraint::Constraint() {
