@@ -14,11 +14,14 @@ namespace Constraints {
 		NotEqual,
 		LessThan,
 		GreaterThan,
+		GreaterThanOrEqual,
+		LessThanOrEqual,
 		NumComparisonTypes
 	} ComparisonType;
 
 	class Constraint {
 	private:
+		static const char* ComparisonTypeStrings[];
 		std::vector<ConstraintItem> _items;
 		ComparisonType _type;
 		double _value;
@@ -32,7 +35,7 @@ namespace Constraints {
 		void setComparisonType(ComparisonType const& type);
 
 		std::string toString() const;
-		void addToTable(Simplex::Table& table) const;
+		void addToTable(Simplex::Table& table, std::vector<int>& artificialColumns) const;
 	};
 };
 

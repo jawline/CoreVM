@@ -20,7 +20,8 @@ void Problem::addConstraint(Constraint const& constraint) {
 
 bool Problem::isSatisfiable() const {
 	Simplex::Table table;
-	if (!toTable(table)) {
+	std::vector<int> artificialColumns;
+	if (!toTable(table, artificialColumns)) {
 		return false;
 	}
 	return false;
@@ -50,7 +51,7 @@ std::string Problem::toString() const {
 	return result;
 }
 
-bool Problem::toTable(Simplex::Table& result) const {
+bool Problem::toTable(Simplex::Table& result, std::vector<int>& artificialColumns) const {
 	result.empty();
 	
 	result.addRow();
@@ -67,7 +68,7 @@ bool Problem::toTable(Simplex::Table& result) const {
 	result.setField(result.getCurrentRow(), ProblemConstants::cResultColumnName, 0);
 	
 	for (unsigned int i = 0; i < _constraints.size(); i++) {
-		_constraints[i].addToTable(result);
+		_constraints[i].addToTable(result, artificialColumns);
 	}
 	
 	result.moveColumnToEnd(ProblemConstants::cResultColumnName);

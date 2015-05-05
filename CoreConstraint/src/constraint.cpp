@@ -3,7 +3,7 @@
 
 using namespace Constraints;
 
-static const char* ComparisonTypeStrings[NumComparisonTypes] = {"=", "!=", "<", ">"};
+const char* Constraint::ComparisonTypeStrings[NumComparisonTypes] = {"=", "!=", "<", ">", ">=", "<="};
 unsigned int slackd = 0;
 
 Constraint::Constraint() {
@@ -50,32 +50,71 @@ std::string Constraint::toString() const {
 	return result;
 }
 
-void Constraint::addToTable(Simplex::Table& table) const {
+void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialColumns) const {
 	table.addRow();
+	
 	for (unsigned int i = 0; i < _items.size(); i++) {
 		table.addColumn(_items[i].first.toString());
 		table.setField(table.getCurrentRow(), _items[i].first.toString(), _items[i].second);
 	}
+	
+	ComparisonType localType = _type;
+	double localValue = _value;
+	
+	if (localType == GreaterThanOrEqual) {
+		localType = GreaterThan;
+		localValue += 1;
+	}
+	
+	if (localType == LessThanOrEqual) {
+		localType = LessThan;
+		localValue -= 1;
+	}
 
 	std::string name;
 
-	switch (_type) {
+	switch (localType) {
 		case Equal:
+
+			//No slack - Add an artificial variable with the same sign as the result
+			name = std::string("artificial") + std::to_string(slackd);
+			artificialColumns.push_back(table.addColumn(name));
+			table.setField(table.getCurrentRow(), name, localValue > 0 ? 1 : -1);
+			slackd++;
+
 			break;
 		case LessThan:
-			name = std::string("slack") + std::to_string(slackd++);
+			name = std::string("slack") + std::to_string(slackd);
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, 1);
+
+			//If the slack doesn't have the same sign as the result add an artificial variable
+			if (localValue < 0) {
+				name = std::string("artificial") + std::to_string(slackd);
+				artificialColumns.push_back(table.addColumn(name));
+				table.setField(table.getCurrentRow(), name, -1);
+			}
+
+			slackd++;
 			break;
 		case GreaterThan:
-			name = std::string("slack") + std::to_string(slackd++);
+			name = std::string("slack") + std::to_string(slackd);
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, -1);
+			
+			//If the slack doesn't have the same sign as the result add an artificial variable
+			if (localValue > 0) {
+				name = std::string("artificial") + std::to_string(slackd);
+				artificialColumns.push_back(table.addColumn(name));
+				table.setField(table.getCurrentRow(), name, 1);
+			}
+
+			slackd++;
 			break;
 		default:
 			printf("%s NOT HANDLED YET\n", ComparisonTypeStrings[_type]);
 			break;
 	}
 
-	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, _value);
+	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, localValue);
 }
