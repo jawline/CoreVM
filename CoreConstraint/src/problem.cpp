@@ -41,6 +41,16 @@ std::string Problem::toString() const {
 			result += _constraints[i].toString() + "\n";
 	}
 
+	if (_variables.size()) {
+		for (unsigned int i = 0; i < _variables.size(); i++) {
+			if (i) {
+				result += ", ";
+			}
+			result += _variables[i].toString();
+		}
+		result += " > 0\n";
+	}
+
 	printf("Satisfiable: %i\n", isSatisfiable());
 
 	return result;
