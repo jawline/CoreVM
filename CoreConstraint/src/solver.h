@@ -1,6 +1,6 @@
 #ifndef _TABLEAU_SOLVER_DEF_H_
 #define _TABLEAU_SOLVER_DEF_H_
-#include <stdbool.h>
+#include <vector>
 #include "tableau.h"
 
 namespace Simplex {
@@ -27,7 +27,7 @@ namespace Simplex {
 		 * Solve the simplex tableau
 		 * NOTE: It is assumed that the last column in the table is the results column
 		 */
-		static void solveTable(Table& instance, SimplexResult& results);
+		static bool solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results);
 	};
 }
 

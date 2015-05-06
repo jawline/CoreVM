@@ -91,8 +91,13 @@ void Solver::makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 	}
 }
 
-void Solver::solveTable(Table& instance, SimplexResult& results) {
+bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
 	
+	if (artificialVariables.size()) {
+		printf("I don't know how to solve something with artificial variables yet\n");
+		return false;
+	}
+
 	//Find the initial basic variables (Only occur in one col)
 	int* rowBasicData = new int[instance.getNumRows()];
 	double* rowBasicSolution = new double[instance.getNumRows()];
@@ -157,4 +162,5 @@ void Solver::solveTable(Table& instance, SimplexResult& results) {
 	delete[] rowBasicData;
 	delete[] rowBasicSolution;
 	results.result = instance.getField(0, instance.getNumColumns() - 1);
+	return true;
 }
