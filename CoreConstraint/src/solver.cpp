@@ -42,14 +42,14 @@ int Solver::findPivotColumn(Table& instance) {
 
 	//Never look at the first column, it shouldn't change
 	for (unsigned int i = 1; i < instance.getNumColumns() - 1; i++) {
-		if (instance.getField(0, i) != 0 && (instance.getField(0, i) < cPivotValue || cPivotValue == 0)) {
+		if (instance.getField(0, i) != 0 && instance.getField(0, i) < cPivotValue) {
 			cPivot = i;
 			cPivotValue = instance.getField(0, i);
 		}
 	}
 
 	//If the columns objective value is >= 0 then it cannot be a pivot column
-	return cPivotValue != 0 ? cPivot : -1;
+	return cPivotValue < 0 ? cPivot : -1;
 }
 
 double Solver::findRatio(Table& instance, int row, int column, int resCol) {
@@ -155,15 +155,7 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 		rowBasicData[pivotR] = pivotC;
 		i++;
 		if (artificialVariables.size() > 0) {
-			bool allZero = true;
-			for (unsigned int i = 0; i < artificialVariables.size(); i++) {
-				if (instance.getField(0, artificialVariables[i]) != 0) {
-					allZero = false;
-					printf("allzero false on %i\n", artificialVariables[i]);
-				}
-			}
-			if (allZero) {
-				printf("Artifical Variables satisfiable\n");
+			if (instance.getField(0, instance.getNumColumns() -1) == 0) {
 				break;
 			}
 		}
