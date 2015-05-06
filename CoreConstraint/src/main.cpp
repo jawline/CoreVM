@@ -65,8 +65,12 @@ int main(int argc, char** argv) {
 	std::vector<int> artificialColumns;
 	p.toTable(table, artificialColumns);
 	table.print();
-	Simplex::Solver::solveTable(table, artificialColumns, res);
-	printf("%f\n", res.result);
+	
+	if (Simplex::Solver::solveTable(table, artificialColumns, res)) {
+		printf("%f\n", res.result);
+	} else {
+		printf("Cannot solve\n");
+	}
 
 	return -1;
 }
