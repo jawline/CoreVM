@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 	Constraint q;
 
 	q.addItem(a, 5);
-	q.addItem(b, 1);
+	q.addItem(b, -1);
 	q.setResult(20);
 
 	p.addConstraint(d);

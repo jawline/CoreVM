@@ -1,5 +1,6 @@
 #include "constraint.h"
 #include "problem_constants.h"
+#include <math.h>
 
 using namespace Constraints;
 
@@ -35,9 +36,13 @@ std::string Constraint::toString() const {
 	if (_items.size()) {
 		for (unsigned int i = 0; i < _items.size(); i++) {
 			if (i) {
-				result += "+ ";
+				if (_items[i].second > 0) {
+					result += "+ ";
+				} else {
+					result += "- ";
+				}
 			}
-			result += std::to_string(_items[i].second);
+			result += std::to_string(fabs(_items[i].second));
 			result += _items[i].first.toString();
 			result += " ";
 		}

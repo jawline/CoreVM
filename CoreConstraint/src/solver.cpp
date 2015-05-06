@@ -158,6 +158,17 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 			if (instance.getField(0, instance.getNumColumns() -1) == 0) {
 				break;
 			}
+			bool allZero = true;
+			for (unsigned int i = 0; i < artificialVariables.size(); i++) {
+				if (instance.getField(0, artificialVariables[i]) != 0) {
+					allZero = false;
+					printf("allzero false on %i\n", artificialVariables[i]);
+				}
+			}
+			if (allZero) {
+				printf("Artifical Variables not satisfiable\n");
+				return false;
+			}
 		}
 	}
 
