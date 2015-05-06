@@ -95,10 +95,16 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 	Table original;
 
 	if (artificialVariables.size()) {
+		//TODO: store the top row instead
 		original = instance;
-		instance.print();
 		printf("Aaah artificialness\n");
-		return false;
+		for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
+			instance.setField(0, i, 0);
+		}
+		for (unsigned int i = 0; i < artificialVariables.size(); i++) {
+			instance.setField(0, artificialVariables[i], -1);
+		}
+		instance.print();
 	}
 
 	//Find the initial basic variables (Only occur in one col)
@@ -148,6 +154,19 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 		instance.print();
 		rowBasicData[pivotR] = pivotC;
 		i++;
+		if (artificialVariables.size() > 0) {
+			bool allZero = true;
+			for (unsigned int i = 0; i < artificialVariables.size(); i++) {
+				if (instance.getField(0, artificialVariables[i]) != 0) {
+					allZero = false;
+					printf("allzero false on %i\n", artificialVariables[i]);
+				}
+			}
+			if (allZero) {
+				printf("Artifical Variables satisfiable\n");
+				break;
+			}
+		}
 	}
 
 	printf("---------\n");
@@ -165,5 +184,14 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 	delete[] rowBasicData;
 	delete[] rowBasicSolution;
 	results.result = instance.getField(0, instance.getNumColumns() - 1);
-	return true;
+
+	if (artificialVariables.size() > 0) {
+		for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
+			instance.setField(0, i, original.getField(0, i));
+		}
+		//TODO: Remove artificials
+		return solveTable(instance, std::vector<int>(), results);
+	} else {
+		return true;
+	}
 }

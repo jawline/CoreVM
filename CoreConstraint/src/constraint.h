@@ -35,7 +35,7 @@ namespace Constraints {
 		void setComparisonType(ComparisonType const& type);
 
 		std::string toString() const;
-		void addToTable(Simplex::Table& table, std::vector<int>& artificialColumns) const;
+		void addToTable(Simplex::Table& table) const;
 	};
 };
 

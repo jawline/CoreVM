@@ -54,8 +54,24 @@ Column* Table::getColumn(int i) const {
 }
 
 int Table::addColumn(std::string const& name) {
+	return addColumn(name, false);
+}
 
+std::vector<int> Table::getArtificialColumnList() const {
+	std::vector<int> results;
+	for (unsigned int i = 0; i < getNumColumns(); i++) {
+		if (_columns[i].isArtificial()) {
+			results.push_back(i);
+		}
+	}
+	return results;
+}
+
+int Table::addColumn(std::string const& name, bool artificial) {
+
+	//If it already exists just update its artificialness and return it
 	if (getColumnId(name) != -1) {
+		_columns[getColumnId(name)].setArtificial(artificial);
 		return getColumnId(name);
 	}
 
@@ -73,6 +89,7 @@ int Table::addColumn(std::string const& name) {
 	
 	//Initialise new column
 	_columns[getNumColumns()] = Column(name);
+	_columns[getNumColumns()].setArtificial(artificial);
 	
 	//Expand existing row data
 	expandRows(getNumColumns() + 1);

@@ -1,6 +1,7 @@
 #ifndef _SIMPLEX_TABLAEU_DEF_H_
 #define _SIMPLEX_TABLAEU_DEF_H_
 #include "column.h"
+#include <vector>
 
 namespace Simplex {
 
@@ -25,6 +26,7 @@ namespace Simplex {
 		int getNumColumns() const;
 
 		int addColumn(std::string const& column);
+		int addColumn(std::string const& column, bool artificial);
 		void addRow();
 
 		unsigned int getCurrentRow() const;
@@ -46,6 +48,8 @@ namespace Simplex {
 
 		void moveColumnToEnd(unsigned int col);
 		void moveColumnToEnd(std::string const& name);
+
+		std::vector<int> getArtificialColumnList() const;
 
 		void empty();
 

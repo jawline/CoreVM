@@ -50,7 +50,7 @@ std::string Constraint::toString() const {
 	return result;
 }
 
-void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialColumns) const {
+void Constraint::addToTable(Simplex::Table& table) const {
 	table.addRow();
 	
 	for (unsigned int i = 0; i < _items.size(); i++) {
@@ -78,7 +78,7 @@ void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialC
 
 			//No slack - Add an artificial variable with the same sign as the result
 			name = std::string("artificial") + std::to_string(slackd);
-			artificialColumns.push_back(table.addColumn(name));
+			table.addColumn(name, true);
 			table.setField(table.getCurrentRow(), name, localValue > 0 ? 1 : -1);
 			slackd++;
 
@@ -91,7 +91,7 @@ void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialC
 			//If the slack doesn't have the same sign as the result add an artificial variable
 			if (localValue < 0) {
 				name = std::string("artificial") + std::to_string(slackd);
-				artificialColumns.push_back(table.addColumn(name));
+				table.addColumn(name, true);
 				table.setField(table.getCurrentRow(), name, -1);
 			}
 
@@ -105,7 +105,7 @@ void Constraint::addToTable(Simplex::Table& table, std::vector<int>& artificialC
 			//If the slack doesn't have the same sign as the result add an artificial variable
 			if (localValue > 0) {
 				name = std::string("artificial") + std::to_string(slackd);
-				artificialColumns.push_back(table.addColumn(name));
+				table.addColumn(name, true);
 				table.setField(table.getCurrentRow(), name, 1);
 			}
 

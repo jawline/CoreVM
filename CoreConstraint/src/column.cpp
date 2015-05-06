@@ -20,3 +20,11 @@ Column::~Column() {
 std::string Column::getName() const {
 	return _name;
 }
+
+void Column::setArtificial(bool a) {
+	_artificial = a;
+}
+
+bool Column::isArtificial() const {
+	return _artificial;
+}
