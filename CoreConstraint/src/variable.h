@@ -6,13 +6,15 @@ namespace Constraints {
 	class Variable {
 	private:
 		std::string _name;
+		bool _isSigned;
 		int _index;
 	public:
 		Variable();
-		Variable(std::string const& name, unsigned int index);
+		Variable(std::string const& name, bool isSigned, unsigned int index);
 		~Variable();
 		unsigned int getIndex() const;
 		std::string toString() const;
+		bool isSigned() const;
 	};
 }
 

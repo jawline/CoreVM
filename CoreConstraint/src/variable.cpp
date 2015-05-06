@@ -7,8 +7,9 @@ Variable::Variable() {
 	_index = -1;
 }
 
-Variable::Variable(std::string const& name, unsigned int index) {
+Variable::Variable(std::string const& name, bool isSigned, unsigned int index) {
 	_name = name;
+	_isSigned = isSigned;
 	_index = index;
 }
 
@@ -20,4 +21,8 @@ unsigned int Variable::getIndex() const {
 
 std::string Variable::toString() const {
 	return _name;
+}
+
+bool Variable::isSigned() const {
+	return _isSigned;
 }

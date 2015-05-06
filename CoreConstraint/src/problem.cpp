@@ -10,8 +10,8 @@ Problem::Problem() {
 Problem::~Problem() {}
 
 Variable Problem::createVariable(std::string const& name) {
-	_variables.push_back(Variable(name, _lastv+1));
-	return Variable(name, _lastv++);
+	_variables.push_back(Variable(name, true, _lastv+1));
+	return Variable(name, true, _lastv++);
 }
 
 void Problem::addConstraint(Constraint const& constraint) {
