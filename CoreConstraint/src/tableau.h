@@ -13,6 +13,7 @@ namespace Simplex {
 		int _numRows;
 
 		void expandRows(int numNewColumns);	
+		void copyFrom(Table const& other);
 	public:
 		Table();
 		Table(Table const& other);
@@ -52,8 +53,14 @@ namespace Simplex {
 		std::vector<int> getArtificialColumnList() const;
 
 		void empty();
+		void removeArtificials();
 
 		void print();
+
+		Table& operator=(Table const& other) {
+			copyFrom(other);
+			return *this;
+		}
 	};
 }
 

@@ -189,7 +189,10 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 		for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
 			instance.setField(0, i, original.getField(0, i));
 		}
-		//TODO: Remove artificials
+		instance.removeArtificials();
+		printf("REMOVED ARTIFICIALS");
+		instance.print();
+		printf("SEE\n");
 		return solveTable(instance, std::vector<int>(), results);
 	} else {
 		return true;

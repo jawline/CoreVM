@@ -9,29 +9,38 @@ using namespace Simplex;
 Table::Table() {
 	_columns = nullptr;
 	_numColumns = 0;
+
 	_rowData = nullptr;
 	_numRows = 0;
 }
 
 Table::Table(Table const& other) {
-	empty();
-
-	_numColumns = other.getNumColumns();
-	_numRows = other.getNumRows();
-
-	_columns = new Column[getNumColumns()];
-	for (unsigned int i = 0; i < getNumColumns(); i++) {
-		_columns[i] = other._columns[i];
-	}
-
-	_rowData = new double[getNumRows() * getNumColumns()];
-	for (unsigned int i = 0; i < getNumColumns() * getNumRows(); i++) {
-		_rowData[i] = other._rowData[i];
-	}
+	copyFrom(other);
 }
 
 Table::~Table() {
 	empty();
+}
+
+void Table::copyFrom(Table const& other) {
+	_numColumns = other.getNumColumns();
+	_numRows = other.getNumRows();
+	_rowData = nullptr;
+	_columns = nullptr;
+
+	if (getNumColumns()) {
+		_columns = new Column[getNumColumns()];
+		for (unsigned int i = 0; i < getNumColumns(); i++) {
+			_columns[i] = other._columns[i];
+		}
+	}
+
+	if (getNumRows() * getNumColumns()) {
+		_rowData = new double[getNumRows() * getNumColumns()];
+		for (unsigned int i = 0; i < getNumColumns() * getNumRows(); i++) {
+			_rowData[i] = other._rowData[i];
+		}
+	}
 }
 
 int Table::getColumnId(std::string const& name) const {
@@ -47,6 +56,20 @@ Column* Table::getColumn(std::string const& name) const {
 	int col = getColumnId(name);
 	assert(col != -1);
 	return getColumn(col);
+}
+
+void Table::removeArtificials() {
+	//TODO: Remove artificials
+	//TODO: This just nulls all values in artificial columns so they dont effect the results. It sucks
+	//Remove instead
+	for (unsigned int i = 0; i < getNumColumns(); i++) {
+		if (getColumn(i)->isArtificial()) {
+			for (unsigned int j = 0; j < getNumRows(); j++) {
+				setField(j, i, 0);
+			}
+			getColumn(i)->setArtificial(false);
+		}
+	}
 }
 
 Column* Table::getColumn(int i) const {
