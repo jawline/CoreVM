@@ -190,7 +190,7 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 			instance.setField(0, i, original.getField(0, i));
 		}
 		instance.removeArtificials();
-		printf("REMOVED ARTIFICIALS");
+		printf("REMOVED ARTIFICIALS\n");
 		instance.print();
 		printf("SEE\n");
 		return solveTable(instance, std::vector<int>(), results);
