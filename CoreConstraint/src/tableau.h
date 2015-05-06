@@ -14,6 +14,7 @@ namespace Simplex {
 		void expandRows(int numNewColumns);	
 	public:
 		Table();
+		Table(Table const& other);
 		~Table();
 
 		int getColumnId(std::string const& name) const;
@@ -47,7 +48,6 @@ namespace Simplex {
 		void moveColumnToEnd(std::string const& name);
 
 		void empty();
-		void copy(Table& location);
 
 		void print();
 	};

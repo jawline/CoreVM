@@ -92,9 +92,12 @@ void Solver::makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 }
 
 bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
-	
+	Table original;
+
 	if (artificialVariables.size()) {
-		printf("I don't know how to solve something with artificial variables yet\n");
+		original = instance;
+		instance.print();
+		printf("Aaah artificialness\n");
 		return false;
 	}
 

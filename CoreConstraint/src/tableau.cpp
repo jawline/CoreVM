@@ -13,22 +13,25 @@ Table::Table() {
 	_numRows = 0;
 }
 
-Table::~Table() {
+Table::Table(Table const& other) {
 	empty();
+
+	_numColumns = other.getNumColumns();
+	_numRows = other.getNumRows();
+
+	_columns = new Column[getNumColumns()];
+	for (unsigned int i = 0; i < getNumColumns(); i++) {
+		_columns[i] = other._columns[i];
+	}
+
+	_rowData = new double[getNumRows() * getNumColumns()];
+	for (unsigned int i = 0; i < getNumColumns() * getNumRows(); i++) {
+		_rowData[i] = other._rowData[i];
+	}
 }
 
-void Table::copy(Table& copy) {
-	copy.empty();
-	copy._columns = new Column[_numColumns];
-	for (unsigned int i = 0; i < getNumColumns(); i++) {
-		copy._columns[i] = _columns[i];
-	}
-	copy._numColumns = getNumColumns();
-	copy._rowData = new double[getNumColumns() * getNumRows()];
-	for (unsigned int i = 0; i < getNumColumns() * getNumRows(); i++) {
-		copy._rowData[i] = _rowData[i];
-	}
-	copy._numRows = getNumRows();
+Table::~Table() {
+	empty();
 }
 
 int Table::getColumnId(std::string const& name) const {
