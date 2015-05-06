@@ -17,6 +17,20 @@ Table::~Table() {
 	empty();
 }
 
+void Table::copy(Table& copy) {
+	copy.empty();
+	copy._columns = new Column[_numColumns];
+	for (unsigned int i = 0; i < getNumColumns(); i++) {
+		copy._columns[i] = _columns[i];
+	}
+	copy._numColumns = getNumColumns();
+	copy._rowData = new double[getNumColumns() * getNumRows()];
+	for (unsigned int i = 0; i < getNumColumns() * getNumRows(); i++) {
+		copy._rowData[i] = _rowData[i];
+	}
+	copy._numRows = getNumRows();
+}
+
 int Table::getColumnId(std::string const& name) const {
 	for (int i = 0; i < _numColumns; i++) {
 		if (_columns[i].getName().compare(name) == 0) {

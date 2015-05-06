@@ -47,6 +47,7 @@ namespace Simplex {
 		void moveColumnToEnd(std::string const& name);
 
 		void empty();
+		void copy(Table& location);
 
 		void print();
 	};
