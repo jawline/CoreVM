@@ -50,11 +50,25 @@ namespace Simplex {
 		void moveColumnToEnd(unsigned int col);
 		void moveColumnToEnd(std::string const& name);
 
+		/**
+		 * Return a list of artificial variables
+		 */
 		std::vector<int> getArtificialColumnList() const;
 
+		/**
+		 * Clear the table, deleting all rows and columns
+		 */
 		void empty();
+		
+		/**
+		 * Remove artificial variable columns from the table
+		 * TODO: Currently just nulls them rather than actually freeing the memory, is it worth freeing?
+		 */
 		void removeArtificials();
 
+		/**
+		 * Print the table info to stdout
+		 */
 		void print();
 
 		Table& operator=(Table const& other) {
