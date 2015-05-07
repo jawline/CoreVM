@@ -9,6 +9,9 @@ namespace Constraints {
 
 	typedef std::pair<Variable,double> ConstraintItem;
 
+	/**
+	 * The different types of comparison in a constraint
+	 */
 	typedef enum {
 		Invalid = 0,
 		Equal,
@@ -34,8 +37,15 @@ namespace Constraints {
 		void addItem(Variable const& var, double multiplier);
 		void setResult(double endValue);
 		void setComparisonType(ComparisonType const& type);
+		
+		/**
+		 * Get the comparison type of this constraint
+		 */
 		ComparisonType getComparisonType() const;
 
+		/**
+		 * Return a human readable description of the constraint
+		 */
 		std::string toString() const;
 		
 		/**
