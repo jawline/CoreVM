@@ -22,11 +22,19 @@ void Problem::addConstraint(Constraint const& constraint) {
 
 bool Problem::isSatisfiable() const {
 	Table table;
-	SimplexResult results;
-	if (!toTable(table)) {
-		return false;
+	table.empty();
+	table.addRow();
+	table.addColumn(ProblemConstants::cObjectColumnName);
+	table.setField(table.getCurrentRow(), ProblemConstants::cObjectColumnName, 1);
+	
+	for (unsigned int i = 0; i < _variables.size(); i++) {
+		result.addColumn(_variables[i].toString());
+		result.setField(result.getCurrentRow(), _variables[i].toString(), -1);
 	}
-	return Solver::solveTable(table, table.getArtificialColumnList(), results);
+	
+	result.addColumn(ProblemConstants::cResultColumnName);
+	result.setField(result.getCurrentRow(), ProblemConstants::cResultColumnName, 0);
+	return simSat(table, 0);
 }
 
 std::string Problem::toString() const {
@@ -64,17 +72,6 @@ std::string Problem::toString() const {
 }
 
 bool Problem::toTable(Simplex::Table& result) const {
-	result.empty();
-	
-	result.addRow();
-
-	result.addColumn(ProblemConstants::cObjectColumnName);
-	result.setField(result.getCurrentRow(), ProblemConstants::cObjectColumnName, 1);
-	
-	for (unsigned int i = 0; i < _variables.size(); i++) {
-		result.addColumn(_variables[i].toString());
-		result.setField(result.getCurrentRow(), _variables[i].toString(), -1);
-	}
 
 	result.addColumn(ProblemConstants::cResultColumnName);
 	result.setField(result.getCurrentRow(), ProblemConstants::cResultColumnName, 0);
@@ -85,4 +82,15 @@ bool Problem::toTable(Simplex::Table& result) const {
 	
 	result.moveColumnToEnd(ProblemConstants::cResultColumnName);
 	return true;
+}
+
+bool Problem::isSolvable(Simplex::Table& currentTable, unsigned int i) const {
+	if (i == _constraints.size() - 1) {
+	} else {
+		simSat(currentTable, i+1);
+	}
+}
+
+bool Problem::simSat(Simplex::Table& currentTable, unsigned int i) const {
+	isSolvable(currentTable, i);
 }
