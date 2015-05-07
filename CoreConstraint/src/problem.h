@@ -9,8 +9,9 @@ namespace Constraints {
 		unsigned int _lastv;
 		std::vector<Variable> _variables;
 		std::vector<Constraint> _constraints;
-		bool toTable(Simplex::Table& emptyTable) const;
-
+		
+		inline bool isSolvable(Simplex::Table& currentTable, unsigned int i);
+		bool simSat(Simplex::Table& currentTable, unsigned int i);
 	public:
 		Problem();
 		~Problem();
