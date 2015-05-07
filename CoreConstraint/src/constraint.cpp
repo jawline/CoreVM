@@ -55,7 +55,7 @@ std::string Constraint::toString() const {
 	return result;
 }
 
-void Constraint::addToTable(Simplex::Table& table) const {
+void Constraint::addToTable(Simplex::Table& table, ComparisonType typeOverride) const {
 	table.addRow();
 	
 	for (unsigned int i = 0; i < _items.size(); i++) {
@@ -63,7 +63,7 @@ void Constraint::addToTable(Simplex::Table& table) const {
 		table.setField(table.getCurrentRow(), _items[i].first.toString(), _items[i].second);
 	}
 	
-	ComparisonType localType = _type;
+	ComparisonType localType = typeOverride == Invalid ? _type : typeOverride;
 	double localValue = _value;
 	
 	if (localType == GreaterThanOrEqual) {
