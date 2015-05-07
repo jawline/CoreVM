@@ -59,7 +59,5 @@ int main(int argc, char** argv) {
 	p.addConstraint(q);
 
 	std::cout << p.toString();
-
-	printf("Satisfiable? %s\n", p.isSatisfiable() ? "yes" : "no");
 	return -1;
 }
