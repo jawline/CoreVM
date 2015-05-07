@@ -1,5 +1,7 @@
 #CoreVM Virtual Machine
 
-The virtual machine implementation and instruction and register headers.
+CoreVM virtual machine, capable of symbolically executing CoreVM machine code.
 
-Depends on CoreConstraint
+To build execute 'make', to install execute 'sudo make install'
+
+Depends on CoreConstraints for constraint solving.
