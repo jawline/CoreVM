@@ -34,8 +34,19 @@ namespace Constraints {
 		Constraint(double value);
 		~Constraint();
 
+		/**
+		 * Add a new variable to the constraint
+		 */
 		void addItem(Variable const& var, double multiplier);
+		
+		/**
+		 * Set the result to be compared against
+		 */
 		void setResult(double endValue);
+		
+		/**
+		 * Set the comparison type on this constraint
+		 */
 		void setComparisonType(ComparisonType const& type);
 		
 		/**
