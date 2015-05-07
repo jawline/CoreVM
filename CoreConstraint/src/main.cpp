@@ -60,18 +60,6 @@ int main(int argc, char** argv) {
 
 	std::cout << p.toString();
 
-	Simplex::SimplexResult res;
-	Simplex::Table table;
-	std::vector<int> artificialColumns;
-	p.toTable(table);
-	artificialColumns = table.getArtificialColumnList();
-	table.print();
-
-	if (Simplex::Solver::solveTable(table, artificialColumns, res)) {
-		printf("%f\n", res.result);
-	} else {
-		printf("Cannot solve\n");
-	}
-
+	printf("Satisfiable? %s\n", p.isSatisfiable() ? "yes" : "no");
 	return -1;
 }
