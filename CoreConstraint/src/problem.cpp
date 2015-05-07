@@ -1,7 +1,9 @@
 #include "problem.h"
 #include "problem_constants.h"
+#include "solver.h"
 
 using namespace Constraints;
+using namespace Simplex;
 
 Problem::Problem() {
 	_lastv = 0;
@@ -19,7 +21,12 @@ void Problem::addConstraint(Constraint const& constraint) {
 }
 
 bool Problem::isSatisfiable() const {
-	return false;
+	Table table;
+	SimplexResult results;
+	if (!toTable(table)) {
+		return false;
+	}
+	return Solver::solveTable(table, results);
 }
 
 std::string Problem::toString() const {
