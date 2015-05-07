@@ -33,6 +33,7 @@ namespace Constraints {
 		void addItem(Variable const& var, double multiplier);
 		void setResult(double endValue);
 		void setComparisonType(ComparisonType const& type);
+		ComparisonType getComparisonType() const;
 
 		std::string toString() const;
 		void addToTable(Simplex::Table& table) const;
