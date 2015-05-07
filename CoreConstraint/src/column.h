@@ -12,9 +12,20 @@ namespace Simplex {
       Column(std::string const& name);
       Column(char const* name, size_t len);
       ~Column();
-
+      
+      /**
+       * Set whether this variable is an artificial variable
+       */
       void setArtificial(bool a);
+      
+      /**
+       * Check if this variable is an artificial variable inserted to find a initial table.
+       */
       bool isArtificial() const;
+      
+      /**
+       * Get the column name
+       */
       std::string getName() const;
   };
 }
