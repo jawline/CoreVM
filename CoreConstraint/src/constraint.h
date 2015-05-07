@@ -10,6 +10,7 @@ namespace Constraints {
 	typedef std::pair<Variable,double> ConstraintItem;
 
 	typedef enum {
+		Invalid = 0,
 		Equal,
 		NotEqual,
 		LessThan,
