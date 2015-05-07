@@ -7,13 +7,19 @@ namespace Constraints {
 	private:
 		std::string _name;
 		bool _isSigned;
-		int _index;
 	public:
 		Variable();
-		Variable(std::string const& name, bool isSigned, unsigned int index);
+		Variable(std::string const& name, bool isSigned);
 		~Variable();
-		unsigned int getIndex() const;
+		
+		/**
+		 * Return the variables name
+		 */
 		std::string toString() const;
+		
+		/**
+		 * Return true if this is a signed integer
+		 */
 		bool isSigned() const;
 	};
 }
