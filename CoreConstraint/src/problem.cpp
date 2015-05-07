@@ -75,6 +75,7 @@ bool Problem::isSolvable(Simplex::Table& currentTable, unsigned int i) const {
 	if (i == _constraints.size() - 1) {
 		printf("-----------------------------------HIT THIS POINT-------------------------\n");
 		currentTable.print();
+		currentTable.moveColumnToEnd(ProblemConstants::cResultColumnName);
 		SimplexResult result;
 		return Solver::solveTable(currentTable, currentTable.getArtificialColumnList(), result);
 	}
