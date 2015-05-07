@@ -97,11 +97,11 @@ bool Problem::simSat(Simplex::Table& currentTable, unsigned int i) const {
 	if (_constraints[i].getComparisonType() == NotEqual) {
 		//TODO: doesn't need to be a complete copy
 		Table copy = currentTable;
-		_constraints[i].addToTable(currentTable);
+		_constraints[i].addToTable(currentTable, GreaterThan);
 		if (isSolvable(currentTable, i)) {
 			return true;
 		}
-		_constraints[i].addToTable(copy);
+		_constraints[i].addToTable(copy, LessThan);
 		return isSolvable(currentTable, i);
 	} else {
 		_constraints[i].addToTable(currentTable);
