@@ -86,6 +86,7 @@ bool Problem::toTable(Simplex::Table& result) const {
 
 bool Problem::isSolvable(Simplex::Table& currentTable, unsigned int i) const {
 	if (i == _constraints.size() - 1) {
+		currentTable.print();
 		SimplexResult result;
 		return Solver::solveTable(currentTable, currentTable.getArtificialVariables(), result);
 	} else {
