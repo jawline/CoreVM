@@ -26,7 +26,7 @@ bool Problem::isSatisfiable() const {
 	if (!toTable(table)) {
 		return false;
 	}
-	return Solver::solveTable(table, results);
+	return Solver::solveTable(table, table.getArtificialColumnList(), results);
 }
 
 std::string Problem::toString() const {
