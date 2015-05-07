@@ -171,8 +171,9 @@ void Core::jumpEqualImmediateImmediate() {
 	//Symbolic jump
 	if (_state->isSymbolic(r1)) {
 		printf("FORKING\n");
-		CoreState *left, *right;
+		CoreState *left, *right, *last;
 		forkState(left, right);
+		forkState(right, last);
 		printf("TODO: LEFT CONSTRAINT  r1  = %i\n", val);
 		printf("TODO: RIGHT CONSTRAINT r1 != %i\n", val);
 
@@ -186,11 +187,18 @@ void Core::jumpEqualImmediateImmediate() {
 		Constraints::Constraint c2;
 		c2.addItem(left->getVariable(r1), 1);
 		c2.setResult(val);
-		c2.setComparisonType(Constraints::NotEqual);
+		c2.setComparisonType(Constraints::GreaterThan);
 		right->getProblem()->addConstraint(c2);
+		
+		Constraints::Constraint c3;
+		c3.addItem(left->getVariable(r1), 1);
+		c3.setResult(val);
+		c3.setComparisonType(Constraints::LessThan);
+		last->getProblem()->addConstraint(c3);
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 10);
+		setProgramCounter(last, getProgramCounter(last) + 10);
 	} else { //Not symbolic, do normal jump
 		if (_state->getRegisterUInt(r1) == val) {
 			setProgramCounter(dst);
@@ -245,8 +253,9 @@ void Core::jumpEqualRegisterImmediate() {
 
 	if (_state->isSymbolic(r1) && _state->isSymbolic(r2)) {
 		printf("FORKING\n");
-		CoreState *left, *right;
+		CoreState *left, *right, *last;
 		forkState(left, right);
+		forkState(right, last);
 		printf("TODO: LEFT CONSTRAINT  r1  = r2\n");
 		printf("TODO: RIGHT CONSTRAINT r1 != r2\n");
 
@@ -262,11 +271,19 @@ void Core::jumpEqualRegisterImmediate() {
 		c2.addItem(left->getVariable(r1), 1);
 		c2.addItem(left->getVariable(r2), -1);
 		c2.setResult(0);
-		c2.setComparisonType(Constraints::NotEqual);
+		c2.setComparisonType(Constraints::GreaterThan);
 		right->getProblem()->addConstraint(c2);
+
+		Constraints::Constraint c3;
+		c3.addItem(left->getVariable(r1), 1);
+		c3.addItem(left->getVariable(r2), -1);
+		c3.setResult(0);
+		c3.setComparisonType(Constraints::LessThan);
+		last->getProblem()->addConstraint(c3);
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);
+		setProgramCounter(last, getProgramCounter(last) + 7);
 	} else {
 		if (_state->getRegisterUInt(r1) == _state->getRegisterUInt(r2)) {
 			setProgramCounter(dst);
