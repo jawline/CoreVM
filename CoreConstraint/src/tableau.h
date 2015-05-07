@@ -12,7 +12,14 @@ namespace Simplex {
 		int _numColumns;
 		int _numRows;
 
-		void expandRows(int numNewColumns);	
+		/**
+		 * Expand the rowdata after a new column has been added
+		 */
+		void expandRows(int numNewColumns);
+		
+		/**
+		 * Copy this data from another
+		 */
 		void copyFrom(Table const& other);
 	public:
 		Table();
