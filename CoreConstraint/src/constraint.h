@@ -37,7 +37,12 @@ namespace Constraints {
 		ComparisonType getComparisonType() const;
 
 		std::string toString() const;
-		void addToTable(Simplex::Table& table) const;
+		
+		/**
+		 * Add this constraint to a simplex table, if typeOverride is anything other than
+		 * invalid then it will be used instead of the constraints
+		 */
+		void addToTable(Simplex::Table& table, ComparisonType typeOverride = ComparisonType::Invalid) const;
 	};
 };
 
