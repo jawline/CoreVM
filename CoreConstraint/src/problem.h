@@ -9,6 +9,7 @@ namespace Constraints {
 		unsigned int _lastv;
 		std::vector<Variable> _variables;
 		std::vector<Constraint> _constraints;
+		bool toTable(Simplex::Table& emptyTable) const;
 
 	public:
 		Problem();
@@ -19,7 +20,6 @@ namespace Constraints {
 
 		bool isSatisfiable() const;
 		std::string toString() const;
-		bool toTable(Simplex::Table& emptyTable) const;
 	};
 }
 
