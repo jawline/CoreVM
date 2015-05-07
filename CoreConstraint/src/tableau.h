@@ -78,6 +78,9 @@ namespace Simplex {
 		 */
 		void print();
 
+		/**
+		 * Override = operator to copy data rather than using the same pointers (Avoids double free)
+		 */
 		Table& operator=(Table const& other) {
 			copyFrom(other);
 			return *this;
