@@ -94,5 +94,17 @@ bool Problem::isSolvable(Simplex::Table& currentTable, unsigned int i) const {
 }
 
 bool Problem::simSat(Simplex::Table& currentTable, unsigned int i) const {
-	isSolvable(currentTable, i);
+	if (_constraints[i].getComparisonType() == NotEqual) {
+		//TODO: doesn't need to be a complete copy
+		Table copy = currentTable;
+		_constraints[i].addToTable(currentTable);
+		if (isSolvable(currentTable, i)) {
+			return true;
+		}
+		_constraints[i].addToTable(copy);
+		return isSolvable(currentTable, i);
+	} else {
+		_constraints[i].addToTable(currentTable);
+		return isSolvable(currentTable, i);
+	}
 }
