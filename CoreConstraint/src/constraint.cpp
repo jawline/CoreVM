@@ -123,3 +123,7 @@ void Constraint::addToTable(Simplex::Table& table) const {
 
 	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, localValue);
 }
+
+ComparisonType Constraint::getComparisonType() const {
+	return _type;
+}
