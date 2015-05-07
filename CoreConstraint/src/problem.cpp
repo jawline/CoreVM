@@ -20,7 +20,6 @@ void Problem::addConstraint(Constraint const& constraint) {
 }
 
 bool Problem::isSatisfiable() const {
-	printf("---------------------------------IS SAT??--------------------------\n");
 	Table table;
 	table.empty();
 	table.addRow();
@@ -73,7 +72,6 @@ std::string Problem::toString() const {
 
 bool Problem::isSolvable(Simplex::Table& currentTable, unsigned int i) const {
 	if (i == _constraints.size() - 1) {
-		currentTable.print();
 		currentTable.moveColumnToEnd(ProblemConstants::cResultColumnName);
 		SimplexResult result;
 		return Solver::solveTable(currentTable, currentTable.getArtificialColumnList(), result);
