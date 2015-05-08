@@ -10,6 +10,13 @@ namespace Constraints {
 		std::vector<Constraint> _constraints;
 		unsigned int _lastVariableId;
 		
+		/**
+		 * Add definitions for caching satisfiability
+		 */
+		static const int CACHE_MASK;;
+		static const int SATISFIABLE_MASK;
+		unsigned int _satisfiableCache;
+		
 		inline bool isSolvable(Simplex::Table& currentTable, unsigned int i) const;
 		bool simSat(Simplex::Table& currentTable, unsigned int i) const;
 	public:
