@@ -3,9 +3,10 @@
 using namespace Constraints;
 
 Variable::Variable() {}
-Variable::Variable(std::string const& name, bool isSigned) {
+Variable::Variable(std::string const& name, bool isSigned, unsigned int index) {
 	_name = name;
 	_isSigned = isSigned;
+	_variableIndex = index;
 }
 
 Variable::~Variable() {}
@@ -16,4 +17,8 @@ std::string Variable::toString() const {
 
 bool Variable::isSigned() const {
 	return _isSigned;
+}
+
+unsigned int getVariableIndex() const {
+	return _variableIndex;
 }
