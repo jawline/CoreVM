@@ -79,7 +79,7 @@ int Solver::findPivotRow(Table& instance, int column) {
 		}
 	}
 
-	return cPivot;
+	return cPivotR != 0 ? cPivot : -1;
 }
 
 void Solver::makeRowUnit(Table& instance, int row, int col) {
@@ -147,6 +147,12 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 	
 	while ((pivotC = findPivotColumn(instance)) != -1) {
 		int pivotR = findPivotRow(instance, pivotC);
+		if (pivotR == -1) {
+			printf("AAAAH Should I be here?\n");
+			//TODO: Verify whether pivotR will ever be -1
+			exit(1);
+			break;
+		}
 		double ratio = findRatio(instance, pivotR, pivotC, instance.getNumColumns() - 1);
 		printf("Operation Number: %i\n", i);
 		printf("Pivot Column: %i\n", pivotC);
