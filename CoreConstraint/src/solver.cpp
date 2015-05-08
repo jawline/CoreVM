@@ -156,6 +156,15 @@ void Solver::handleFinalBasicData(Table& instance, int* rowBasicData, double* ro
 	printf("------------------------------------------\n");
 }
 
+bool Solver::allArtificialsZero(Table const& instance, std::vector<int> const& artificialVariables) {
+	for (unsigned int i = 0; i < artificialVariables.size(); i++) {
+		if (instance.getField(0, artificialVariables[i]) != 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
 bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolution, std::vector<int> const& artficialVariables) {
 	int pivotC;
 	int i = 0;
@@ -182,19 +191,11 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolu
 		instance.print();
 		rowBasicData[pivotR] = pivotC;
 		i++;
-		if (numArtificials > 0) {
+		if (numArtificials) {
 			if (instance.getField(0, instance.getNumColumns() -1) == 0) {
 				break;
 			}
-			bool allZero = true;
-			for (unsigned int i = 0; i < numArtificials; i++) {
-				if (instance.getField(0, artificialVariables[i]) != 0) {
-					allZero = false;
-					printf("allzero false on %i\n", artificialVariables[i]);
-				}
-			}
-			if (allZero) {
-				printf("Artifical Variables not satisfiable\n");
+			if (allArtificialsZero(instance, artificialVariables)) {
 				return false;
 			}
 		}
