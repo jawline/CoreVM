@@ -109,7 +109,7 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 	Table original;
 
 	if (artificialVariables.size()) {
-		setupArtificialTable();
+		setupArtificialTable(instance, original, artificialVariables);
 		printf("DEBUG: Changed to artificial table\n");
 	}
 
