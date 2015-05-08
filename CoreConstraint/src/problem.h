@@ -8,6 +8,7 @@ namespace Constraints {
 	private:
 		std::vector<Variable> _variables;
 		std::vector<Constraint> _constraints;
+		unsigned int _lastVariableId;
 		
 		inline bool isSolvable(Simplex::Table& currentTable, unsigned int i) const;
 		bool simSat(Simplex::Table& currentTable, unsigned int i) const;
