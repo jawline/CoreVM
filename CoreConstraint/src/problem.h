@@ -13,9 +13,8 @@ namespace Constraints {
 		/**
 		 * Add definitions for caching satisfiability
 		 */
-		static const int cCacheMask;
-		static const int cSatisfiableMask;
-		unsigned int _satisfiableCache;
+		bool _cached;
+		bool _satisfiable;
 		
 		inline bool isSolvable(Simplex::Table& currentTable, unsigned int i) const;
 		bool simSat(Simplex::Table& currentTable, unsigned int i) const;
