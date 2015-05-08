@@ -166,8 +166,7 @@ bool Solver::allArtificialsZero(Table const& instance, std::vector<int> const& a
 }
 
 bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolution, std::vector<int> const& artficialVariables) {
-	int pivotC;
-	int i = 0;
+	int pivotC, iterations = 0;
 	unsigned int numArtificials = artificialVariables.size();
 	
 	while ((pivotC = findPivotColumn(instance)) != -1) {
@@ -181,7 +180,7 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolu
 		
 		double ratio = findRatio(instance, pivotR, pivotC, instance.getNumColumns() - 1);
 		
-		printf("Operation Number: %i\n", i);
+		printf("Operation Number: %i\n", iterations);
 		printf("Pivot Column: %i\n", pivotC);
 		printf("Pivot Row: %i\n", pivotR);
 		printf("Pivot Ratio: %f\n", ratio);
@@ -190,7 +189,7 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolu
 		makeOtherRowsUnit(instance, pivotR, pivotC);
 		instance.print();
 		rowBasicData[pivotR] = pivotC;
-		i++;
+		
 		if (numArtificials) {
 			if (instance.getField(0, instance.getNumColumns() -1) == 0) {
 				break;
@@ -199,6 +198,8 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolu
 				return false;
 			}
 		}
+
+		iterations++;
 	}	
 }
 
