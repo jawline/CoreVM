@@ -94,20 +94,23 @@ void Solver::makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 	}
 }
 
+void Solver::setupArtificialTable(Table& instance, Table& original, std::vector<int> const& artificialVariables) {
+	//TODO: store the top row instead, this is crazy ineficient
+	original = instance;
+	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
+		instance.setField(0, i, 0);
+	}
+	for (unsigned int i = 0; i < artificialVariables.size(); i++) {
+		instance.setField(0, artificialVariables[i], -1);
+	}
+}
+
 bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
 	Table original;
 
 	if (artificialVariables.size()) {
-		//TODO: store the top row instead
-		original = instance;
-		printf("Aaah artificialness\n");
-		for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
-			instance.setField(0, i, 0);
-		}
-		for (unsigned int i = 0; i < artificialVariables.size(); i++) {
-			instance.setField(0, artificialVariables[i], -1);
-		}
-		instance.print();
+		setupArtificialTable();
+		printf("DEBUG: Changed to artificial table\n");
 	}
 
 	//Find the initial basic variables (Only occur in one col)
