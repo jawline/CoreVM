@@ -7,6 +7,8 @@ namespace Constraints {
 	private:
 		std::string _name;
 		bool _isSigned;
+		unsigned int _variableIndex;
+		
 	public:
 		Variable();
 		Variable(std::string const& name, bool isSigned);
@@ -21,6 +23,11 @@ namespace Constraints {
 		 * Return true if this is a signed integer
 		 */
 		bool isSigned() const;
+		
+		/**
+		 * Get this variables index in the problem
+		 */
+		unsigned int getVariableIndex() const;
 	};
 }
 
