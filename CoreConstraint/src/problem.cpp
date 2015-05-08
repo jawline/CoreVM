@@ -6,13 +6,14 @@ using namespace Constraints;
 using namespace Simplex;
 
 Problem::Problem() {
+	_lastVariableId = 0;
 }
 
 Problem::~Problem() {}
 
 Variable Problem::createVariable(std::string const& name) {
-	_variables.push_back(Variable(name, true));
-	return Variable(name, true);
+	_variables.push_back(Variable(name, true, _lastVariableId));
+	return Variable(name, true, _lastVariableId++);
 }
 
 void Problem::addConstraint(Constraint const& constraint) {
