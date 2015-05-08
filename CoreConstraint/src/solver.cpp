@@ -53,7 +53,10 @@ int Solver::findPivotColumn(Table& instance) {
 }
 
 double Solver::findRatio(Table& instance, int row, int column, int resCol) {
-	return instance.getField(row, resCol) / instance.getField(row, column);
+	double resultField = instance.getField(row, column);
+	//TODO: Verify this is correct
+	//Avoids divide by zero
+	return resultField != 0 ? instance.getField(row, resCol) / resultField : 0;
 }
 
 int Solver::findPivotRow(Table& instance, int column) {
