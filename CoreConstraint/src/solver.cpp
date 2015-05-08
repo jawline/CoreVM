@@ -140,10 +140,27 @@ void Solver::findBasicData(Table& instance, int*& rowBasicData, double*& rowBasi
 	printf("------------------------------------------\n");
 }
 
+void Solver::handleFinalBasicData(Table& instance, int*& rowBasicData, double*& rowBasicSolution) {
+	printf("------------------------------------------\n");
+	printf("-              FINAL BASIC               -\n");
+	printf("------------------------------------------\n");
+	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
+		if (rowBasicData[i] != -1) {
+			printf("%s: %f\n",
+				instance.getColumn(i)->getName().c_str(), 
+				instance.getField(i, instance.getNumColumns() - 1));
+		} else {
+			printf("Row %i unmapped\n", i);
+		}
+	}
+	printf("------------------------------------------\n");
+}
+
 bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
 	Table original;
+	unsigned int numArtificials = artificialVariables.size();
 
-	if (artificialVariables.size()) {
+	if (numArtificials) {
 		setupArtificialTable(instance, original, artificialVariables);
 		printf("DEBUG: Changed to artificial table\n");
 	}
@@ -190,24 +207,16 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 			}
 		}
 	}
-
-	printf("---------\n");
-	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
-		if (rowBasicData[i] != -1) {
-			printf("%s: %f\n",
-				instance.getColumn(i)->getName().c_str(), 
-				instance.getField(i, instance.getNumColumns() - 1));
-		} else {
-			printf("Row %i unmapped\n", i);
-		}
+	
+	if (numArtificials) {
+		handleFinalBasicData(instance, rowBasicdata, rowBasicSolution);
 	}
-	printf("---------\n");
 
 	delete[] rowBasicData;
 	delete[] rowBasicSolution;
 	results.result = instance.getField(0, instance.getNumColumns() - 1);
 
-	if (artificialVariables.size() > 0) {
+	if (numArtificials) {
 		restoreTable(instance, original);
 		printf("DEBUG: Stripped artificials\n");
 		return solveTable(instance, std::vector<int>(), results);
