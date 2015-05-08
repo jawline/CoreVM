@@ -112,7 +112,7 @@ void Solver::restoreTable(Table& instance, Table& original) {
 	instance.removeArtificials();
 }
 
-void Solver::findBasicData(Table& instance, int*& rowBasicData, double*& rowBasicSolution) {
+void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
 	
 	printf("------------------------------------------\n");
 	printf("-             BASIC INFO                 -\n");
@@ -140,7 +140,7 @@ void Solver::findBasicData(Table& instance, int*& rowBasicData, double*& rowBasi
 	printf("------------------------------------------\n");
 }
 
-void Solver::handleFinalBasicData(Table& instance, int*& rowBasicData, double*& rowBasicSolution) {
+void Solver::handleFinalBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
 	printf("------------------------------------------\n");
 	printf("-              FINAL BASIC               -\n");
 	printf("------------------------------------------\n");
@@ -156,19 +156,7 @@ void Solver::handleFinalBasicData(Table& instance, int*& rowBasicData, double*& 
 	printf("------------------------------------------\n");
 }
 
-bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
-	Table original;
-	unsigned int numArtificials = artificialVariables.size();
-
-	if (numArtificials) {
-		setupArtificialTable(instance, original, artificialVariables);
-		printf("DEBUG: Changed to artificial table\n");
-	}
-	
-	int* rowBasicData = new int[instance.getNumRows()];
-	double* rowBasicSolution = new double[instance.getNumRows()];
-	findBasicData(instance, rowBasicData, rowBasicSolution);
-
+bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolution, std::vector<int> const& artficialVariables) {
 	int pivotC;
 	int i = 0;
 	
@@ -206,6 +194,24 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 				return false;
 			}
 		}
+	}	
+}
+
+bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
+	Table original;
+	unsigned int numArtificials = artificialVariables.size();
+
+	if (numArtificials) {
+		setupArtificialTable(instance, original, artificialVariables);
+		printf("DEBUG: Changed to artificial table\n");
+	}
+	
+	int* rowBasicData = new int[instance.getNumRows()];
+	double* rowBasicSolution = new double[instance.getNumRows()];
+	findBasicData(instance, rowBasicData, rowBasicSolution);
+	
+	if (!pivotTable(instance, rowBasicData, rowBasicSolution, artificialVariables)) {
+		return false;
 	}
 	
 	if (numArtificials) {
