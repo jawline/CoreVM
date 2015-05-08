@@ -23,6 +23,7 @@ namespace Simplex {
 		static void makeOtherRowsUnit(Table& instance, int baseRow, int col);
 		static void setupArtificialTable(Table& instance, Table& original, std::vector<int> const& artificialVariables);
 		static void restoreTable(Table& instance, Table& original);
+		static void findBasicData(Table& instance, int*& rowBasicData, double*& rowBasicSolution);
 
 	public:
 		/**
