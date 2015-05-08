@@ -4,11 +4,11 @@
 #include "tableau.h"
 
 namespace Simplex {
+
 	/**
 	 * Structure to hold results of simplex solver run
 	 */
-	class SimplexResult {
-	public:
+	struct SimplexResult {
 		double result;
 	};
 
