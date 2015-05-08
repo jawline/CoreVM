@@ -105,6 +105,13 @@ void Solver::setupArtificialTable(Table& instance, Table& original, std::vector<
 	}
 }
 
+void Solver::restoreTable(Table& instance, Table& original) {
+	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
+		instance.setField(0, i, original.getField(0, i));
+	}
+	instance.removeArtificials();
+}
+
 bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
 	Table original;
 
@@ -201,13 +208,8 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 	results.result = instance.getField(0, instance.getNumColumns() - 1);
 
 	if (artificialVariables.size() > 0) {
-		for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
-			instance.setField(0, i, original.getField(0, i));
-		}
-		instance.removeArtificials();
-		printf("REMOVED ARTIFICIALS\n");
-		instance.print();
-		printf("SEE\n");
+		restoreTable(instance, original);
+		printf("DEBUG: Stripped artificials\n");
 		return solveTable(instance, std::vector<int>(), results);
 	} else {
 		return true;
