@@ -112,24 +112,11 @@ void Solver::restoreTable(Table& instance, Table& original) {
 	instance.removeArtificials();
 }
 
-bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
-	Table original;
-
-	if (artificialVariables.size()) {
-		setupArtificialTable(instance, original, artificialVariables);
-		printf("DEBUG: Changed to artificial table\n");
-	}
-
-	//Find the initial basic variables (Only occur in one col)
-	int* rowBasicData = new int[instance.getNumRows()];
-	double* rowBasicSolution = new double[instance.getNumRows()];
-
-	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
-		rowBasicData[i] = 0;
-		rowBasicSolution[i] = 0;
-	}
+void Solver::findBasicData(Table& instance, int*& rowBasicData, double*& rowBasicSolution) {
 	
-	printf("---------\n");
+	printf("------------------------------------------\n");
+	printf("-             BASIC INFO                 -\n");
+	printf("------------------------------------------\n");
 
 	//First row is the objective function, should have no basic variables
 	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
@@ -150,7 +137,20 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 		}
 	}
 	
-	printf("---------\n");
+	printf("------------------------------------------\n");
+}
+
+bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
+	Table original;
+
+	if (artificialVariables.size()) {
+		setupArtificialTable(instance, original, artificialVariables);
+		printf("DEBUG: Changed to artificial table\n");
+	}
+	
+	int* rowBasicData = new int[instance.getNumRows()];
+	double* rowBasicSolution = new double[instance.getNumRows()];
+	findBasicData(instance, rowBasicData, rowBasicSolution);
 
 	int pivotC;
 	int i = 0;
