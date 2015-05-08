@@ -159,31 +159,35 @@ void Solver::handleFinalBasicData(Table& instance, int* rowBasicData, double* ro
 bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolution, std::vector<int> const& artficialVariables) {
 	int pivotC;
 	int i = 0;
+	unsigned int numArtificials = artificialVariables.size();
 	
 	while ((pivotC = findPivotColumn(instance)) != -1) {
 		int pivotR = findPivotRow(instance, pivotC);
 		if (pivotR == -1) {
-			printf("AAAAH Should I be here?\n");
 			//TODO: Verify whether pivotR will ever be -1
-			exit(1);
-			break;
+			//TODO: Verify what that means?
+			printf("AAAAH Should I be here?\n");
+			return false;
 		}
+		
 		double ratio = findRatio(instance, pivotR, pivotC, instance.getNumColumns() - 1);
+		
 		printf("Operation Number: %i\n", i);
 		printf("Pivot Column: %i\n", pivotC);
 		printf("Pivot Row: %i\n", pivotR);
 		printf("Pivot Ratio: %f\n", ratio);
+		
 		makeRowUnit(instance, pivotR, pivotC);
 		makeOtherRowsUnit(instance, pivotR, pivotC);
 		instance.print();
 		rowBasicData[pivotR] = pivotC;
 		i++;
-		if (artificialVariables.size() > 0) {
+		if (numArtificials > 0) {
 			if (instance.getField(0, instance.getNumColumns() -1) == 0) {
 				break;
 			}
 			bool allZero = true;
-			for (unsigned int i = 0; i < artificialVariables.size(); i++) {
+			for (unsigned int i = 0; i < numArtificials; i++) {
 				if (instance.getField(0, artificialVariables[i]) != 0) {
 					allZero = false;
 					printf("allzero false on %i\n", artificialVariables[i]);
