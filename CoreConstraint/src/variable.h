@@ -11,7 +11,7 @@ namespace Constraints {
 		
 	public:
 		Variable();
-		Variable(std::string const& name, bool isSigned);
+		Variable(std::string const& name, bool isSigned, unsigned int index);
 		~Variable();
 		
 		/**
