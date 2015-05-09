@@ -59,6 +59,7 @@ void failureState(VM::Core* c) {
 		printf("------------------------------------------------\n");
 		printf("-              NO             FAIL             -\n");
 		printf("------------------------------------------------\n");
+		printInterrupt(c);
 	}
 }
 

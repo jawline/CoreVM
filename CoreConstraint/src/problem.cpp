@@ -63,7 +63,7 @@ std::string Problem::toString() const {
 			}
 			result += _variables[i].toString();
 		}
-		result += " > 0\n";
+		result += " >= 0\n";
 	}
 
 	printf("Satisfiable: %i\n", isSatisfiable());
@@ -89,7 +89,7 @@ bool Problem::simSat(Simplex::Table& currentTable, unsigned int i) const {
 			return true;
 		}
 		_constraints[i].addToTable(copy, LessThan);
-		return isSolvable(currentTable, i);
+		return isSolvable(copy, i);
 	}
 	
 	_constraints[i].addToTable(currentTable);

@@ -174,6 +174,7 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolu
 		if (pivotR == -1) {
 			//TODO: Verify whether pivotR will ever be -1
 			//TODO: Verify what that means?
+			instance.print();
 			printf("AAAAH Should I be here?\n");
 			return false;
 		}
