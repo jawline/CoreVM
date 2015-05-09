@@ -73,11 +73,13 @@ int Solver::findPivotRow(Table& instance, int column) {
 	
 	//Find the row to be used as the pivot, excluding the objective function
 	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
-		if (findRatio(instance, i, column, resultsColumn) < cPivotR) {
+		if ((findRatio(instance, i, column, resultsColumn) != 0 && findRatio(instance, i, column, resultsColumn) < cPivotR) || cPivotR == 0) {
 			cPivot = i;
 			cPivotR = findRatio(instance, i, column, resultsColumn);
 		}
 	}
+
+	printf("PivotR: %i %f\n", cPivot, cPivotR);
 
 	return cPivotR != 0 ? cPivot : -1;
 }
@@ -175,7 +177,7 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolu
 			//TODO: Verify whether pivotR will ever be -1
 			//TODO: Verify what that means?
 			instance.print();
-			printf("AAAAH Should I be here?\n");
+			printf("AAAAH Should I be here? %i %i\n", pivotC, pivotR);
 			return false;
 		}
 		
