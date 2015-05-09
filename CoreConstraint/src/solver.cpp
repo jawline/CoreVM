@@ -165,7 +165,7 @@ bool Solver::allArtificialsZero(Table const& instance, std::vector<int> const& a
 	return true;
 }
 
-bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolution, std::vector<int> const& artficialVariables) {
+bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolution, std::vector<int> const& artificialVariables) {
 	int pivotC, iterations = 0;
 	unsigned int numArtificials = artificialVariables.size();
 	
@@ -200,7 +200,9 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolu
 		}
 
 		iterations++;
-	}	
+	}
+
+	return true;
 }
 
 bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
@@ -221,7 +223,7 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 	}
 	
 	if (numArtificials) {
-		handleFinalBasicData(instance, rowBasicdata, rowBasicSolution);
+		handleFinalBasicData(instance, rowBasicData, rowBasicSolution);
 	}
 
 	delete[] rowBasicData;

@@ -7,41 +7,34 @@ using namespace Simplex;
 
 Problem::Problem() {
 	_lastVariableId = 0;
-	_cached = false;
 }
 
 Problem::~Problem() {}
 
 Variable Problem::createVariable(std::string const& name) {
-	_cached = false;
 	_variables.push_back(Variable(name, true, _lastVariableId));
 	return Variable(name, true, _lastVariableId++);
 }
 
 void Problem::addConstraint(Constraint const& constraint) {
-	_cached = false;
 	_constraints.push_back(constraint);
 }
 
 bool Problem::isSatisfiable() const {
-	if (_cached) {
-		return _satisfiable;
-	} else {
-		Table table;
-		table.empty();
-		table.addRow();
-		table.addColumn(ProblemConstants::cObjectColumnName);
-		table.setField(table.getCurrentRow(), ProblemConstants::cObjectColumnName, 1);
-		
-		for (unsigned int i = 0; i < _variables.size(); i++) {
-			table.addColumn(_variables[i].toString());
-			table.setField(table.getCurrentRow(), _variables[i].toString(), -1);
-		}
-		
-		table.addColumn(ProblemConstants::cResultColumnName);
-		table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, 0);
-		return simSat(table, 0);
+	Table table;
+	table.empty();
+	table.addRow();
+	table.addColumn(ProblemConstants::cObjectColumnName);
+	table.setField(table.getCurrentRow(), ProblemConstants::cObjectColumnName, 1);
+	
+	for (unsigned int i = 0; i < _variables.size(); i++) {
+		table.addColumn(_variables[i].toString());
+		table.setField(table.getCurrentRow(), _variables[i].toString(), -1);
 	}
+	
+	table.addColumn(ProblemConstants::cResultColumnName);
+	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, 0);
+	return simSat(table, 0);
 }
 
 std::string Problem::toString() const {
@@ -82,9 +75,7 @@ bool Problem::isSolvable(Simplex::Table& currentTable, unsigned int i) const {
 	if (i == _constraints.size() - 1) {
 		currentTable.moveColumnToEnd(ProblemConstants::cResultColumnName);
 		SimplexResult result;
-		_satisfiable = Solver::solveTable(currentTable, currentTable.getArtificialColumnList(), result);
-		_cached = true;
-		return _satisfiable;
+		return Solver::solveTable(currentTable, currentTable.getArtificialColumnList(), result);
 	}
 	return simSat(currentTable, i+1);
 }

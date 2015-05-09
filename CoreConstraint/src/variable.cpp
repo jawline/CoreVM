@@ -19,6 +19,6 @@ bool Variable::isSigned() const {
 	return _isSigned;
 }
 
-unsigned int getVariableIndex() const {
+unsigned int Variable::getVariableIndex() const {
 	return _variableIndex;
 }
