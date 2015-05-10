@@ -62,7 +62,7 @@ double Solver::findRatio(Table& instance, int row, int column, int resCol) {
 int Solver::findPivotRow(Table& instance, int column) {
 
 	if (instance.getNumRows() < 2) {
-		printf("no pivot possible\n");
+		printf("ERROR: no pivot possible\n");
 		return -1;
 	}
 
