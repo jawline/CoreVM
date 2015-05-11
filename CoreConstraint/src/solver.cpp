@@ -124,13 +124,13 @@ void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
 		rowBasicData[i] = findBasic(instance, i);
 		if (rowBasicData[i] == -1) {
-			printf("Failed to find basic variable for row %i\n", i);
+			printf("DEBUG: Failed to find basic variable for row %i\n", i);
 			rowBasicSolution[i] = 0;
 		} else {
 			double basicField = instance.getField(i, rowBasicData[i]);
 			double resultField = instance.getField(i, instance.getNumColumns() - 1);
 			rowBasicSolution[i] = basicField / resultField;
-			printf("Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
+			printf("DEBUG: Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
 				i,
 				rowBasicData[i],
 				instance.getField(i, rowBasicData[i]),
@@ -177,16 +177,16 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolu
 			//TODO: Verify whether pivotR will ever be -1
 			//TODO: Verify what that means?
 			instance.print();
-			printf("AAAAH Should I be here? %i %i\n", pivotC, pivotR);
+			printf("DEBUG: PANIC? PIVOTR == -1 %i %i\n", pivotC, pivotR);
 			return false;
 		}
 		
 		double ratio = findRatio(instance, pivotR, pivotC, instance.getNumColumns() - 1);
 		
-		printf("Operation Number: %i\n", iterations);
-		printf("Pivot Column: %i\n", pivotC);
-		printf("Pivot Row: %i\n", pivotR);
-		printf("Pivot Ratio: %f\n", ratio);
+		printf("DEBUG: Operation Number: %i\n", iterations);
+		printf("DEBUG: Pivot Column: %i\n", pivotC);
+		printf("DEBUG: Pivot Row: %i\n", pivotR);
+		printf("DEBUG: Pivot Ratio: %f\n", ratio);
 		
 		makeRowUnit(instance, pivotR, pivotC);
 		makeOtherRowsUnit(instance, pivotR, pivotC);
