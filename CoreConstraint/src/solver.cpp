@@ -6,7 +6,9 @@ using namespace Simplex;
 
 bool Solver::isBasic(Table& instance, int col) {
 	unsigned int count = 0;
-	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
+
+	//Assume row 0 is the results row
+	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
 		if (instance.getField(i, col) != 0) {
 			count++;
 		}
@@ -18,7 +20,7 @@ bool Solver::isBasic(Table& instance, int col) {
 int Solver::findBasic(Table& instance, int row) {
 
 	//-1 excludes the result row
-	for (unsigned int i = 0; i < instance.getNumColumns() - 1; i++) {
+	for (unsigned int i = 1; i < instance.getNumColumns() - 1; i++) {
 		if (isBasic(instance, i) && instance.getField(row, i) != 0) {
 			return i;
 		}
@@ -29,7 +31,7 @@ int Solver::findBasic(Table& instance, int row) {
 /**
  * Return the ID of the pivot column or -1 if there is not pivot column
  */
-int Solver::findPivotColumn(Table& instance) {
+int Solver::findPivotColumn(Table& instance, bool minimize) {
 
 	//Check there are at least three columns (At least one variable, the objective variable, and the results columns)
 	if (instance.getNumColumns() < 3) {
@@ -130,6 +132,8 @@ void Solver::restoreTable(Table& instance, Table& original) {
 	instance.removeArtificials();
 }
 
+int li = 0;
+
 bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
 	
 	printf("------------------------------------------\n");
@@ -140,9 +144,11 @@ bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
 		rowBasicData[i] = findBasic(instance, i);
 		if (rowBasicData[i] == -1) {
+			int col = instance.addColumn(std::string("artificial") + std::to_string(li++), true);
+			instance.setField(i, col, 1);
 			printf("DEBUG: Failed to find basic variable for row %i\n", i);
-			printf("ERROR: Exiting because no initial feasible solution is found\n");
-			return false;
+			printf("DEBUG: Creating artificial variable for row %i\n", i);
+			instance.print();
 		} else {
 			double basicField = instance.getField(i, rowBasicData[i]);
 			double resultField = instance.getField(i, instance.getNumColumns() - 1);
@@ -186,65 +192,63 @@ bool Solver::allArtificialsZero(Table const& instance, std::vector<int> const& a
 	return true;
 }
 
-bool Solver::pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolution, std::vector<int> const& artificialVariables) {
+bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 	int pivotC, iterations = 0;
-	unsigned int numArtificials = artificialVariables.size();
-	
-	while ((pivotC = findPivotColumn(instance)) != -1) {
+
+	while ((pivotC = findPivotColumn(instance, minimize)) != -1) {
+		
 		int pivotR = findPivotRow(instance, pivotC);
 		if (pivotR == -1) {
-			//TODO: Verify whether pivotR will ever be -1
-			//TODO: Verify what that means?
+			printf("DEBUG: PivotR returns -1, table is unsolvable %i %i\n", pivotC, pivotR);
 			instance.print();
-			printf("DEBUG: PANIC? PIVOTR == -1 %i %i\n", pivotC, pivotR);
 			return false;
 		}
 		
 		double ratio = findRatio(instance, pivotR, pivotC, instance.getNumColumns() - 1);
-		
+		makeRowUnit(instance, pivotR, pivotC);
+		makeOtherRowsUnit(instance, pivotR, pivotC);
+		rowBasicData[pivotR] = pivotC;
+		iterations++;
+
 		printf("DEBUG: Operation Number: %i\n", iterations);
 		printf("DEBUG: Pivot Column: %i\n", pivotC);
 		printf("DEBUG: Pivot Row: %i\n", pivotR);
 		printf("DEBUG: Pivot Ratio: %f\n", ratio);
-		
-		makeRowUnit(instance, pivotR, pivotC);
-		makeOtherRowsUnit(instance, pivotR, pivotC);
 		instance.print();
-		rowBasicData[pivotR] = pivotC;
-		
-		if (numArtificials) {
-			if (instance.getField(0, instance.getNumColumns() -1) == 0) {
-				break;
-			}
-			if (allArtificialsZero(instance, artificialVariables)) {
-				return false;
-			}
-		}
-
-		iterations++;
 	}
 
 	return true;
 }
 
-bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVariables, SimplexResult& results) {
-	Table original;
-	unsigned int numArtificials = artificialVariables.size();
+bool Solver::solveTable(Table& instance, SimplexResult& results) {
 
-	if (numArtificials) {
-		setupArtificialTable(instance, original, artificialVariables);
-		printf("DEBUG: Changed to artificial table\n");
-		instance.print();
-	}
-	
 	int* rowBasicData = new int[instance.getNumRows()];
 	double* rowBasicSolution = new double[instance.getNumRows()];
+	Table original;
 
 	if (!findBasicData(instance, rowBasicData, rowBasicSolution)) {
 		return false;
 	}
+
+	std::vector<int> artificialVariables = instance.getArtificialColumnList();
+	unsigned int numArtificials = artificialVariables.size();
+
+	if (numArtificials) {
+		original = instance;
+		setupArtificialTable(instance, original, artificialVariables);
+		printf("DEBUG: Changed to artificial table\n");
+		instance.print();
+
+		if (!pivotTable(instance, rowBasicData, true)) {
+			return false;
+		}	
+
+		restoreTable(instance, original);
+		printf("DEBUG: Stripped artificials\n");
+		instance.print();
+	}
 	
-	if (!pivotTable(instance, rowBasicData, rowBasicSolution, artificialVariables)) {
+	if (!pivotTable(instance, rowBasicData, false)) {
 		return false;
 	}
 	
@@ -256,11 +260,5 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 	delete[] rowBasicSolution;
 	results.result = instance.getField(0, instance.getNumColumns() - 1);
 
-	if (numArtificials) {
-		restoreTable(instance, original);
-		printf("DEBUG: Stripped artificials\n");
-		return solveTable(instance, std::vector<int>(), results);
-	} else {
-		return true;
-	}
+	return true;
 }

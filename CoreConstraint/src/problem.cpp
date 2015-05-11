@@ -24,16 +24,14 @@ bool Problem::isSatisfiable() const {
 	Table table;
 	table.empty();
 	table.addRow();
-	table.addColumn(ProblemConstants::cObjectColumnName);
-	table.setField(table.getCurrentRow(), ProblemConstants::cObjectColumnName, 1);
+	table.addColumn(ProblemConstants::cResultColumnName);
+	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, 0);
 	
 	for (unsigned int i = 0; i < _variables.size(); i++) {
 		table.addColumn(_variables[i].toString());
 		table.setField(table.getCurrentRow(), _variables[i].toString(), -1);
 	}
-	
-	table.addColumn(ProblemConstants::cResultColumnName);
-	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, 0);
+
 	return simSat(table, 0);
 }
 
@@ -73,9 +71,8 @@ std::string Problem::toString() const {
 
 bool Problem::isSolvable(Simplex::Table& currentTable, unsigned int i) const {
 	if (i == _constraints.size() - 1) {
-		currentTable.moveColumnToEnd(ProblemConstants::cResultColumnName);
 		SimplexResult result;
-		return Solver::solveTable(currentTable, currentTable.getArtificialColumnList(), result);
+		return Solver::solveTable(currentTable, result);
 	}
 	return simSat(currentTable, i+1);
 }
