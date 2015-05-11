@@ -76,11 +76,11 @@ bool Solver::artificialColumnsInBasis(int* basis, unsigned int numRows, std::vec
 	for (unsigned int i = 0; i < numRows; i++) {
 		for (unsigned int j = 0; j < artificialColumns.size(); j++) {
 			if (basis[i] == artificialColumns[j]) {
-				return false;
+				return true;
 			}
 		}
 	}
-	return true;
+	return false;
 }
 
 /**
