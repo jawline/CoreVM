@@ -47,7 +47,9 @@ std::string Constraint::toString() const {
 			result += " ";
 		}
 		result += ComparisonTypeStrings[_type];
-		result += " ";
+		result += " (";
+		result += std::to_string(_type);
+		result += ") ";
 		result += std::to_string(_value);
 	} else {
 		result = "Empty Constraint";

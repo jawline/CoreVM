@@ -243,6 +243,9 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 
 bool Solver::solveTable(Table& instance, SimplexResult& results) {
 
+	printf("DEBUG: Entered with table\n");
+	instance.print();
+
 	int* rowBasicData = new int[instance.getNumRows()];
 	double* rowBasicSolution = new double[instance.getNumRows()];
 	Table original;
@@ -271,6 +274,13 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 			return false;
 		}
 
+		if (instance.getField(0,0) != 0) {
+			printf("DEBUG: Result of artificial minimization != 0, not solvable\n");
+			return false;
+		}
+
+		handleFinalBasicData(instance, rowBasicData, rowBasicSolution);
+
 		restoreTable(instance, original);
 		printf("DEBUG: Stripped artificials\n");
 		instance.print();
@@ -280,9 +290,7 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 		return false;
 	}
 	
-	if (numArtificials) {
-		handleFinalBasicData(instance, rowBasicData, rowBasicSolution);
-	}
+	handleFinalBasicData(instance, rowBasicData, rowBasicSolution);
 
 	delete[] rowBasicData;
 	delete[] rowBasicSolution;

@@ -42,18 +42,18 @@ int main(int argc, char** argv) {
 
 	Problem p;
 	Variable a = p.createVariable("A");
-	Variable b = p.createVariable("B");
 
 	Constraint d;
 	
-	d.addItem(a,5);
+	d.addItem(a, 1);
+	d.setComparisonType(LessThanOrEqual);
 	d.setResult(10);
 
 	Constraint q;
 
-	q.addItem(a, 5);
-	q.addItem(b, 1);
-	q.setResult(20);
+	q.addItem(a, 1);
+	q.setComparisonType(GreaterThanOrEqual);
+	q.setResult(5);
 
 	p.addConstraint(d);
 	p.addConstraint(q);
