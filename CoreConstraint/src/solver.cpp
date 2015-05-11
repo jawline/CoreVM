@@ -42,16 +42,27 @@ int Solver::findPivotColumn(Table& instance, bool minimize) {
 	int cPivot = 1;
 	double cPivotValue = instance.getField(0, 1);
 
-	//Never look at the first column, it shouldn't change
-	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
-		if (instance.getField(0, i) != 0 && instance.getField(0, i) < cPivotValue) {
-			cPivot = i;
-			cPivotValue = instance.getField(0, i);
+	if (minimize) {
+		//Never look at the first column, it shouldn't change
+		for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
+			if (instance.getField(0, i) != 0 && instance.getField(0, i) > cPivotValue) {
+				cPivot = i;
+				cPivotValue = instance.getField(0, i);
+			}
 		}
+		//If the columns objective value is >= 0 then it cannot be a pivot column
+		return cPivotValue > 0 ? cPivot : -1;
+	} else {
+		//Never look at the first column, it shouldn't change
+		for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
+			if (instance.getField(0, i) != 0 && instance.getField(0, i) < cPivotValue) {
+				cPivot = i;
+				cPivotValue = instance.getField(0, i);
+			}
+		}
+		//If the columns objective value is >= 0 then it cannot be a pivot column
+		return cPivotValue < 0 ? cPivot : -1;
 	}
-
-	//If the columns objective value is >= 0 then it cannot be a pivot column
-	return cPivotValue < 0 ? cPivot : -1;
 }
 
 double Solver::findRatio(Table& instance, int row, int column, int resCol) {
@@ -192,30 +203,35 @@ bool Solver::allArtificialsZero(Table const& instance, std::vector<int> const& a
 	return true;
 }
 
+void Solver::doPivot(Table& instance, int* basis, unsigned int pivotR, unsigned int pivotC) {		
+	double ratio = findRatio(instance, pivotR, pivotC, 0);
+	makeRowUnit(instance, pivotR, pivotC);
+	makeOtherRowsUnit(instance, pivotR, pivotC);
+	basis[pivotR] = pivotC;
+	printf("DEBUG: Pivot Column: %i\n", pivotC);
+	printf("DEBUG: Pivot Row: %i\n", pivotR);
+	printf("DEBUG: Pivot Ratio: %f\n", ratio);
+	instance.print();
+}
+
 bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 	int pivotC, iterations = 0;
 
 	while ((pivotC = findPivotColumn(instance, minimize)) != -1) {
-		
 		int pivotR = findPivotRow(instance, pivotC);
 		if (pivotR == -1) {
 			printf("DEBUG: PivotR returns -1, table is unsolvable %i %i\n", pivotC, pivotR);
 			instance.print();
 			return false;
 		}
-		
-		double ratio = findRatio(instance, pivotR, pivotC, 0);
-		makeRowUnit(instance, pivotR, pivotC);
-		makeOtherRowsUnit(instance, pivotR, pivotC);
-		rowBasicData[pivotR] = pivotC;
 		iterations++;
-
 		printf("DEBUG: Operation Number: %i\n", iterations);
-		printf("DEBUG: Pivot Column: %i\n", pivotC);
-		printf("DEBUG: Pivot Row: %i\n", pivotR);
-		printf("DEBUG: Pivot Ratio: %f\n", ratio);
-		instance.print();
+		doPivot(instance, rowBasicData, pivotR, pivotC);
 	}
+
+	printf("Could not find pivotC %i\n", pivotC);
+	instance.print();
+	printf("\n\n---------------\n");
 
 	return true;
 }
@@ -241,7 +257,7 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 
 		if (!pivotTable(instance, rowBasicData, true)) {
 			return false;
-		}	
+		}
 
 		restoreTable(instance, original);
 		printf("DEBUG: Stripped artificials\n");
