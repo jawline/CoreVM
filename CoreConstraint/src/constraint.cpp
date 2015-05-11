@@ -81,11 +81,13 @@ void Constraint::addToTable(Simplex::Table& table, ComparisonType typeOverride) 
 	switch (localType) {
 		case Equal:
 
+			/*
 			//No slack - Add an artificial variable with the same sign as the result
 			name = std::string("artificial") + std::to_string(slackd);
 			table.addColumn(name, true);
 			table.setField(table.getCurrentRow(), name, localValue > 0 ? 1 : -1);
 			slackd++;
+			*/
 
 			break;
 		case LessThan:
@@ -93,12 +95,13 @@ void Constraint::addToTable(Simplex::Table& table, ComparisonType typeOverride) 
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, 1);
 
+			/*
 			//If the slack doesn't have the same sign as the result add an artificial variable
 			if (localValue < 0) {
 				name = std::string("artificial") + std::to_string(slackd);
 				table.addColumn(name, true);
 				table.setField(table.getCurrentRow(), name, -1);
-			}
+			}*/
 
 			slackd++;
 			break;
@@ -107,12 +110,13 @@ void Constraint::addToTable(Simplex::Table& table, ComparisonType typeOverride) 
 			table.addColumn(name);
 			table.setField(table.getCurrentRow(), name, -1);
 			
+			/*
 			//If the slack doesn't have the same sign as the result add an artificial variable
 			if (localValue > 0) {
 				name = std::string("artificial") + std::to_string(slackd);
 				table.addColumn(name, true);
 				table.setField(table.getCurrentRow(), name, 1);
-			}
+			}*/
 
 			slackd++;
 			break;
