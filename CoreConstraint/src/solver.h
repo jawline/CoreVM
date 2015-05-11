@@ -27,6 +27,7 @@ namespace Simplex {
 		static void handleFinalBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution);
 		static bool pivotTable(Table& instance, int* rowBasicData, double* rowBasicSolution, std::vector<int> const& artficialVariables);
 		static bool allArtificialsZero(Table const& instance, std::vector<int> const& artificialVariables);
+		static bool artificialColumnsInBasis(int* basis, unsigned int numRows, std::vector<int> const& artificialColumns);
 
 	public:
 		/**
