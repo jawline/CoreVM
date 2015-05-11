@@ -59,6 +59,17 @@ double Solver::findRatio(Table& instance, int row, int column, int resCol) {
 	return resultField != 0 ? instance.getField(row, resCol) / resultField : 0;
 }
 
+bool Solver::artificialColumnsInBasis(int* basis, unsigned int numRows, std::vector<int>& artificialColumns) {
+	for (unsigned int i = 0; i < numRows; i++) {
+		for (unsigned int j = 0; j < artificialColumns.size(); i++) {
+			if (basis[i] == artificialColumns[j]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 int Solver::findPivotRow(Table& instance, int column) {
 
 	if (instance.getNumRows() < 2) {
