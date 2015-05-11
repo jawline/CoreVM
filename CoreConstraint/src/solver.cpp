@@ -4,16 +4,18 @@
 
 using namespace Simplex;
 
-bool Solver::isBasic(Table& instance, int col) {
+int Solver::findBasicRow(Table& instance, int col) {
 	unsigned int count = 0;
+	int row;
 
 	//Assume row 0 is the results row
 	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
 		if (instance.getField(i, col) != 0) {
 			count++;
+			row = i;
 		}
 	}
-	return count == 1;
+	return count == 1 ? row : -1;
 }
 
 //TODO: Could be more efficient. The row->col->row search could be turned into just a row->col search
@@ -21,7 +23,7 @@ int Solver::findBasic(Table& instance, int row) {
 
 	//-1 excludes the result row
 	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
-		if (isBasic(instance, i) && instance.getField(row, i) != 0) {
+		if (findBasicRow(instance, i) != -1 && instance.getField(row, i) != 0) {
 			return i;
 		}
 	}
@@ -258,7 +260,7 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 		printf("DEBUG: Changed to artificial table\n");
 		instance.print();
 
-		//doPivot(rowBasicData[artificialVariables[0]])
+		doPivot(instance, rowBasicData, findBasicRow(instance, artificialVariables[0]), artificialVariables[0]);
 
 		if (!pivotTable(instance, rowBasicData, true)) {
 			return false;

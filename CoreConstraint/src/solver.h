@@ -14,7 +14,7 @@ namespace Simplex {
 
 	class Solver {
 	private:
-		static bool isBasic(Table& instance, int col);
+		static int findBasicRow(Table& instance, int col);
 		static int findBasic(Table& instance, int row);
 		static int findPivotColumn(Table& instance, bool minimize);
 		static double findRatio(Table& instance, int row, int column, int resCol);
