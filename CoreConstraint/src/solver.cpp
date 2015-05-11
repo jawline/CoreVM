@@ -74,7 +74,7 @@ double Solver::findRatio(Table& instance, int row, int column, int resCol) {
 
 bool Solver::artificialColumnsInBasis(int* basis, unsigned int numRows, std::vector<int> const& artificialColumns) {
 	for (unsigned int i = 0; i < numRows; i++) {
-		for (unsigned int j = 0; j < artificialColumns.size(); i++) {
+		for (unsigned int j = 0; j < artificialColumns.size(); j++) {
 			if (basis[i] == artificialColumns[j]) {
 				return false;
 			}
@@ -153,24 +153,27 @@ bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 
 	//First row is the objective function, should have no basic variables
 	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
+		
 		rowBasicData[i] = findBasic(instance, i);
+		
 		if (rowBasicData[i] == -1) {
 			int col = instance.addColumn(std::string("artificial") + std::to_string(li++), true);
 			instance.setField(i, col, 1);
+			rowBasicData[i] = col;
 			printf("DEBUG: Failed to find basic variable for row %i\n", i);
 			printf("DEBUG: Creating artificial variable for row %i\n", i);
 			instance.print();
-		} else {
-			double basicField = instance.getField(i, rowBasicData[i]);
-			double resultField = instance.getField(i, 0);
-			rowBasicSolution[i] = basicField / resultField;
-			printf("DEBUG: Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
-				i,
-				rowBasicData[i],
-				instance.getField(i, rowBasicData[i]),
-				instance.getField(i, 0),
-				rowBasicSolution[i]);
 		}
+
+		double basicField = instance.getField(i, rowBasicData[i]);
+		double resultField = instance.getField(i, 0);
+		rowBasicSolution[i] = resultField == 0 ? 0 : basicField / resultField;
+		printf("DEBUG: Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
+			i,
+			rowBasicData[i],
+			instance.getField(i, rowBasicData[i]),
+			instance.getField(i, 0),
+			rowBasicSolution[i]);
 	}
 	
 	printf("------------------------------------------\n");
@@ -231,7 +234,7 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 
 	printf("Could not find pivotC %i\n", pivotC);
 	instance.print();
-	printf("\n\n---------------\n");
+	printf("-----------------------------------------\n");
 
 	return true;
 }
@@ -255,7 +258,14 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 		printf("DEBUG: Changed to artificial table\n");
 		instance.print();
 
+		//doPivot(rowBasicData[artificialVariables[0]])
+
 		if (!pivotTable(instance, rowBasicData, true)) {
+			return false;
+		}
+
+		if (artificialColumnsInBasis(rowBasicData, instance.getNumRows(), artificialVariables)) {
+			printf("DEBUG: Artificial columns still in basis, unsolvable\n");
 			return false;
 		}
 
