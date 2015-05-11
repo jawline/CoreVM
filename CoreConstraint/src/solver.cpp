@@ -20,7 +20,7 @@ bool Solver::isBasic(Table& instance, int col) {
 int Solver::findBasic(Table& instance, int row) {
 
 	//-1 excludes the result row
-	for (unsigned int i = 1; i < instance.getNumColumns() - 1; i++) {
+	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
 		if (isBasic(instance, i) && instance.getField(row, i) != 0) {
 			return i;
 		}
@@ -34,7 +34,7 @@ int Solver::findBasic(Table& instance, int row) {
 int Solver::findPivotColumn(Table& instance, bool minimize) {
 
 	//Check there are at least three columns (At least one variable, the objective variable, and the results columns)
-	if (instance.getNumColumns() < 3) {
+	if (instance.getNumColumns() < 2) {
 		return -1;
 	}
 
@@ -43,7 +43,7 @@ int Solver::findPivotColumn(Table& instance, bool minimize) {
 	double cPivotValue = instance.getField(0, 1);
 
 	//Never look at the first column, it shouldn't change
-	for (unsigned int i = 1; i < instance.getNumColumns() - 1; i++) {
+	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
 		if (instance.getField(0, i) != 0 && instance.getField(0, i) < cPivotValue) {
 			cPivot = i;
 			cPivotValue = instance.getField(0, i);
@@ -82,7 +82,7 @@ int Solver::findPivotRow(Table& instance, int column) {
 		return -1;
 	}
 
-	int resultsColumn = instance.getNumColumns() - 1;
+	int resultsColumn = 0;
 	
 	int cPivot = 1;
 	double cPivotR = findRatio(instance, 1, column, resultsColumn);
@@ -117,7 +117,7 @@ void Solver::makeOtherRowsUnit(Table& instance, int baseRow, int col) {
 void Solver::setupArtificialTable(Table& instance, Table& original, std::vector<int> const& artificialVariables) {
 	//TODO: store the top row instead, this is crazy ineficient
 	original = instance;
-	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
+	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
 		instance.setField(0, i, 0);
 	}
 	for (unsigned int i = 0; i < artificialVariables.size(); i++) {
@@ -126,7 +126,7 @@ void Solver::setupArtificialTable(Table& instance, Table& original, std::vector<
 }
 
 void Solver::restoreTable(Table& instance, Table& original) {
-	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
+	for (unsigned int i = 0; i < instance.getNumColumns(); i++) {
 		instance.setField(0, i, original.getField(0, i));
 	}
 	instance.removeArtificials();
@@ -151,13 +151,13 @@ bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 			instance.print();
 		} else {
 			double basicField = instance.getField(i, rowBasicData[i]);
-			double resultField = instance.getField(i, instance.getNumColumns() - 1);
+			double resultField = instance.getField(i, 0);
 			rowBasicSolution[i] = basicField / resultField;
 			printf("DEBUG: Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
 				i,
 				rowBasicData[i],
 				instance.getField(i, rowBasicData[i]),
-				instance.getField(i, instance.getNumColumns() - 1),
+				instance.getField(i, 0),
 				rowBasicSolution[i]);
 		}
 	}
@@ -175,7 +175,7 @@ void Solver::handleFinalBasicData(Table& instance, int* rowBasicData, double* ro
 		if (rowBasicData[i] != -1) {
 			printf("%s: %f\n",
 				instance.getColumn(i)->getName().c_str(), 
-				instance.getField(i, instance.getNumColumns() - 1));
+				instance.getField(i, 0));
 		} else {
 			printf("Row %i unmapped\n", i);
 		}
@@ -204,7 +204,7 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 			return false;
 		}
 		
-		double ratio = findRatio(instance, pivotR, pivotC, instance.getNumColumns() - 1);
+		double ratio = findRatio(instance, pivotR, pivotC, 0);
 		makeRowUnit(instance, pivotR, pivotC);
 		makeOtherRowsUnit(instance, pivotR, pivotC);
 		rowBasicData[pivotR] = pivotC;
@@ -258,7 +258,7 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 
 	delete[] rowBasicData;
 	delete[] rowBasicSolution;
-	results.result = instance.getField(0, instance.getNumColumns() - 1);
+	results.result = instance.getField(0, 0);
 
 	return true;
 }
