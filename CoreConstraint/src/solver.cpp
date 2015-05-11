@@ -59,7 +59,7 @@ double Solver::findRatio(Table& instance, int row, int column, int resCol) {
 	return resultField != 0 ? instance.getField(row, resCol) / resultField : 0;
 }
 
-bool Solver::artificialColumnsInBasis(int* basis, unsigned int numRows, std::vector<int>& artificialColumns) {
+bool Solver::artificialColumnsInBasis(int* basis, unsigned int numRows, std::vector<int> const& artificialColumns) {
 	for (unsigned int i = 0; i < numRows; i++) {
 		for (unsigned int j = 0; j < artificialColumns.size(); i++) {
 			if (basis[i] == artificialColumns[j]) {
@@ -125,7 +125,7 @@ void Solver::restoreTable(Table& instance, Table& original) {
 	instance.removeArtificials();
 }
 
-void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
+bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
 	
 	printf("------------------------------------------\n");
 	printf("-             BASIC INFO                 -\n");
@@ -136,7 +136,8 @@ void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 		rowBasicData[i] = findBasic(instance, i);
 		if (rowBasicData[i] == -1) {
 			printf("DEBUG: Failed to find basic variable for row %i\n", i);
-			rowBasicSolution[i] = 0;
+			printf("ERROR: Exiting because no initial feasible solution is found\n");
+			return false;
 		} else {
 			double basicField = instance.getField(i, rowBasicData[i]);
 			double resultField = instance.getField(i, instance.getNumColumns() - 1);
@@ -151,6 +152,8 @@ void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 	}
 	
 	printf("------------------------------------------\n");
+	
+	return true;
 }
 
 void Solver::handleFinalBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
@@ -230,7 +233,10 @@ bool Solver::solveTable(Table& instance, std::vector<int> const& artificialVaria
 	
 	int* rowBasicData = new int[instance.getNumRows()];
 	double* rowBasicSolution = new double[instance.getNumRows()];
-	findBasicData(instance, rowBasicData, rowBasicSolution);
+
+	if (!findBasicData(instance, rowBasicData, rowBasicSolution)) {
+		return false;
+	}
 	
 	if (!pivotTable(instance, rowBasicData, rowBasicSolution, artificialVariables)) {
 		return false;
