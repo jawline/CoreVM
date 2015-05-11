@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
 	Constraint d;
 	
 	d.addItem(a, 1);
-	d.setComparisonType(LessThanOrEqual);
+	d.setComparisonType(LessThan);
 	d.setResult(10);
 
 	Constraint q;
