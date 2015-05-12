@@ -246,18 +246,6 @@ void Table::subtractRow(unsigned int r1, unsigned int r2) {
 	subtractRow(r1, r2, 1);
 }
 
-void Table::moveColumnToEnd(unsigned int col) {
-	for (unsigned int i = col; i < getNumColumns() - 1; i++) {
-		swapColumn(i, i+1);
-	}
-}
-
-void Table::moveColumnToEnd(std::string const& name) {
-	int col = getColumnId(name);
-	assert(col != -1);
-	moveColumnToEnd(col);
-}
-
 void Table::empty() {
 	_numRows = 0;
 	_numColumns = 0;
