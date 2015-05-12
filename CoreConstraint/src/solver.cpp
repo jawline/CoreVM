@@ -152,7 +152,7 @@ void Solver::restoreTable(Table& instance, Table& original) {
 }
 
 
-void Solver::findBasicData(Table& instance, int* rowBasis, double* rowBasicSolution) {
+void Solver::findBasicData(Table& instance, int* rowBasis) {
 	
 	if (_excessiveLogging) {
 		printf("------------------------------------------\n");
@@ -179,7 +179,6 @@ void Solver::findBasicData(Table& instance, int* rowBasis, double* rowBasicSolut
 
 		double basicField = instance.getField(i, rowBasis[i]);
 		double resultField = instance.getField(i, 0);
-		rowBasicSolution[i] = resultField == 0 ? 0 : basicField / resultField;
 		
 		if (_excessiveLogging) {
 			printf("DEBUG: Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
@@ -187,7 +186,7 @@ void Solver::findBasicData(Table& instance, int* rowBasis, double* rowBasicSolut
 				rowBasis[i],
 				instance.getField(i, rowBasis[i]),
 				instance.getField(i, 0),
-				rowBasicSolution[i]);
+				resultField == 0 ? 0 : basicField / resultField);
 		}
 	}
 	
@@ -196,7 +195,7 @@ void Solver::findBasicData(Table& instance, int* rowBasis, double* rowBasicSolut
 	}
 }
 
-void Solver::handleFinalBasicData(Table& instance, int* rowBasis, double* rowBasicSolution) {
+void Solver::handleFinalBasicData(Table& instance, int* rowBasis) {
 	if (_excessiveLogging) {
 		printf("------------------------------------------\n");
 		printf("-              FINAL BASIC               -\n");
@@ -298,7 +297,7 @@ bool Solver::artificialMinStep(Table& instance, int* rowBasis) {
 			return false;
 		}
 
-		handleFinalBasicData(instance, rowBasis, rowBasicSolution);
+		handleFinalBasicData(instance, rowBasis);
 
 		restoreTable(instance, original);
 		
@@ -320,10 +319,9 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 	}
 
 	int* rowBasis = new int[instance.getNumRows()];
-	double* rowBasicSolution = new double[instance.getNumRows()];
 
 	//Find the columns with only one `1` or insert artificial variables
-	findBasicData(instance, rowBasis, rowBasicSolution);
+	findBasicData(instance, rowBasis);
 	
 	/* 
 	 * If there are any artificial variables inserted then this min step will attempt to find
@@ -338,12 +336,11 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 		return false;
 	}
 	
-	handleFinalBasicData(instance, rowBasis, rowBasicSolution);
+	handleFinalBasicData(instance, rowBasis);
 
 	results = SimplexResult(instance, rowBasis);
 
 	delete[] rowBasis;
-	delete[] rowBasicSolution;
 
 	return true;
 }
