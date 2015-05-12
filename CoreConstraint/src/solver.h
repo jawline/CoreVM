@@ -14,6 +14,7 @@ namespace Simplex {
 
 	class Solver {
 	private:
+		static bool excessiveLogging;
 		static int findBasicRow(Table& instance, int col);
 		static int findBasic(Table& instance, int row);
 		static int findPivotColumn(Table& instance, bool minimize);
@@ -36,6 +37,11 @@ namespace Simplex {
 		 * NOTE: It is assumed that the last column in the table is the results column
 		 */
 		static bool solveTable(Table& instance, SimplexResult& results);
+		
+		/**
+		 * Set the solvers logging level
+		 */
+		static void setLogging(bool enabled);
 	};
 }
 
