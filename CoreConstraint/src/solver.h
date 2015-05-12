@@ -2,15 +2,9 @@
 #define _TABLEAU_SOLVER_DEF_H_
 #include <vector>
 #include "tableau.h"
+#include "simplexresult.h"
 
 namespace Simplex {
-
-	/**
-	 * Structure to hold results of simplex solver run
-	 */
-	struct SimplexResult {
-		double result;
-	};
 
 	class Solver {
 	private:
