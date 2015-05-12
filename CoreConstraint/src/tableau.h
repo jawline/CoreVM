@@ -43,15 +43,34 @@ namespace Simplex {
 		double getField(unsigned int row, unsigned int col) const;
 		double getField(unsigned int row, std::string const& column) const;
 
+		/**
+		 * Set the table value as the specified row & column
+		 */
 		void setField(unsigned int row, unsigned int col, double value);
+		
+		/**
+		 * Set the value of the column with the specified name at the specified row
+		 */
 		void setField(unsigned int row, std::string const& column, double value);
 
-		void swapColumn(unsigned int c1, unsigned int c2);
-
+		/**
+		 * Subtract a multiple of one row from another
+		 */
 		void subtractRow(unsigned int r1, unsigned int r2, double scalar);
+		
+		/**
+		 * Subtract one row from another
+		 */
 		void subtractRow(unsigned int r1, unsigned int r2);
 
+		/**
+		 * Multiply one row with another
+		 */
 		void multiplyRow(unsigned int r1, double scalar);
+		
+		/**
+		 * Divide one row by another
+		 */
 		void divideRow(unsigned int r1, double divisor);
 
 		/**
