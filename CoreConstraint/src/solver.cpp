@@ -5,6 +5,7 @@
 using namespace Simplex;
 
 bool Solver::_excessiveLogging = false;
+unsigned int Solver::_lastArtificial = 0;
 
 int Solver::findBasicRow(Table& instance, int col) {
 	unsigned int count = 0;
@@ -150,7 +151,6 @@ void Solver::restoreTable(Table& instance, Table& original) {
 	instance.removeArtificials();
 }
 
-int li = 0;
 
 void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
 	
@@ -166,7 +166,7 @@ void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 		rowBasicData[i] = findBasic(instance, i);
 		
 		if (rowBasicData[i] == -1) {
-			int col = instance.addColumn(std::string("artificial") + std::to_string(li++), true);
+			int col = instance.addColumn(std::string("artificial") + std::to_string(_lastArtificial++), true);
 			instance.setField(i, col, 1);
 			rowBasicData[i] = col;
 			
@@ -312,6 +312,7 @@ bool Solver::artificialMinStep(Table& instance, int* rowBasicData) {
 }
 
 bool Solver::solveTable(Table& instance, SimplexResult& results) {
+	_lastArtificial = 0;
 
 	if (_excessiveLogging) {
 		printf("DEBUG: Entered with table\n");
