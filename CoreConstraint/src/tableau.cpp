@@ -201,18 +201,6 @@ void Table::setField(unsigned int row, std::string const& name, double val) {
 	setField(row, col, val);
 }
 
-void Table::swapColumn(unsigned int a, unsigned int b) {
-	double temp;
-	for (unsigned int i = 0; i < _numRows; i++) {
-		temp = getField(i, a);
-		setField(i, a, getField(i, b));
-		setField(i, b, temp);
-	}
-	Column tempCol = _columns[a];
-	_columns[a] = _columns[b];
-	_columns[b] = tempCol;
-}
-
 void Table::print() {
 	for (unsigned int i = 0; i < _numColumns; i++) {
 		printf("| %s |", _columns[i].getName().c_str());
