@@ -152,7 +152,7 @@ void Solver::restoreTable(Table& instance, Table& original) {
 }
 
 
-void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
+void Solver::findBasicData(Table& instance, int* rowBasis, double* rowBasicSolution) {
 	
 	if (_excessiveLogging) {
 		printf("------------------------------------------\n");
@@ -163,12 +163,12 @@ void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 	//First row is the objective function, should have no basic variables
 	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
 		
-		rowBasicData[i] = findBasic(instance, i);
+		rowBasis[i] = findBasic(instance, i);
 		
-		if (rowBasicData[i] == -1) {
+		if (rowBasis[i] == -1) {
 			int col = instance.addColumn(std::string("artificial") + std::to_string(_lastArtificial++), true);
 			instance.setField(i, col, 1);
-			rowBasicData[i] = col;
+			rowBasis[i] = col;
 			
 			if (_excessiveLogging) {
 				printf("DEBUG: Failed to find basic variable for row %i\n", i);
@@ -177,15 +177,15 @@ void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 			}
 		}
 
-		double basicField = instance.getField(i, rowBasicData[i]);
+		double basicField = instance.getField(i, rowBasis[i]);
 		double resultField = instance.getField(i, 0);
 		rowBasicSolution[i] = resultField == 0 ? 0 : basicField / resultField;
 		
 		if (_excessiveLogging) {
 			printf("DEBUG: Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
 				i,
-				rowBasicData[i],
-				instance.getField(i, rowBasicData[i]),
+				rowBasis[i],
+				instance.getField(i, rowBasis[i]),
 				instance.getField(i, 0),
 				rowBasicSolution[i]);
 		}
@@ -196,13 +196,13 @@ void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 	}
 }
 
-void Solver::handleFinalBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
+void Solver::handleFinalBasicData(Table& instance, int* rowBasis, double* rowBasicSolution) {
 	if (_excessiveLogging) {
 		printf("------------------------------------------\n");
 		printf("-              FINAL BASIC               -\n");
 		printf("------------------------------------------\n");
 		for (unsigned int i = 0; i < instance.getNumRows(); i++) {
-			if (rowBasicData[i] != -1) {
+			if (rowBasis[i] != -1) {
 				printf("%s: %f\n",
 					instance.getColumn(i)->getName().c_str(), 
 					instance.getField(i, 0));
@@ -237,7 +237,7 @@ void Solver::doPivot(Table& instance, int* basis, unsigned int pivotR, unsigned 
 	}
 }
 
-bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
+bool Solver::pivotTable(Table& instance, int* rowBasis, bool minimize) {
 	int pivotC, iterations = 0;
 
 	while ((pivotC = findPivotColumn(instance, minimize)) != -1) {
@@ -257,7 +257,7 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 			printf("DEBUG: Operation Number: %i\n", iterations);
 		}
 
-		doPivot(instance, rowBasicData, pivotR, pivotC);
+		doPivot(instance, rowBasis, pivotR, pivotC);
 	}
 
 	if (_excessiveLogging) {
@@ -269,7 +269,7 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 	return true;
 }
 
-bool Solver::artificialMinStep(Table& instance, int* rowBasicData) {
+bool Solver::artificialMinStep(Table& instance, int* rowBasis) {
 	std::vector<int> artificialVariables = instance.getArtificialColumnList();
 	unsigned int numArtificials = artificialVariables.size();
 	
@@ -282,13 +282,13 @@ bool Solver::artificialMinStep(Table& instance, int* rowBasicData) {
 			instance.print();
 		}
 
-		doPivot(instance, rowBasicData, findBasicRow(instance, artificialVariables[0]), artificialVariables[0]);
+		doPivot(instance, rowBasis, findBasicRow(instance, artificialVariables[0]), artificialVariables[0]);
 
-		if (!pivotTable(instance, rowBasicData, true)) {
+		if (!pivotTable(instance, rowBasis, true)) {
 			return false;
 		}
 
-		if (artificialColumnsInBasis(rowBasicData, instance.getNumRows(), artificialVariables)) {
+		if (artificialColumnsInBasis(rowBasis, instance.getNumRows(), artificialVariables)) {
 			printf("DEBUG: Artificial columns still in basis, unsolvable\n");
 			return false;
 		}
@@ -298,7 +298,7 @@ bool Solver::artificialMinStep(Table& instance, int* rowBasicData) {
 			return false;
 		}
 
-		handleFinalBasicData(instance, rowBasicData, rowBasicSolution);
+		handleFinalBasicData(instance, rowBasis, rowBasicSolution);
 
 		restoreTable(instance, original);
 		
@@ -319,28 +319,28 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 		instance.print();
 	}
 
-	int* rowBasicData = new int[instance.getNumRows()];
+	int* rowBasis = new int[instance.getNumRows()];
 	double* rowBasicSolution = new double[instance.getNumRows()];
 
 	//Find the columns with only one `1` or insert artificial variables
-	findBasicData(instance, rowBasicData, rowBasicSolution);
+	findBasicData(instance, rowBasis, rowBasicSolution);
 	
 	/* 
 	 * If there are any artificial variables inserted then this min step will attempt to find
 	 * if the table is solvable by minimizing them. If it is solvable it will find an initial
 	 * feasible solution which can then be pivoted by the second phase
 	 */
-	if (!artificialMinStep(instance, rowBasicData)) {
+	if (!artificialMinStep(instance, rowBasis)) {
 		return false;
 	}
 	
-	if (!pivotTable(instance, rowBasicData, false)) {
+	if (!pivotTable(instance, rowBasis, false)) {
 		return false;
 	}
 	
-	handleFinalBasicData(instance, rowBasicData, rowBasicSolution);
+	handleFinalBasicData(instance, rowBasis, rowBasicSolution);
 
-	delete[] rowBasicData;
+	delete[] rowBasis;
 	delete[] rowBasicSolution;
 	results.result = instance.getField(0, 0);
 
