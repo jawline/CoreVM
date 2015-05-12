@@ -17,7 +17,6 @@ Variable Problem::createVariable(std::string const& name) {
 }
 
 void Problem::addConstraint(Constraint const& constraint) {
-	printf("Added %s\n", constraint.toString().c_str());
 	_constraints.push_back(constraint);
 }
 
