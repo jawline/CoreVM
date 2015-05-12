@@ -10,7 +10,7 @@ SimplexResult::SimplexResult(Table const& instance, int* rowBasis) {
   
   //Map the results column to the result basis's
   for (unsigned int i = 1; i < instance.getNumRows(); i++) {
-    _results[rowBasis[i]] = instance.getField(rowBasis[i], 0);
+    _results[rowBasis[i]] = instance.getField(i, 0);
   }
 }
 
