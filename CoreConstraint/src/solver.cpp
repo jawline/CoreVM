@@ -152,7 +152,7 @@ void Solver::restoreTable(Table& instance, Table& original) {
 
 int li = 0;
 
-bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
+void Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
 	
 	if (_excessiveLogging) {
 		printf("------------------------------------------\n");
@@ -194,8 +194,6 @@ bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 	if (_excessiveLogging) {
 		printf("------------------------------------------\n");
 	}
-	
-	return true;
 }
 
 void Solver::handleFinalBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
@@ -282,9 +280,8 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 	double* rowBasicSolution = new double[instance.getNumRows()];
 	Table original;
 
-	if (!findBasicData(instance, rowBasicData, rowBasicSolution)) {
-		return false;
-	}
+	//Find the columns with only one `1` or insert artificial variables
+	findBasicData(instance, rowBasicData, rowBasicSolution);
 
 	std::vector<int> artificialVariables = instance.getArtificialColumnList();
 	unsigned int numArtificials = artificialVariables.size();
