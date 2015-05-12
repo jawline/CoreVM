@@ -9,6 +9,7 @@ namespace Simplex {
 	class Solver {
 	private:
 		static bool _excessiveLogging;
+		static unsigned int _lastArtificial;
 		static int findBasicRow(Table& instance, int col);
 		static int findBasic(Table& instance, int row);
 		static int findPivotColumn(Table& instance, bool minimize);
