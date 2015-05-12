@@ -151,9 +151,11 @@ int li = 0;
 
 bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
 	
-	printf("------------------------------------------\n");
-	printf("-             BASIC INFO                 -\n");
-	printf("------------------------------------------\n");
+	if (_excessiveLogging) {
+		printf("------------------------------------------\n");
+		printf("-             BASIC INFO                 -\n");
+		printf("------------------------------------------\n");
+	}
 
 	//First row is the objective function, should have no basic variables
 	for (unsigned int i = 1; i < instance.getNumRows(); i++) {
@@ -164,20 +166,26 @@ bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 			int col = instance.addColumn(std::string("artificial") + std::to_string(li++), true);
 			instance.setField(i, col, 1);
 			rowBasicData[i] = col;
-			printf("DEBUG: Failed to find basic variable for row %i\n", i);
-			printf("DEBUG: Creating artificial variable for row %i\n", i);
-			instance.print();
+			
+			if (_excessiveLogging) {
+				printf("DEBUG: Failed to find basic variable for row %i\n", i);
+				printf("DEBUG: Creating artificial variable for row %i\n", i);
+				instance.print();
+			}
 		}
 
 		double basicField = instance.getField(i, rowBasicData[i]);
 		double resultField = instance.getField(i, 0);
 		rowBasicSolution[i] = resultField == 0 ? 0 : basicField / resultField;
-		printf("DEBUG: Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
-			i,
-			rowBasicData[i],
-			instance.getField(i, rowBasicData[i]),
-			instance.getField(i, 0),
-			rowBasicSolution[i]);
+		
+		if (_excessiveLogging) {
+			printf("DEBUG: Row %i: Col %i is basic (Solution: %f/%f -> %f)\n",
+				i,
+				rowBasicData[i],
+				instance.getField(i, rowBasicData[i]),
+				instance.getField(i, 0),
+				rowBasicSolution[i]);
+		}
 	}
 	
 	printf("------------------------------------------\n");
@@ -186,19 +194,21 @@ bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 }
 
 void Solver::handleFinalBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution) {
-	printf("------------------------------------------\n");
-	printf("-              FINAL BASIC               -\n");
-	printf("------------------------------------------\n");
-	for (unsigned int i = 0; i < instance.getNumRows(); i++) {
-		if (rowBasicData[i] != -1) {
-			printf("%s: %f\n",
-				instance.getColumn(i)->getName().c_str(), 
-				instance.getField(i, 0));
-		} else {
-			printf("Row %i unmapped\n", i);
+	if (_excessiveLogging) {
+		printf("------------------------------------------\n");
+		printf("-              FINAL BASIC               -\n");
+		printf("------------------------------------------\n");
+		for (unsigned int i = 0; i < instance.getNumRows(); i++) {
+			if (rowBasicData[i] != -1) {
+				printf("%s: %f\n",
+					instance.getColumn(i)->getName().c_str(), 
+					instance.getField(i, 0));
+			} else {
+				printf("Row %i unmapped\n", i);
+			}
 		}
+		printf("------------------------------------------\n");
 	}
-	printf("------------------------------------------\n");
 }
 
 bool Solver::allArtificialsZero(Table const& instance, std::vector<int> const& artificialVariables) {
