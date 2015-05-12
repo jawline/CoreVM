@@ -194,12 +194,6 @@ char const* parseConstraints(Table& instance, char const* input) {
 }
 
 bool postParseStep(Table& instance) {
-  
-  //Make results the last column (For formatting)
-  for (unsigned int i = instance.getColumnId(Constraints::ProblemConstants::cResultColumnName); i < instance.getNumColumns() - 1; i++) {
-    instance.swapColumn(i, i+1);
-  }
-
   return true;
 }
 
