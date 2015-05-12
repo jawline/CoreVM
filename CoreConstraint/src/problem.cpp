@@ -72,7 +72,18 @@ std::string Problem::toString() const {
 bool Problem::isSolvable(Simplex::Table& currentTable, unsigned int i) const {
 	if (i == _constraints.size() - 1) {
 		SimplexResult result;
-		return Solver::solveTable(currentTable, result);
+		bool isSat = Solver::solveTable(currentTable, result);
+
+		if (isSat) {
+			for (unsigned int i = 0; i < currentTable.getNumColumns(); i++) {
+				double v;
+				if (result.getResult(i, v)) {
+					printf("%s: %f\n", currentTable.getColumn(i)->getName().c_str(), v);
+				}
+			}
+		}
+
+		return isSat;
 	}
 	return simSat(currentTable, i+1);
 }

@@ -4,6 +4,7 @@
 #include <map>
 
 namespace Simplex {
+
     /**
      * Structure to hold results of simplex solver run
      */
