@@ -269,25 +269,12 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 	return true;
 }
 
-bool Solver::solveTable(Table& instance, SimplexResult& results) {
-
-	if (_excessiveLogging) {
-		printf("DEBUG: Entered with table\n");
-		instance.print();
-	}
-
-	int* rowBasicData = new int[instance.getNumRows()];
-	double* rowBasicSolution = new double[instance.getNumRows()];
-	Table original;
-
-	//Find the columns with only one `1` or insert artificial variables
-	findBasicData(instance, rowBasicData, rowBasicSolution);
-
+bool Solver::artificialMinStep(Table& instance, int* rowBasicData) {
 	std::vector<int> artificialVariables = instance.getArtificialColumnList();
 	unsigned int numArtificials = artificialVariables.size();
-
+	
 	if (numArtificials) {
-		original = instance;
+		Table original = instance;
 		setupArtificialTable(instance, original, artificialVariables);
 		
 		if (_excessiveLogging) {
@@ -319,6 +306,31 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 			printf("DEBUG: Stripped artificials\n");
 			instance.print();
 		}
+	}
+	
+	return true;
+}
+
+bool Solver::solveTable(Table& instance, SimplexResult& results) {
+
+	if (_excessiveLogging) {
+		printf("DEBUG: Entered with table\n");
+		instance.print();
+	}
+
+	int* rowBasicData = new int[instance.getNumRows()];
+	double* rowBasicSolution = new double[instance.getNumRows()];
+
+	//Find the columns with only one `1` or insert artificial variables
+	findBasicData(instance, rowBasicData, rowBasicSolution);
+	
+	/* 
+	 * If there are any artificial variables inserted then this min step will attempt to find
+	 * if the table is solvable by minimizing them. If it is solvable it will find an initial
+	 * feasible solution which can then be pivoted by the second phase
+	 */
+	if (!artificialMinStep(instance, rowBasicData)) {
+		return false;
 	}
 	
 	if (!pivotTable(instance, rowBasicData, false)) {
