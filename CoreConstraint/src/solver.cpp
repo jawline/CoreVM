@@ -4,6 +4,8 @@
 
 using namespace Simplex;
 
+bool Solver::_excessiveLogging = false;
+
 int Solver::findBasicRow(Table& instance, int col) {
 	unsigned int count = 0;
 	int row;
@@ -297,4 +299,8 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 	results.result = instance.getField(0, 0);
 
 	return true;
+}
+
+void Solver::setLogging(bool enabled) {
+	_excessiveLogging = enabled;
 }
