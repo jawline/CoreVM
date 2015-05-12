@@ -113,7 +113,10 @@ int Solver::findPivotRow(Table& instance, int column) {
 		}
 	}
 
-	printf("PivotR: %i %f\n", cPivot, cPivotR);
+	if (_excessiveLogging) {
+		printf("PivotR: %i %f\n", cPivot, cPivotR);
+	}
+
 	return cPivotR > 0 ? cPivot : -1;
 }
 
