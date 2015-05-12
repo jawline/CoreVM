@@ -19,7 +19,7 @@ namespace Simplex {
 		static void setupArtificialTable(Table& instance, Table& original, std::vector<int> const& artificialVariables);
 		static void restoreTable(Table& instance, Table& original);
 		static void findBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution);
-		static void artificialMinStep(Table& instance, int* rowBasicData);
+		static bool artificialMinStep(Table& instance, int* rowBasicData);
 		static void handleFinalBasicData(Table& instance, int* rowBasicData, double* rowBasicSolution);
 		static bool pivotTable(Table& instance, int* rowBasicData, bool minimize);
 		static void doPivot(Table& instance, int* basis, unsigned int row, unsigned int col);
