@@ -54,9 +54,6 @@ namespace Simplex {
 		void multiplyRow(unsigned int r1, double scalar);
 		void divideRow(unsigned int r1, double divisor);
 
-		void moveColumnToEnd(unsigned int col);
-		void moveColumnToEnd(std::string const& name);
-
 		/**
 		 * Return a list of artificial variables
 		 */
