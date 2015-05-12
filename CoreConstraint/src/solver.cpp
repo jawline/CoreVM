@@ -340,9 +340,10 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 	
 	handleFinalBasicData(instance, rowBasis, rowBasicSolution);
 
+	results = SimplexResult(instance, rowBasis);
+
 	delete[] rowBasis;
 	delete[] rowBasicSolution;
-	results.result = instance.getField(0, 0);
 
 	return true;
 }
