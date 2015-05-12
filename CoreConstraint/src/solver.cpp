@@ -93,7 +93,7 @@ bool Solver::artificialColumnsInBasis(int* basis, unsigned int numRows, std::vec
 int Solver::findPivotRow(Table& instance, int column) {
 
 	if (instance.getNumRows() < 2) {
-		printf("ERROR: no pivot possible\n");
+		printf("ERROR: no pivot possible, table poorly formed\n");
 		return -1;
 	}
 
@@ -191,7 +191,9 @@ bool Solver::findBasicData(Table& instance, int* rowBasicData, double* rowBasicS
 		}
 	}
 	
-	printf("------------------------------------------\n");
+	if (_excessiveLogging) {
+		printf("------------------------------------------\n");
+	}
 	
 	return true;
 }
@@ -228,28 +230,35 @@ void Solver::doPivot(Table& instance, int* basis, unsigned int pivotR, unsigned 
 	makeRowUnit(instance, pivotR, pivotC);
 	makeOtherRowsUnit(instance, pivotR, pivotC);
 	basis[pivotR] = pivotC;
-	printf("DEBUG: Pivot Column: %i\n", pivotC);
-	printf("DEBUG: Pivot Row: %i\n", pivotR);
-	printf("DEBUG: Pivot Ratio: %f\n", ratio);
-	instance.print();
+	
+	if (_excessiveLogging) {
+		printf("DEBUG: Pivot Column: %i\n", pivotC);
+		printf("DEBUG: Pivot Row: %i\n", pivotR);
+		printf("DEBUG: Pivot Ratio: %f\n", ratio);
+		instance.print();
+	}
 }
 
 bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 	int pivotC, iterations = 0;
 
 	while ((pivotC = findPivotColumn(instance, minimize)) != -1) {
+
 		int pivotR = findPivotRow(instance, pivotC);
 		if (pivotR == -1) {
-
 			if (_excessiveLogging) {
 				printf("DEBUG: PivotR returns -1, table is unsolvable %i %i\n", pivotC, pivotR);
 				instance.print();
 			}
-
 			return false;
 		}
+		
 		iterations++;
-		printf("DEBUG: Operation Number: %i\n", iterations);
+
+		if (_excessiveLogging) {
+			printf("DEBUG: Operation Number: %i\n", iterations);
+		}
+
 		doPivot(instance, rowBasicData, pivotR, pivotC);
 	}
 
