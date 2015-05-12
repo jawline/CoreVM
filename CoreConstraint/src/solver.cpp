@@ -227,8 +227,12 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 	while ((pivotC = findPivotColumn(instance, minimize)) != -1) {
 		int pivotR = findPivotRow(instance, pivotC);
 		if (pivotR == -1) {
-			printf("DEBUG: PivotR returns -1, table is unsolvable %i %i\n", pivotC, pivotR);
-			instance.print();
+
+			if (_excessiveLogging) {
+				printf("DEBUG: PivotR returns -1, table is unsolvable %i %i\n", pivotC, pivotR);
+				instance.print();
+			}
+
 			return false;
 		}
 		iterations++;
@@ -236,17 +240,21 @@ bool Solver::pivotTable(Table& instance, int* rowBasicData, bool minimize) {
 		doPivot(instance, rowBasicData, pivotR, pivotC);
 	}
 
-	printf("Could not find pivotC %i\n", pivotC);
-	instance.print();
-	printf("-----------------------------------------\n");
+	if (_excessiveLogging) {
+		printf("Could not find pivotC %i\n", pivotC);
+		instance.print();
+		printf("-----------------------------------------\n");
+	}
 
 	return true;
 }
 
 bool Solver::solveTable(Table& instance, SimplexResult& results) {
 
-	printf("DEBUG: Entered with table\n");
-	instance.print();
+	if (_excessiveLogging) {
+		printf("DEBUG: Entered with table\n");
+		instance.print();
+	}
 
 	int* rowBasicData = new int[instance.getNumRows()];
 	double* rowBasicSolution = new double[instance.getNumRows()];
@@ -262,8 +270,11 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 	if (numArtificials) {
 		original = instance;
 		setupArtificialTable(instance, original, artificialVariables);
-		printf("DEBUG: Changed to artificial table\n");
-		instance.print();
+		
+		if (_excessiveLogging) {
+			printf("DEBUG: Changed to artificial table\n");
+			instance.print();
+		}
 
 		doPivot(instance, rowBasicData, findBasicRow(instance, artificialVariables[0]), artificialVariables[0]);
 
@@ -284,8 +295,11 @@ bool Solver::solveTable(Table& instance, SimplexResult& results) {
 		handleFinalBasicData(instance, rowBasicData, rowBasicSolution);
 
 		restoreTable(instance, original);
-		printf("DEBUG: Stripped artificials\n");
-		instance.print();
+		
+		if (_excessiveLogging) {
+			printf("DEBUG: Stripped artificials\n");
+			instance.print();
+		}
 	}
 	
 	if (!pivotTable(instance, rowBasicData, false)) {
