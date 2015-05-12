@@ -14,7 +14,7 @@ namespace Simplex {
 
 	class Solver {
 	private:
-		static bool excessiveLogging;
+		static bool _excessiveLogging;
 		static int findBasicRow(Table& instance, int col);
 		static int findBasic(Table& instance, int row);
 		static int findPivotColumn(Table& instance, bool minimize);
