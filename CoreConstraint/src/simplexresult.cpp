@@ -17,12 +17,12 @@ SimplexResult::SimplexResult(Table const& instance, int* rowBasis) {
 SimplexResult::~SimplexResult() {}
 
 double SimplexResult::getResult() const {
-  return _results[0];
+  return _results.find(0)->second;
 }
 
 bool SimplexResult::getResult(int column, double& result) const {
   if (_results.find(column) != _results.end()) {
-    result = _results[column];
+    result = _results.find(column)->second;
     return true;
   }
   return false;

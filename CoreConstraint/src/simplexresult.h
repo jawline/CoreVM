@@ -1,5 +1,6 @@
 #ifndef _SIMPLEX_RESULT_DEF_H_
 #define _SIMPLEX_RESULT_DEF_H_
+#include "tableau.h"
 #include <map>
 
 namespace Simplex {
