@@ -99,7 +99,9 @@ Underneath the simplified interface provided by Constraints::Problem there is th
 
 //TODO: Prove this works or scrap it
 Once the table has been satisfied, a final check is required. A simplex solver does not guarentee integer allocations and this can lead to allocations which are seen as satisfiable, therefore if the value of any of the allocated variables is not an integer then additional checks are required to work out if the problem is satisfiable.
-Therefore, if the allocaitons are non int then the ceiling and floor of the allocations should be checked for satisfiability, and only if there is an allocation of these which is satisfiable should the problem be considered satisfiable.
+When looking for the minimal/maximal value a branch & bound strategy can be used (http://www.columbia.edu/~cs2035/courses/ieor4600.S07/bb-lecb.pdf).
+
+In the case where any satisfiable, a similar approach can be used, however the strategy can return as soon as any valid allocation where all variables are integer is found.
 
 \chapter {Conclusion}
 
