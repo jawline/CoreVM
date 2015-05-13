@@ -19,6 +19,7 @@ namespace VM {
         }
         uint32_t value;
         bool symbolic;
+        int symbolicMultiplier;
         Constraints::Variable variable;
     };
 
