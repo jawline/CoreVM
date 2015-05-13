@@ -95,8 +95,11 @@ Underneath the simplified interface provided by Constraints::Problem there is th
 \subsection {Tableau}
 \subsection {Checking Satisfiability}
 \subsection {Solving}
-
 \chapter {Results}
+
+//TODO: Prove this works or scrap it
+Once the table has been satisfied, a final check is required. A simplex solver does not guarentee integer allocations and this can lead to allocations which are seen as satisfiable, therefore if the value of any of the allocated variables is not an integer then additional checks are required to work out if the problem is satisfiable.
+
 \chapter {Conclusion}
 
 \end{document}
