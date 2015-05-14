@@ -166,6 +166,7 @@ void Core::setMemoryInt() {
 	uint32_t loc = _state->getDataUInt(getProgramCounter()+2);
 	_state->setDataUInt(loc, _state->getRegisterUInt(reg));
 	setProgramCounter(getProgramCounter() + 6);
+	printf("WARNING: SETM CANNOT HANDLE SYMBOLIC VALUES\n");
 	printf("SETM %i %i\n", reg, loc);
 }
 
@@ -174,6 +175,7 @@ void Core::getMemoryInt() {
 	uint32_t loc = _state->getDataUInt(getProgramCounter()+2);
 	_state->setRegisterUInt(reg, _state->getDataUInt(loc));
 	setProgramCounter(getProgramCounter() + 6);
+	printf("WARNING: GETM CANNOT HANDLE SYMBOLIC VALUES\n");
 	printf("GETM %i %i\n", reg, loc);
 }
 
@@ -182,6 +184,7 @@ void Core::setMemoryIntRegister() {
 	uint8_t locReg = _state->getDataByte(getProgramCounter()+2);
 	_state->setDataUInt(_state->getRegisterUInt(locReg), _state->getRegisterUInt(reg));
 	setProgramCounter(getProgramCounter() + 3);
+	printf("WARNING: SETM CANNOT HANDLE SYMBOLIC VALUES\n");
 	printf("SETM %i %i\n", reg, locReg);
 }
 
@@ -190,6 +193,7 @@ void Core::getMemoryIntRegister() {
 	uint8_t locReg = _state->getDataByte(getProgramCounter()+2);
 	_state->setRegisterUInt(reg, _state->getDataUInt(_state->getRegisterUInt(locReg)));
 	setProgramCounter(getProgramCounter() + 3);
+	printf("WARNING: GETM CANNOT HANDLE SYMBOLIC VALUES\n");
 	printf("GETM %i %i\n", reg, locReg);
 }
 
