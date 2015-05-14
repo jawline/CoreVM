@@ -114,17 +114,35 @@ void Core::subtractRegister() {
 void Core::multiplyRegister() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	uint8_t r2 = _state->getDataByte(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) * _state->getRegisterInt(r2));
-	setProgramCounter(getProgramCounter() + 3);
-	printf("MUL %i %i\n", r1, r2);
+	
+	bool r1Reg = _state->isSymbolic(r1);
+	bool r2Reg = _state->isSymbolic(r2);
+	
+	if (r1Reg && r2Reg) {
+	} else if (r1Reg) {
+	} else if (r2Reg) {
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) * _state->getRegisterInt(r2));
+		setProgramCounter(getProgramCounter() + 3);
+		printf("MUL %i %i\n", r1, r2);
+	}
 }
 
 void Core::divideRegister() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	uint8_t r2 = _state->getDataByte(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) / _state->getRegisterInt(r2));
-	setProgramCounter(getProgramCounter() + 3);
-	printf("DIV %i %i\n", r1, r2);
+	
+	bool r1Reg = _state->isSymbolic(r1);
+	bool r2Reg = _state->isSymbolic(r2);
+	
+	if (r1Reg && r2Reg) {
+	} else if (r1Reg) {
+	} else if (r2Reg) {
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) / _state->getRegisterInt(r2));
+		setProgramCounter(getProgramCounter() + 3);
+		printf("DIV %i %i\n", r1, r2);
+	}
 }
 
 void Core::greaterThanRegister() {
