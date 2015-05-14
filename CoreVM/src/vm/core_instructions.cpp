@@ -56,7 +56,8 @@ void Core::multiplyImmediate() {
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
 	
 	if (_state->isSymbolic(r1)) {
-		printf("SYMBOLIC MULTIPLY, WHAT DO I DO?\n");
+		_state->setSymbolicMultiplier(r1, _state->getSymbolicMultiplier(r1) * val);
+		printf("SYMBOLIC MULTIPLY %i %i\n", r1, val);
 	} else {
 		_state->setRegisterInt(r1, _state->getRegisterInt(r1) * val);
 		setProgramCounter(getProgramCounter() + 6);
@@ -69,7 +70,8 @@ void Core::divideImmediate() {
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
 	
 	if (_state->isSymbolic(r1)) {
-		printf("SYMBOLIC DIVIDE, WHAT DO I DO?\n");
+		_state->setSymbolicMultiplier(r1, _state->getSymbolicMultiplier(r1) / val);
+		printf("SYMBOLIC DIVIDE %i %i\n", r1, val);
 	} else {
 		_state->setRegisterInt(r1, _state->getRegisterInt(r1) / val);
 		setProgramCounter(getProgramCounter() + 6);
