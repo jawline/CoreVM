@@ -12,29 +12,29 @@ namespace VM {
         private:
         
         /**
-        * Last symbol created
-        */
+         * Last symbol created
+         */
         static unsigned long _lastSymbol;
         
         /**
-        * Current register data
-        */
+         * Current register data
+         */
         RegisterState* _registers;
         
         /**
-        * RAM contents
-        */
+         * RAM contents
+         */
         shared_ptr<uint8_t> _data;
         unsigned int _dataSize;
         
         /**
-        * Should the state be copied on write
-        */
+         * Should the state be copied on write
+         */
         bool _copyDataOnWrite;
         
         /**
-        * The current symbolic state
-        */
+         * The current symbolic state
+         */
         Constraints::Problem _symState;
         
         void copyData();
