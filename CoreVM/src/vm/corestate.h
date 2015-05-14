@@ -2,28 +2,12 @@
 #define _CORE_STATE_DEF_H_
 #include <cstdint>
 #include <memory>
-#include <CoreCS/problem.h>
+#include "registerstate.h"
 #include "registers.h"
 
 using namespace std;
 
 namespace VM {
-
-    /**
-     * RegisterState is used to store registers.
-     */
-    struct RegisterState {
-        RegisterState() {
-            value = 0;
-            symbolic = false;
-            symbolicMultiplier = 1;
-        }
-        uint32_t value;
-        bool symbolic;
-        int symbolicMultiplier;
-        Constraints::Variable variable;
-    };
-
     class CoreState {
     private:
     
