@@ -3,7 +3,7 @@
 #include "compositesymbol.h"
 
 namespace VM {
-  class AddValueSymbol {
+  class AddValueSymbol: public CompositeSymbol {
   private:
     CompositeSymbol* _symbol;
     //TODO: Pick a type that is equal to a registers size
