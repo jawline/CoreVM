@@ -54,17 +54,27 @@ void Core::subtractImmediate() {
 void Core::multiplyImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) * val);
-	setProgramCounter(getProgramCounter() + 6);
-	printf("MUL %i %i\n", r1, val);
+	
+	if (_state->isSymbolic(r1)) {
+		printf("SYMBOLIC MULTIPLY, WHAT DO I DO?\n");
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) * val);
+		setProgramCounter(getProgramCounter() + 6);
+		printf("MUL %i %i\n", r1, val);
+	}
 }
 
 void Core::divideImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) / val);
-	setProgramCounter(getProgramCounter() + 6);
-	printf("DIV %i %i\n", r1, val);
+	
+	if (_state->isSymbolic(r1)) {
+		printf("SYMBOLIC DIVIDE, WHAT DO I DO?\n");
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) / val);
+		setProgramCounter(getProgramCounter() + 6);
+		printf("DIV %i %i\n", r1, val);
+	}
 }
 
 void Core::greaterThanImmediate() {
