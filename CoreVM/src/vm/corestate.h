@@ -16,6 +16,7 @@ namespace VM {
         RegisterState() {
             value = 0;
             symbolic = false;
+            symbolicMultiplier = 1;
         }
         uint32_t value;
         bool symbolic;
