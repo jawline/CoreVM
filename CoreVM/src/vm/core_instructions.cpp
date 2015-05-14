@@ -54,17 +54,29 @@ void Core::subtractImmediate() {
 void Core::multiplyImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) * val);
-	setProgramCounter(getProgramCounter() + 6);
-	printf("MUL %i %i\n", r1, val);
+	
+	if (_state->isSymbolic(r1)) {
+		_state->setSymbolicMultiplier(r1, _state->getSymbolicMultiplier(r1) * val);
+		printf("SYMBOLIC MULTIPLY %i %i\n", r1, val);
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) * val);
+		setProgramCounter(getProgramCounter() + 6);
+		printf("MUL %i %i\n", r1, val);
+	}
 }
 
 void Core::divideImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) / val);
-	setProgramCounter(getProgramCounter() + 6);
-	printf("DIV %i %i\n", r1, val);
+	
+	if (_state->isSymbolic(r1)) {
+		_state->setSymbolicMultiplier(r1, _state->getSymbolicMultiplier(r1) / val);
+		printf("SYMBOLIC DIVIDE %i %i\n", r1, val);
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) / val);
+		setProgramCounter(getProgramCounter() + 6);
+		printf("DIV %i %i\n", r1, val);
+	}
 }
 
 void Core::greaterThanImmediate() {
@@ -102,17 +114,35 @@ void Core::subtractRegister() {
 void Core::multiplyRegister() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	uint8_t r2 = _state->getDataByte(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) * _state->getRegisterInt(r2));
-	setProgramCounter(getProgramCounter() + 3);
-	printf("MUL %i %i\n", r1, r2);
+	
+	bool r1Reg = _state->isSymbolic(r1);
+	bool r2Reg = _state->isSymbolic(r2);
+	
+	if (r1Reg && r2Reg) {
+	} else if (r1Reg) {
+	} else if (r2Reg) {
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) * _state->getRegisterInt(r2));
+		setProgramCounter(getProgramCounter() + 3);
+		printf("MUL %i %i\n", r1, r2);
+	}
 }
 
 void Core::divideRegister() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	uint8_t r2 = _state->getDataByte(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) / _state->getRegisterInt(r2));
-	setProgramCounter(getProgramCounter() + 3);
-	printf("DIV %i %i\n", r1, r2);
+	
+	bool r1Reg = _state->isSymbolic(r1);
+	bool r2Reg = _state->isSymbolic(r2);
+	
+	if (r1Reg && r2Reg) {
+	} else if (r1Reg) {
+	} else if (r2Reg) {
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) / _state->getRegisterInt(r2));
+		setProgramCounter(getProgramCounter() + 3);
+		printf("DIV %i %i\n", r1, r2);
+	}
 }
 
 void Core::greaterThanRegister() {
@@ -136,6 +166,7 @@ void Core::setMemoryInt() {
 	uint32_t loc = _state->getDataUInt(getProgramCounter()+2);
 	_state->setDataUInt(loc, _state->getRegisterUInt(reg));
 	setProgramCounter(getProgramCounter() + 6);
+	printf("WARNING: SETM CANNOT HANDLE SYMBOLIC VALUES\n");
 	printf("SETM %i %i\n", reg, loc);
 }
 
@@ -144,6 +175,7 @@ void Core::getMemoryInt() {
 	uint32_t loc = _state->getDataUInt(getProgramCounter()+2);
 	_state->setRegisterUInt(reg, _state->getDataUInt(loc));
 	setProgramCounter(getProgramCounter() + 6);
+	printf("WARNING: GETM CANNOT HANDLE SYMBOLIC VALUES\n");
 	printf("GETM %i %i\n", reg, loc);
 }
 
@@ -152,6 +184,7 @@ void Core::setMemoryIntRegister() {
 	uint8_t locReg = _state->getDataByte(getProgramCounter()+2);
 	_state->setDataUInt(_state->getRegisterUInt(locReg), _state->getRegisterUInt(reg));
 	setProgramCounter(getProgramCounter() + 3);
+	printf("WARNING: SETM CANNOT HANDLE SYMBOLIC VALUES\n");
 	printf("SETM %i %i\n", reg, locReg);
 }
 
@@ -160,6 +193,7 @@ void Core::getMemoryIntRegister() {
 	uint8_t locReg = _state->getDataByte(getProgramCounter()+2);
 	_state->setRegisterUInt(reg, _state->getDataUInt(_state->getRegisterUInt(locReg)));
 	setProgramCounter(getProgramCounter() + 3);
+	printf("WARNING: GETM CANNOT HANDLE SYMBOLIC VALUES\n");
 	printf("GETM %i %i\n", reg, locReg);
 }
 

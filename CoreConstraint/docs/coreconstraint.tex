@@ -95,8 +95,14 @@ Underneath the simplified interface provided by Constraints::Problem there is th
 \subsection {Tableau}
 \subsection {Checking Satisfiability}
 \subsection {Solving}
-
 \chapter {Results}
+
+//TODO: Prove this works or scrap it
+Once the table has been satisfied, a final check is required. A simplex solver does not guarentee integer allocations and this can lead to allocations which are seen as satisfiable, therefore if the value of any of the allocated variables is not an integer then additional checks are required to work out if the problem is satisfiable.
+When looking for the minimal/maximal value a branch & bound strategy can be used (http://www.columbia.edu/~cs2035/courses/ieor4600.S07/bb-lecb.pdf).
+
+In the case where any satisfiable, a similar approach can be used, however the strategy can return as soon as any valid allocation where all variables are integer is found.
+
 \chapter {Conclusion}
 
 \end{document}
