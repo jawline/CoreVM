@@ -4,7 +4,7 @@
 namespace VM {
   
   enum CompositeSymbolType {
-    Scale, Add, Reference, Value
+    Scale, Add, AddValue, Reference
   };
 
   class CompositeSymbol {
