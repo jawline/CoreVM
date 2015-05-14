@@ -2,7 +2,7 @@
 
 using namespace VM;
 
-ScaleSymbol(CompositeSymbol* symbol, int scalar) {
+ScaleSymbol::ScaleSymbol(CompositeSymbol* symbol, int scalar) {
   _symbol = symbol;
   _scalar = scalar;
 }

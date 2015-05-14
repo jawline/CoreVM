@@ -10,7 +10,7 @@ namespace VM {
   public:
     AddSymbol(CompositeSymbol* symbol1, CompositeSymbol* symbol2);
     virtual ~AddSymbol();
-  }
+  };
 }
 
 #endif //_ADD_SYMBOL_DEF_H_

@@ -1,7 +1,7 @@
 #ifndef _REFERENCE_SYMBOL_DEF_H_
 #define _REFERENCE_SYMBOL_DEF_H_
 #include "compositesymbol.h"
-#include <CoreVM/problem.h>
+#include <CoreCS/problem.h>
 
 namespace VM {
   class ReferenceSymbol : public CompositeSymbol {

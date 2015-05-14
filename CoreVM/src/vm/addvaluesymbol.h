@@ -10,7 +10,7 @@ namespace VM {
     int _value;
   public:
     AddValueSymbol(CompositeSymbol* symbol, int value);
-    virtual AddValueSymbol();
+    virtual ~AddValueSymbol();
   };
 }
 

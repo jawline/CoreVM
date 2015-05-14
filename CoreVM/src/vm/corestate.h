@@ -59,8 +59,8 @@ namespace VM {
             return _registers[registerId].symbolicMultiplier;
         }
         
-        inline void setSymbolicMultiplier(uint8_t reg, int val) {
-            _regsiters[registerId].symbolicMultiplier = val;
+        inline void setSymbolicMultiplier(uint8_t registerId, int val) {
+            _registers[registerId].symbolicMultiplier = val;
         }
         
         inline Constraints::Variable getVariable(uint8_t registerId) {
