@@ -11,7 +11,7 @@ namespace VM {
   public:
     AddValueSymbol(CompositeSymbol* symbol, int value);
     virtual AddValueSymbol();
-  }
+  };
 }
 
 #endif //_ADD_VALUE_SYMBOL_DEF_H_
