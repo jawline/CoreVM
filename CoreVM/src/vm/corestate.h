@@ -4,6 +4,7 @@
 #include <memory>
 #include "registerstate.h"
 #include "registers.h"
+#include "scalesymbol.h"
 
 using namespace std;
 
@@ -52,19 +53,19 @@ namespace VM {
         }
         
         inline bool isSymbolic(uint8_t registerId) {
-            return _registers[registerId].symbolic;
+            return _registers[registerId].symbol != 0;
+        }
+
+        inline void multiplySymbol(uint8_t registerId, int scalar) {
+            return _registers[registerId].symbol = new ScaleSymbol(_registers[registerId].symbol);
+        }
+
+        inline void buildSymbolConstraint(uint8_t registerId, Constraints::Constraint& c, Constraints::ComparisonType type, int32_t result) {
+            _registers[registerId].symbol->buildConstraint(c, type, result);
         }
         
-        inline int getSymbolicMultiplier(uint8_t registerId) {
-            return _registers[registerId].symbolicMultiplier;
-        }
-        
-        inline void setSymbolicMultiplier(uint8_t registerId, int val) {
-            _registers[registerId].symbolicMultiplier = val;
-        }
-        
-        inline Constraints::Variable getVariable(uint8_t registerId) {
-            return _registers[registerId].variable;
+        inline CompositeSymbol* getSymbol(uint8_t registerId) {
+            return _registers[registerId].symbol;
         }
         
         inline void moveRegister(uint8_t dstId, uint8_t srcId) {
@@ -77,7 +78,7 @@ namespace VM {
         
         inline void setRegisterUInt(uint8_t registerId, uint32_t value) {
             _registers[registerId].value = value;
-            _registers[registerId].symbolic = false;
+            _registers[registerId].freeSymbol();
         }
         
         inline int32_t getRegisterInt(int8_t registerId) const {
@@ -86,7 +87,7 @@ namespace VM {
         
         inline void setRegisterInt(int8_t registerId, int32_t value) {
             _registers[registerId].value = value;
-            _registers[registerId].symbolic = false;
+            _registers[registerId].freeSymbol();
         }
         
         inline uint8_t getDataByte(size_t location) const {

@@ -56,7 +56,7 @@ void Core::multiplyImmediate() {
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
 	
 	if (_state->isSymbolic(r1)) {
-		_state->setSymbolicMultiplier(r1, _state->getSymbolicMultiplier(r1) * val);
+		_state->multiplySymbol(r1, val);
 		printf("SYMBOLIC MULTIPLY %i %i\n", r1, val);
 	} else {
 		_state->setRegisterInt(r1, _state->getRegisterInt(r1) * val);
@@ -70,7 +70,9 @@ void Core::divideImmediate() {
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
 	
 	if (_state->isSymbolic(r1)) {
-		_state->setSymbolicMultiplier(r1, _state->getSymbolicMultiplier(r1) / val);
+		//_state->setSymbolicMultiplier(r1, _state->getSymbolicMultiplier(r1) / val);
+		//TODO: Unimpl
+		printf("UNIMPL DVI\n");
 		printf("SYMBOLIC DIVIDE %i %i\n", r1, val);
 	} else {
 		_state->setRegisterInt(r1, _state->getRegisterInt(r1) / val);
@@ -212,15 +214,11 @@ void Core::jumpEqualImmediateImmediate() {
 
 		//Generate new constraints
 		Constraints::Constraint c1;
-		c1.addItem(left->getVariable(r1), 1);
-		c1.setResult(val);
-		c1.setComparisonType(Constraints::Equal);
+		_state->buildSymbolConstraint(r1, c1, Constraints::Equal, val);
 		left->getProblem()->addConstraint(c1);
 
 		Constraints::Constraint c2;
-		c2.addItem(left->getVariable(r1), 1);
-		c2.setResult(val);
-		c2.setComparisonType(Constraints::NotEqual);
+		_state->buildSymbolConstraint(r1, c1, Constraints::NotEqual, val);
 		right->getProblem()->addConstraint(c2);
 
 		setProgramCounter(left, dst);
