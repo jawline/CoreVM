@@ -11,3 +11,5 @@ AddSymbol::~AddSymbol() {
   delete _symbol1;
   delete _symbol2;
 }
+
+void AddSymbol::addToConstraint(Constraints::Constraint& constraint) {}

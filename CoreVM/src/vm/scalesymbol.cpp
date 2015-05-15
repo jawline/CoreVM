@@ -10,3 +10,6 @@ ScaleSymbol::ScaleSymbol(CompositeSymbol* symbol, int scalar) {
 ScaleSymbol::~ScaleSymbol() {
   delete _symbol;
 }
+
+void ScaleSymbol::addToConstraint(Constraints::Constraint& constraint) {
+}

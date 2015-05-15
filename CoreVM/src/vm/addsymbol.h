@@ -7,6 +7,8 @@ namespace VM {
   private:
     CompositeSymbol* _symbol1;
     CompositeSymbol* _symbol2;
+  protected:
+  	void addToConstraint(Constraints::Constraint& constraint);
   public:
     AddSymbol(CompositeSymbol* symbol1, CompositeSymbol* symbol2);
     virtual ~AddSymbol();

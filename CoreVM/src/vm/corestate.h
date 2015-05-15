@@ -57,7 +57,7 @@ namespace VM {
         }
 
         inline void multiplySymbol(uint8_t registerId, int scalar) {
-            return _registers[registerId].symbol = new ScaleSymbol(_registers[registerId].symbol);
+            _registers[registerId].symbol = new ScaleSymbol(_registers[registerId].symbol, scalar);
         }
 
         inline CompositeSymbol* getSymbol(uint8_t registerId) {

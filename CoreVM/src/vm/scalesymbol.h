@@ -7,9 +7,13 @@ namespace VM {
   private:
     CompositeSymbol* _symbol;
     int _scalar;
+  protected:
+  	void addToConstraint(Constraints::Constraint& constraint);
   public:
     ScaleSymbol(CompositeSymbol* symbol, int scalar);
     virtual ~ScaleSymbol();
+
+    
   };
 }
 
