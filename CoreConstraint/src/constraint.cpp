@@ -23,6 +23,10 @@ void Constraint::addItem(Variable const& var, double multiplier) {
 	_items.push_back(ConstraintItem(var, multiplier));
 }
 
+double Constraint::getResult() const {
+	return _value;
+}
+
 void Constraint::setResult(double endValue) {
 	_value = endValue;
 }

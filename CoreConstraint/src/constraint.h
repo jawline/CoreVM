@@ -43,6 +43,11 @@ namespace Constraints {
 		 * Set the result to be compared against
 		 */
 		void setResult(double endValue);
+
+		/**
+		 * Get the constraint result
+		 */
+		double getResult() const;
 		
 		/**
 		 * Set the comparison type on this constraint

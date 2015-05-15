@@ -6,5 +6,7 @@ CompositeSymbol::CompositeSymbol() {}
 CompositeSymbol::~CompositeSymbol() {}
 
 void CompositeSymbol::buildConstraint(Constraints::Constraint& constraint, Constraints::ComparisonType type, int32_t result) {
-	printf("TODO: UNIMPL\n");
+	addToConstraint(constraint);
+	constraint.setComparisonType(type);
+	constraint.setResult(result + constraint.getResult());
 }
