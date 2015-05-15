@@ -1,4 +1,5 @@
 #include "core.h"
+#include "addsymbol.h"
 
 using namespace VM;
 
@@ -213,12 +214,10 @@ void Core::jumpEqualImmediateImmediate() {
 		printf("TODO: RIGHT CONSTRAINT r1 != %i\n", val);
 
 		//Generate new constraints
-		Constraints::Constraint c1;
+		Constraints::Constraint c1, c2;
 		_state->buildSymbolConstraint(r1, c1, Constraints::Equal, val);
-		left->getProblem()->addConstraint(c1);
-
-		Constraints::Constraint c2;
 		_state->buildSymbolConstraint(r1, c1, Constraints::NotEqual, val);
+		left->getProblem()->addConstraint(c1);
 		right->getProblem()->addConstraint(c2);
 
 		setProgramCounter(left, dst);
@@ -282,20 +281,17 @@ void Core::jumpEqualRegisterImmediate() {
 		printf("TODO: LEFT CONSTRAINT  r1  = r2\n");
 		printf("TODO: RIGHT CONSTRAINT r1 != r2\n");
 
-		//Generate new constraints
-		Constraints::Constraint c1;
-		c1.addItem(left->getVariable(r1), 1);
-		c1.addItem(left->getVariable(r2), -1);
-		c1.setResult(0);
-		c1.setComparisonType(Constraints::Equal);
-		left->getProblem()->addConstraint(c1);
+		auto tempComposite = new AddSymbol(_state->getSymbol(r1), new ScaleSymbol(_state->getSymbol(r2), -1));
 
-		Constraints::Constraint c2;
-		c2.addItem(left->getVariable(r1), 1);
-		c2.addItem(left->getVariable(r2), -1);
-		c2.setResult(0);
-		c2.setComparisonType(Constraints::NotEqual);
+		//Generate new constraints
+		Constraints::Constraint c1, c2;
+		tempComposite->buildConstraint(c1, Constraints::Equal, 0);
+		tempComposite->buildConstraint(c2, Constraints::NotEqual, 0);
+
+		left->getProblem()->addConstraint(c1);
 		right->getProblem()->addConstraint(c2);
+
+		delete tempComposite;
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);
@@ -321,20 +317,17 @@ void Core::jumpNotEqualRegisterImmediate() {
 		printf("TODO: LEFT CONSTRAINT  r1  != r2\n");
 		printf("TODO: RIGHT CONSTRAINT r1 = r2\n");
 
-		//Generate new constraints
-		Constraints::Constraint c1;
-		c1.addItem(left->getVariable(r1), 1);
-		c1.addItem(left->getVariable(r2), -1);
-		c1.setResult(0);
-		c1.setComparisonType(Constraints::NotEqual);
-		left->getProblem()->addConstraint(c1);
+		auto tempComposite = new AddSymbol(_state->getSymbol(r1), new ScaleSymbol(_state->getSymbol(r2), -1));
 
-		Constraints::Constraint c2;
-		c2.addItem(left->getVariable(r1), 1);
-		c2.addItem(left->getVariable(r2), -1);
-		c2.setResult(0);
-		c2.setComparisonType(Constraints::Equal);
+		//Generate new constraints
+		Constraints::Constraint c1, c2;
+		tempComposite->buildConstraint(c1, Constraints::Equal, 0);
+		tempComposite->buildConstraint(c2, Constraints::NotEqual, 0);
+
+		left->getProblem()->addConstraint(c1);
 		right->getProblem()->addConstraint(c2);
+
+		delete tempComposite;
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);

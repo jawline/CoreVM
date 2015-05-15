@@ -60,12 +60,12 @@ namespace VM {
             return _registers[registerId].symbol = new ScaleSymbol(_registers[registerId].symbol);
         }
 
-        inline void buildSymbolConstraint(uint8_t registerId, Constraints::Constraint& c, Constraints::ComparisonType type, int32_t result) {
-            _registers[registerId].symbol->buildConstraint(c, type, result);
-        }
-        
         inline CompositeSymbol* getSymbol(uint8_t registerId) {
             return _registers[registerId].symbol;
+        }
+
+        inline void buildSymbolConstraint(uint8_t registerId, Constraints::Constraint& c, Constraints::ComparisonType type, int32_t result) {
+            _registers[registerId].symbol->buildConstraint(c, type, result);
         }
         
         inline void moveRegister(uint8_t dstId, uint8_t srcId) {
