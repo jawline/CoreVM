@@ -74,15 +74,15 @@ namespace Constraints {
 		/**
 		 * Combine this and another constraint
 		 */
-		void add(Constraint const& other);
-		void minus(Constraint const& other);
-		void multiply(Constraint const& other);
-		void divide(Constraint const& other);
+		Constraint& add(Constraint const& other);
+		Constraint& minus(Constraint const& other);
+		Constraint& multiply(Constraint const& other);
+		Constraint& divide(Constraint const& other);
 
 		/**
 		 * Scale all values in this constraint
 		 */
-		void scale(double scalar);
+		Constraint& scale(double scalar);
 	};
 };
 

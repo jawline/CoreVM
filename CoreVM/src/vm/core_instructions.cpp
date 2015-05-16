@@ -1,5 +1,4 @@
 #include "core.h"
-#include "addsymbol.h"
 
 using namespace VM;
 
@@ -210,15 +209,12 @@ void Core::jumpEqualImmediateImmediate() {
 		printf("FORKING\n");
 		CoreState *left, *right;
 		forkState(left, right);
-		printf("TODO: LEFT CONSTRAINT  r1  = %i\n", val);
-		printf("TODO: RIGHT CONSTRAINT r1 != %i\n", val);
 
-		//Generate new constraints
-		Constraints::Constraint c1, c2;
-		_state->buildSymbolConstraint(r1, c1, Constraints::Equal, val);
-		_state->buildSymbolConstraint(r1, c1, Constraints::NotEqual, val);
-		left->getProblem()->addConstraint(c1);
-		right->getProblem()->addConstraint(c2);
+		auto c = _state->getSymbol(r1);
+		c.setResult(Constraints::Equal, val);
+		left->getProblem()->addConstraint(c);
+		c.setResult(Constraints::NotEqual, val);
+		right->getProblem()->addConstraint(c);
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 10);
@@ -284,12 +280,10 @@ void Core::jumpEqualRegisterImmediate() {
 		auto c = _state->getSymbol(r1).minus(_state->getSymbol(r2));
 
 		//Generate new constraints
-		Constraints::Constraint c1 = c, c2 = _state->getSymbol();
-		c1.setResult(Constraints::Equal, 0);
-		c2.setResult(Constraints::NotEqual, 0);
-
-		left->getProblem()->addConstraint(c1);
-		right->getProblem()->addConstraint(c2);
+		c.setResult(Constraints::Equal, 0);
+		left->getProblem()->addConstraint(c);
+		c.setResult(Constraints::NotEqual, 0);
+		right->getProblem()->addConstraint(c);
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);
@@ -314,18 +308,13 @@ void Core::jumpNotEqualRegisterImmediate() {
 		forkState(left, right);
 		printf("TODO: LEFT CONSTRAINT  r1  != r2\n");
 		printf("TODO: RIGHT CONSTRAINT r1 = r2\n");
-		
+
 		auto c = _state->getSymbol(r1).minus(_state->getSymbol(r2));
 
-		//Generate new constraints
-		Constraints::Constraint c1 = c, c2 = _state->getSymbol();
-		c1.setResult(Constraints::Equal, 0);
-		c2.setResult(Constraints::NotEqual, 0);
-
-		left->getProblem()->addConstraint(c1);
-		right->getProblem()->addConstraint(c2);
-
-		delete tempComposite;
+		c.setResult(Constraints::Equal, 0);
+		left->getProblem()->addConstraint(c);
+		c.setResult(Constraints::NotEqual, 0);
+		right->getProblem()->addConstraint(c);
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);

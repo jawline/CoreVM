@@ -9,9 +9,9 @@ namespace VM {
      */
      //TODO: Seperate impl into file
     class RegisterState {
-
+public:
         RegisterState() {
-            value = 0;
+            _value = 0;
             _isSymbol = false;
 
         }
@@ -24,6 +24,12 @@ namespace VM {
 
         void setSymbol(Constraints::Constraint const& symbol) {
             _symbol = symbol;
+            _isSymbol = true;
+        }
+
+        void clearSymbol() {
+            _isSymbol = false;
+            _symbol = Constraints::Constraint();
         }
 
         uint32_t getValue() const {
@@ -32,6 +38,10 @@ namespace VM {
 
         void setValue(uint32_t v) {
             _value = v;
+        }
+
+        bool isSymbolic() const {
+            return _isSymbol;
         }
 
     private:

@@ -1,5 +1,4 @@
 #include "corestate.h"
-#include "referencesymbol.h"
 #include <string.h>
 
 using namespace VM;
@@ -57,8 +56,10 @@ CoreState::~CoreState() {
 }
 
 void CoreState::makeSymbolic(uint8_t registerId) {
-	Constraints::Variable nvar = getProblem()->createVariable("symreg" + std::to_string(_lastSymbol++));
-	_registers[registerId].symbol = new ReferenceSymbol(nvar);
+	auto var = getProblem()->createVariable("symreg" + std::to_string(_lastSymbol++));
+	auto constraint = Constraints::Constraint();
+	constraint.addItem(var, 1);
+	_registers[registerId].setSymbol(constraint);
 }
 
 void CoreState::copyData() {

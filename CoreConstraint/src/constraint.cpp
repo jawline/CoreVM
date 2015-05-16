@@ -105,7 +105,7 @@ void Constraint::addToTable(Simplex::Table& table, ComparisonType typeOverride) 
 	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, localValue);
 }
 
-void Constraint::add(Constraint const& other) {
+Constraint& Constraint::add(Constraint const& other) {
 	for (unsigned int i = 0; i < other._items.size(); i++) {
 		bool exists = false;
 
@@ -122,9 +122,10 @@ void Constraint::add(Constraint const& other) {
 	}
 
 	_value += other._value;
+	return *this;
 }
 
-void Constraint::minus(Constraint const& other) {
+Constraint& Constraint::minus(Constraint const& other) {
 	for (unsigned int i = 0; i < other._items.size(); i++) {
 		bool exists = false;
 
@@ -141,14 +142,25 @@ void Constraint::minus(Constraint const& other) {
 	}
 
 	_value -= other._value;
+	return *this;
 }
 
-void Constraint::multiply(Constraint const& other) {
+Constraint& Constraint::multiply(Constraint const& other) {
 	printf("TODO: Multiply\n");
+	return *this;
 }
 
-void Constraint::divide(Constraint const& other) {
+Constraint& Constraint::divide(Constraint const& other) {
 	printf("TODO: Divide\n");
+	return *this;
+}
+
+Constraint& Constraint::scale(double scalar) {
+	for (unsigned int i = 0; i < _items.size(); i++) {
+		_items[i].second *= scalar;
+	}
+	_value *= scalar;
+	return *this;
 }
 
 void Constraint::setResult(ComparisonType type, double endValue) {
@@ -158,11 +170,4 @@ void Constraint::setResult(ComparisonType type, double endValue) {
 
 ComparisonType Constraint::getComparisonType() const {
 	return _type;
-}
-
-void Constraint::scale(double scalar) {
-	for (unsigned int i = 0; i < _items.size(); i++) {
-		_items[i].second *= scalar;
-	}
-	_value *= scalar;
 }

@@ -52,7 +52,7 @@ namespace VM {
         }
         
         inline bool isSymbolic(uint8_t registerId) {
-            return _registers[registerId].symbol != 0;
+            return _registers[registerId].isSymbolic();
         }
 
         inline void multiplySymbol(uint8_t registerId, int scalar) {
@@ -62,31 +62,27 @@ namespace VM {
         inline Constraints::Constraint getSymbol(uint8_t registerId) const {
             return _registers[registerId].getSymbol();
         }
-
-        inline void buildSymbolConstraint(uint8_t registerId, Constraints::Constraint& c, Constraints::ComparisonType type, int32_t result) {
-            _registers[registerId].symbol->buildConstraint(c, type, result);
-        }
         
         inline void moveRegister(uint8_t dstId, uint8_t srcId) {
             _registers[dstId] = _registers[srcId];
         }
         
         inline uint32_t getRegisterUInt(uint8_t registerId) const {
-            return _registers[registerId].value;
+            return _registers[registerId].getValue();
         }
         
         inline void setRegisterUInt(uint8_t registerId, uint32_t value) {
-            _registers[registerId].value = value;
-            _registers[registerId].freeSymbol();
+            _registers[registerId].setValue(value);
+            _registers[registerId].clearSymbol();
         }
         
         inline int32_t getRegisterInt(int8_t registerId) const {
-            return _registers[registerId].value;
+            return _registers[registerId].getValue();
         }
         
         inline void setRegisterInt(int8_t registerId, int32_t value) {
-            _registers[registerId].value = value;
-            _registers[registerId].freeSymbol();
+            _registers[registerId].setValue(value);
+            _registers[registerId].clearSymbol();
         }
         
         inline uint8_t getDataByte(size_t location) const {
