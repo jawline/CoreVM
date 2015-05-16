@@ -7,3 +7,6 @@ ReferenceSymbol::ReferenceSymbol(Constraints::Variable var) {
 }
 
 ReferenceSymbol::~ReferenceSymbol() {}
+
+void ReferenceSymbol::addToConstraint(Constraints::Constraint& constraint) {
+}

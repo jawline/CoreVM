@@ -7,6 +7,8 @@ namespace VM {
   class ReferenceSymbol : public CompositeSymbol {
   private:
     Constraints::Variable _variable;
+  protected:
+    virtual void addToConstraint(Constraints::Constraint& constraint);
   public:
     ReferenceSymbol(Constraints::Variable var);
     virtual ~ReferenceSymbol();

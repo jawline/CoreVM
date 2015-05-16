@@ -15,7 +15,7 @@ void printRam(uint8_t const* data, size_t size) {
 
 void printRegisters(VM::RegisterState const* reg) {
 	for (unsigned int i = 0; i < VM::NumRegisters; i++) {
-		if (reg[i].symbolic) {
+		if (reg[i].symbol) {
 			printf("%s:sym ", VM::RegisterUtils::getRegisterName(i));
 		} else {
 			printf("%s:%u ", VM::RegisterUtils::getRegisterName(i), reg[i].value);
