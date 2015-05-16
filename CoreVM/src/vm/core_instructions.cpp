@@ -38,7 +38,13 @@ void Core::jumpRegister() {
 void Core::addImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) + val);
+
+	if (_state->isSymbolic(r1)) {
+		_state->addSymbol(r1, val);
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) + val);
+	}
+
 	setProgramCounter(getProgramCounter() + 6);
 	printf("ADD %i %i\n", r1, val);
 }
@@ -46,7 +52,12 @@ void Core::addImmediate() {
 void Core::subtractImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) - val);
+
+	if (_state->isSymbolic(r1)) {
+		_state->addSymbol(r1, -val);
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) - val);
+	}
 	setProgramCounter(getProgramCounter() + 6);
 	printf("SUB %i %i\n", r1, val);
 }
@@ -70,9 +81,7 @@ void Core::divideImmediate() {
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
 	
 	if (_state->isSymbolic(r1)) {
-		//_state->setSymbolicMultiplier(r1, _state->getSymbolicMultiplier(r1) / val);
-		//TODO: Unimpl
-		printf("UNIMPL DVI\n");
+		_state->divideSymbol(r1, val);
 		printf("SYMBOLIC DIVIDE %i %i\n", r1, val);
 	} else {
 		_state->setRegisterInt(r1, _state->getRegisterInt(r1) / val);
@@ -211,9 +220,9 @@ void Core::jumpEqualImmediateImmediate() {
 		forkState(left, right);
 
 		auto c1 = _state->getSymbol(r1), c2 = c1;
-		c1.setResult(Constraints::Equal, c1.getResult() + val);
+		c1.buildResult(Constraints::Equal, val);
 		left->getProblem()->addConstraint(c2);
-		c2.setResult(Constraints::NotEqual, c1.getResult() + val);
+		c2.buildResult(Constraints::NotEqual, val);
 		right->getProblem()->addConstraint(c2);
 
 		setProgramCounter(left, dst);
@@ -277,9 +286,9 @@ void Core::jumpEqualRegisterImmediate() {
 
 		auto c1 = _state->getSymbol(r1).minus(_state->getSymbol(r2)), c2 = c1;
 		//Generate new constraints
-		c1.setResult(Constraints::Equal, 0);
+		c1.buildResult(Constraints::Equal, 0);
 		left->getProblem()->addConstraint(c1);
-		c2.setResult(Constraints::NotEqual, 0);
+		c2.buildResult(Constraints::NotEqual, 0);
 		right->getProblem()->addConstraint(c2);
 
 		setProgramCounter(left, dst);
@@ -308,9 +317,9 @@ void Core::jumpNotEqualRegisterImmediate() {
 
 		auto c1 = _state->getSymbol(r1).minus(_state->getSymbol(r2)), c2 = c1;
 
-		c1.setResult(Constraints::Equal, 0);
+		c1.buildResult(Constraints::Equal, 0);
 		left->getProblem()->addConstraint(c1);
-		c2.setResult(Constraints::NotEqual, 0);
+		c2.buildResult(Constraints::NotEqual, 0);
 		right->getProblem()->addConstraint(c2);
 
 		setProgramCounter(left, dst);

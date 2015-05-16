@@ -55,8 +55,18 @@ namespace VM {
             return _registers[registerId].isSymbolic();
         }
 
+        inline void addSymbol(uint8_t registerId, int32_t val) {
+            auto c = _registers[registerId].getSymbol();
+            c.setResult(c.getResult() - val);
+            _registers[registerId].setSymbol(c);
+        }
+
         inline void multiplySymbol(uint8_t registerId, int scalar) {
             _registers[registerId].setSymbol(_registers[registerId].getSymbol().scale(scalar));
+        }
+
+        inline void divideSymbol(uint8_t registerId, int scalar) {
+            _registers[registerId].setSymbol(_registers[registerId].getSymbol().scale(1.0 / scalar));
         }
 
         inline Constraints::Constraint getSymbol(uint8_t registerId) const {

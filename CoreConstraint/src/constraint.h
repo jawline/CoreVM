@@ -43,7 +43,7 @@ namespace Constraints {
 		 * Set the result to be compared against
 		 */
 		void setResult(double endValue);
-		void setResult(ComparisonType type, double endValue);
+		void buildResult(ComparisonType type, double comparisonValue);
 
 		/**
 		 * Get the constraint result

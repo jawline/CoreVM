@@ -163,9 +163,9 @@ Constraint& Constraint::scale(double scalar) {
 	return *this;
 }
 
-void Constraint::setResult(ComparisonType type, double endValue) {
+void Constraint::buildResult(ComparisonType type, double endValue) {
 	setComparisonType(type);
-	setResult(endValue);
+	setResult(getResult() + endValue);
 }
 
 ComparisonType Constraint::getComparisonType() const {
