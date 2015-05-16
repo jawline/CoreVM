@@ -22,3 +22,7 @@ bool Variable::isSigned() const {
 unsigned int Variable::getVariableIndex() const {
 	return _variableIndex;
 }
+
+bool Variable::equals(Variable const& other) const {
+	return _variableIndex == other._variableIndex;
+}

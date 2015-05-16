@@ -28,6 +28,11 @@ namespace Constraints {
 		 * Get this variables index in the problem
 		 */
 		unsigned int getVariableIndex() const;
+
+		/**
+		 * Returns true if its a reference to the same variable
+		 */
+		bool equals(Variable const& other) const;
 	};
 }
 

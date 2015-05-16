@@ -105,6 +105,32 @@ void Constraint::addToTable(Simplex::Table& table, ComparisonType typeOverride) 
 	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, localValue);
 }
 
+void Constraint::combine(Constraint const& other) {
+	for (unsigned int i = 0; i < other._items.size(); i++) {
+		bool exists = false;
+
+		for (unsigned int j = 0; j < _items.size(); j++) {
+			if (_items[j].first.equals(other._items[i].first)) {
+				_items[j].second += other._items[i].second;
+				exists = true;
+			}
+		}
+
+		if (!exists) {
+			_items.push_back(other._items[i]);
+		}
+	}
+
+	_value += other._value;
+}
+
 ComparisonType Constraint::getComparisonType() const {
 	return _type;
+}
+
+void Constraint::scale(double scalar) {
+	for (unsigned int i = 0; i < _items.size(); i++) {
+		_items[i].second *= scalar;
+	}
+	_value *= scalar;
 }

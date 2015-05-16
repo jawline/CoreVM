@@ -69,6 +69,16 @@ namespace Constraints {
 		 * invalid then it will be used instead of the constraints
 		 */
 		void addToTable(Simplex::Table& table, ComparisonType typeOverride = ComparisonType::Invalid) const;
+
+		/**
+		 * Combine this and another constraint
+		 */
+		void combine(Constraint const& other);
+
+		/**
+		 * Scale all values in this constraint
+		 */
+		void scale(double scalar);
 	};
 };
 
