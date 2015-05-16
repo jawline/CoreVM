@@ -8,6 +8,8 @@ namespace VM {
     CompositeSymbol* _symbol;
     //TODO: Pick a type that is equal to a registers size
     int _value;
+  protected:
+  	void addToConstraint(Constraints::Constraint& constraint);
   public:
     AddValueSymbol(CompositeSymbol* symbol, int value);
     virtual ~AddValueSymbol();
