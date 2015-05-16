@@ -4,7 +4,6 @@
 #include <memory>
 #include "registerstate.h"
 #include "registers.h"
-#include "scalesymbol.h"
 
 using namespace std;
 
@@ -57,11 +56,11 @@ namespace VM {
         }
 
         inline void multiplySymbol(uint8_t registerId, int scalar) {
-            _registers[registerId].symbol = new ScaleSymbol(_registers[registerId].symbol, scalar);
+            _registers[registerId].setSymbol(_registers[registerId].getSymbol().scale(scalar));
         }
 
-        inline CompositeSymbol* getSymbol(uint8_t registerId) {
-            return _registers[registerId].symbol;
+        inline Constraints::Constraint getSymbol(uint8_t registerId) const {
+            return _registers[registerId].getSymbol();
         }
 
         inline void buildSymbolConstraint(uint8_t registerId, Constraints::Constraint& c, Constraints::ComparisonType type, int32_t result) {

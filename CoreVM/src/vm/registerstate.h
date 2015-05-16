@@ -1,34 +1,43 @@
 #ifndef _REGISTER_STATE_DEF_H_
 #define _REGISTER_STATE_DEF_H_
 #include <CoreCS/problem.h>
-#include "compositesymbol.h"
 
 namespace VM {
+
     /**
      * RegisterState is used to store registers.
      */
-    struct RegisterState {
+     //TODO: Seperate impl into file
+    class RegisterState {
 
         RegisterState() {
             value = 0;
-            symbol = nullptr;
+            _isSymbol = false;
+
         }
 
-        ~RegisterState() {
-            if (symbol) {
-                delete symbol;
-            }
+        ~RegisterState() {}
+
+        Constraints::Constraint getSymbol() const {
+            return _symbol;
         }
 
-        void freeSymbol() {
-            if (symbol) {
-                delete symbol;
-                symbol = nullptr;
-            }
+        void setSymbol(Constraints::Constraint const& symbol) {
+            _symbol = symbol;
         }
 
-        uint32_t value;
-        CompositeSymbol* symbol;
+        uint32_t getValue() const {
+            return _value;
+        }
+
+        void setValue(uint32_t v) {
+            _value = v;
+        }
+
+    private:
+        uint32_t _value;
+        bool _isSymbol;
+        Constraints::Constraint _symbol;
     };
 }
 

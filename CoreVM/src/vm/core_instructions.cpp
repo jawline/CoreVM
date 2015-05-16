@@ -281,17 +281,15 @@ void Core::jumpEqualRegisterImmediate() {
 		printf("TODO: LEFT CONSTRAINT  r1  = r2\n");
 		printf("TODO: RIGHT CONSTRAINT r1 != r2\n");
 
-		auto tempComposite = new AddSymbol(_state->getSymbol(r1), new ScaleSymbol(_state->getSymbol(r2), -1));
+		auto c = _state->getSymbol(r1).minus(_state->getSymbol(r2));
 
 		//Generate new constraints
-		Constraints::Constraint c1, c2;
-		tempComposite->buildConstraint(c1, Constraints::Equal, 0);
-		tempComposite->buildConstraint(c2, Constraints::NotEqual, 0);
+		Constraints::Constraint c1 = c, c2 = _state->getSymbol();
+		c1.setResult(Constraints::Equal, 0);
+		c2.setResult(Constraints::NotEqual, 0);
 
 		left->getProblem()->addConstraint(c1);
 		right->getProblem()->addConstraint(c2);
-
-		delete tempComposite;
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);
@@ -316,13 +314,13 @@ void Core::jumpNotEqualRegisterImmediate() {
 		forkState(left, right);
 		printf("TODO: LEFT CONSTRAINT  r1  != r2\n");
 		printf("TODO: RIGHT CONSTRAINT r1 = r2\n");
-
-		auto tempComposite = new AddSymbol(_state->getSymbol(r1), new ScaleSymbol(_state->getSymbol(r2), -1));
+		
+		auto c = _state->getSymbol(r1).minus(_state->getSymbol(r2));
 
 		//Generate new constraints
-		Constraints::Constraint c1, c2;
-		tempComposite->buildConstraint(c1, Constraints::Equal, 0);
-		tempComposite->buildConstraint(c2, Constraints::NotEqual, 0);
+		Constraints::Constraint c1 = c, c2 = _state->getSymbol();
+		c1.setResult(Constraints::Equal, 0);
+		c2.setResult(Constraints::NotEqual, 0);
 
 		left->getProblem()->addConstraint(c1);
 		right->getProblem()->addConstraint(c2);

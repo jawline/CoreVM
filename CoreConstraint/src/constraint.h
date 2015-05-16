@@ -43,6 +43,7 @@ namespace Constraints {
 		 * Set the result to be compared against
 		 */
 		void setResult(double endValue);
+		void setResult(ComparisonType type, double endValue);
 
 		/**
 		 * Get the constraint result
@@ -73,7 +74,10 @@ namespace Constraints {
 		/**
 		 * Combine this and another constraint
 		 */
-		void combine(Constraint const& other);
+		void add(Constraint const& other);
+		void minus(Constraint const& other);
+		void multiply(Constraint const& other);
+		void divide(Constraint const& other);
 
 		/**
 		 * Scale all values in this constraint

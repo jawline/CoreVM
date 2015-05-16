@@ -105,7 +105,7 @@ void Constraint::addToTable(Simplex::Table& table, ComparisonType typeOverride) 
 	table.setField(table.getCurrentRow(), ProblemConstants::cResultColumnName, localValue);
 }
 
-void Constraint::combine(Constraint const& other) {
+void Constraint::add(Constraint const& other) {
 	for (unsigned int i = 0; i < other._items.size(); i++) {
 		bool exists = false;
 
@@ -122,6 +122,38 @@ void Constraint::combine(Constraint const& other) {
 	}
 
 	_value += other._value;
+}
+
+void Constraint::minus(Constraint const& other) {
+	for (unsigned int i = 0; i < other._items.size(); i++) {
+		bool exists = false;
+
+		for (unsigned int j = 0; j < _items.size(); j++) {
+			if (_items[j].first.equals(other._items[i].first)) {
+				_items[j].second -= other._items[i].second;
+				exists = true;
+			}
+		}
+
+		if (!exists) {
+			_items.push_back(ConstraintItem(other._items[i].first, -other._items[i].second));
+		}
+	}
+
+	_value -= other._value;
+}
+
+void Constraint::multiply(Constraint const& other) {
+	printf("TODO: Multiply\n");
+}
+
+void Constraint::divide(Constraint const& other) {
+	printf("TODO: Divide\n");
+}
+
+void Constraint::setResult(ComparisonType type, double endValue) {
+	setComparisonType(type);
+	setResult(endValue);
 }
 
 ComparisonType Constraint::getComparisonType() const {
