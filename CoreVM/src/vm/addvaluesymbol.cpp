@@ -10,3 +10,6 @@ AddValueSymbol::AddValueSymbol(CompositeSymbol* symbol, int value) {
 AddValueSymbol::~AddValueSymbol() {
   delete _symbol;
 }
+
+void AddValueSymbol::addToConstraint(Constraints::Constraint& constraint) {
+}
