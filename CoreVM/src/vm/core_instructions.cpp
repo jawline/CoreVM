@@ -93,15 +93,46 @@ void Core::divideImmediate() {
 void Core::greaterThanImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) > val ? 1 : 0);
 	setProgramCounter(getProgramCounter() + 6);
+
+	if (_state->isSymbolic(r1)) {
+		printf("FORKING\n");
+		CoreState *left, *right;
+		forkState(left, right);
+
+		auto c1 = _state->getSymbol(r1), c2 = c1;
+
+		c1.buildResult(Constraints::GreaterThan, val);
+		left->getProblem()->addConstraint(c1);
+		left->setRegisterUInt(r1, 1);
+
+		c2.buildResult(Constraints::LessThanOrEqual, val);
+		right->getProblem()->addConstraint(c2);
+		right->setRegisterUInt(r1, 0);
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) > val ? 1 : 0);
+	}
+
 	printf("GT %i %i\n", r1, val);
 }
 
 void Core::lessThanImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	int32_t val = _state->getDataInt(getProgramCounter()+2);
-	_state->setRegisterInt(r1, _state->getRegisterInt(r1) < val ? 1 : 0);
+
+	if (_state->isSymbolic(r1)) {
+		printf("FORKING\n");
+		CoreState *left, *right;
+		forkState(left, right);
+
+		auto c1 = _state->getSymbol(r1), c2 = c1;
+		c1.buildResult(Constraints::LessThan, val);
+		left->getProblem()->addConstraint(c1);
+		c2.buildResult(Constraints::GreaterThanOrEqual, val);
+		right->getProblem()->addConstraint(c2);
+	} else {
+		_state->setRegisterInt(r1, _state->getRegisterInt(r1) < val ? 1 : 0);
+	}
 	setProgramCounter(getProgramCounter() + 6);
 	printf("LT %i %i\n", r1, val);
 }
@@ -147,6 +178,7 @@ void Core::divideRegister() {
 	bool r2Reg = _state->isSymbolic(r2);
 	
 	if (r1Reg && r2Reg) {
+		printf("NONLINEAR NOT SUPPORTED YET\n");
 	} else if (r1Reg) {
 	} else if (r2Reg) {
 	} else {
@@ -221,7 +253,7 @@ void Core::jumpEqualImmediateImmediate() {
 
 		auto c1 = _state->getSymbol(r1), c2 = c1;
 		c1.buildResult(Constraints::Equal, val);
-		left->getProblem()->addConstraint(c2);
+		left->getProblem()->addConstraint(c1);
 		c2.buildResult(Constraints::NotEqual, val);
 		right->getProblem()->addConstraint(c2);
 
