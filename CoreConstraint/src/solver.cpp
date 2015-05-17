@@ -4,7 +4,7 @@
 
 using namespace Simplex;
 
-bool Solver::_excessiveLogging = true;
+bool Solver::_excessiveLogging = false;
 unsigned int Solver::_lastArtificial = 0;
 
 int Solver::findBasicRow(Table& instance, int col) {
