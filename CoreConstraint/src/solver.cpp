@@ -4,7 +4,7 @@
 
 using namespace Simplex;
 
-bool Solver::_excessiveLogging = false;
+bool Solver::_excessiveLogging = true;
 unsigned int Solver::_lastArtificial = 0;
 
 int Solver::findBasicRow(Table& instance, int col) {
@@ -26,7 +26,7 @@ int Solver::findBasic(Table& instance, int row) {
 
 	//-1 excludes the result row
 	for (unsigned int i = 1; i < instance.getNumColumns(); i++) {
-		if (findBasicRow(instance, i) != -1 && instance.getField(row, i) != 0) {
+		if (findBasicRow(instance, i) != -1 && instance.getField(row, i) == 1) {
 			return i;
 		}
 	}

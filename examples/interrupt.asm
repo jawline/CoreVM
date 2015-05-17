@@ -12,9 +12,6 @@ entry:
 	mov D C
 	gt D 3
 	jeq D 1 exit
-	mov D C
-	gt D 3
-	jeq D 0 exit
 fail:
 	int 2
 exit:
