@@ -2,7 +2,7 @@
 
 Toy assembler for producing CoreVM machine code.
 
-To build run make fro this directory
+To build run make from this directory
 
 Dependancies:
 Requires on CoreVM header files being installed (sudo make install from CoreVM folder)
