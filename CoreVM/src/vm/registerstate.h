@@ -11,7 +11,7 @@ namespace VM {
     class RegisterState {
 public:
         RegisterState() : 
-            _symbol(z3::context().bool_const("bummer")) {
+            _symbol(z3::context().bool_const("dummy_symbol")) {
             _value = 0;
             _isSymbol = false;
         }
