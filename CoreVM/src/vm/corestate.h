@@ -2,6 +2,7 @@
 #define _CORE_STATE_DEF_H_
 #include <cstdint>
 #include <memory>
+#include <z3++.h>
 #include "registerstate.h"
 #include "registers.h"
 
@@ -15,6 +16,11 @@ namespace VM {
          * Last symbol created
          */
         static unsigned long _lastSymbol;
+
+        /**
+         * Constraint solver context
+         */
+        z3::context _z3Context;
         
         /**
          * Current register data
@@ -32,11 +38,6 @@ namespace VM {
          */
         bool _copyDataOnWrite;
         
-        /**
-         * The current symbolic state
-         */
-        Constraints::Problem _symState;
-        
         void copyData();
         
         public:
@@ -47,29 +48,24 @@ namespace VM {
         
         void makeSymbolic(uint8_t registerId);
         
-        Constraints::Problem* getProblem() {
-            return &_symState;
-        }
-        
         inline bool isSymbolic(uint8_t registerId) {
             return _registers[registerId].isSymbolic();
         }
 
         inline void addSymbol(uint8_t registerId, int32_t val) {
-            auto c = _registers[registerId].getSymbol();
-            c.setResult(c.getResult() - val);
+            auto c = _registers[registerId].getSymbol() + val;
             _registers[registerId].setSymbol(c);
         }
 
         inline void multiplySymbol(uint8_t registerId, int scalar) {
-            _registers[registerId].setSymbol(_registers[registerId].getSymbol().scale(scalar));
+            _registers[registerId].setSymbol(_registers[registerId].getSymbol() * scalar);
         }
 
         inline void divideSymbol(uint8_t registerId, int scalar) {
-            _registers[registerId].setSymbol(_registers[registerId].getSymbol().scale(1.0 / scalar));
+            _registers[registerId].setSymbol(_registers[registerId].getSymbol() / scalar);
         }
 
-        inline Constraints::Constraint getSymbol(uint8_t registerId) const {
+        inline z3::expr getSymbol(uint8_t registerId) const {
             return _registers[registerId].getSymbol();
         }
         

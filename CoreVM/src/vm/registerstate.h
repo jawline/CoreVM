@@ -1,35 +1,34 @@
 #ifndef _REGISTER_STATE_DEF_H_
 #define _REGISTER_STATE_DEF_H_
 #include <CoreCS/problem.h>
+#include <z3++.h>
 
 namespace VM {
 
     /**
      * RegisterState is used to store registers.
      */
-     //TODO: Seperate impl into file
     class RegisterState {
 public:
-        RegisterState() {
+        RegisterState(z3::context context) {
             _value = 0;
             _isSymbol = false;
-
+            _symbol = context.bool_const("lsadl");
         }
 
         ~RegisterState() {}
 
-        Constraints::Constraint getSymbol() const {
+        z3::expr getSymbol() const {
             return _symbol;
         }
 
-        void setSymbol(Constraints::Constraint const& symbol) {
+        void setSymbol(z3::expr const& symbol) {
             _symbol = symbol;
             _isSymbol = true;
         }
 
         void clearSymbol() {
             _isSymbol = false;
-            _symbol = Constraints::Constraint();
         }
 
         uint32_t getValue() const {
@@ -47,7 +46,7 @@ public:
     private:
         uint32_t _value;
         bool _isSymbol;
-        Constraints::Constraint _symbol;
+        z3::expr _symbol;
     };
 }
 
