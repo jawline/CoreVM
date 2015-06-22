@@ -100,15 +100,7 @@ void Core::greaterThanImmediate() {
 		CoreState *left, *right;
 		forkState(left, right);
 
-		auto c1 = _state->getSymbol(r1), c2 = c1;
-
-		c1.buildResult(Constraints::GreaterThan, val);
-		left->getProblem()->addConstraint(c1);
-		left->setRegisterUInt(r1, 1);
-
-		c2.buildResult(Constraints::LessThanOrEqual, val);
-		right->getProblem()->addConstraint(c2);
-		right->setRegisterUInt(r1, 0);
+		#pragma message "TODO: GreaterThanImmediate"
 	} else {
 		_state->setRegisterInt(r1, _state->getRegisterInt(r1) > val ? 1 : 0);
 	}
@@ -125,11 +117,7 @@ void Core::lessThanImmediate() {
 		CoreState *left, *right;
 		forkState(left, right);
 
-		auto c1 = _state->getSymbol(r1), c2 = c1;
-		c1.buildResult(Constraints::LessThan, val);
-		left->getProblem()->addConstraint(c1);
-		c2.buildResult(Constraints::GreaterThanOrEqual, val);
-		right->getProblem()->addConstraint(c2);
+		#pragma message "TODO: LessThanImmediate"
 	} else {
 		_state->setRegisterInt(r1, _state->getRegisterInt(r1) < val ? 1 : 0);
 	}
@@ -251,12 +239,7 @@ void Core::jumpEqualImmediateImmediate() {
 		CoreState *left, *right;
 		forkState(left, right);
 
-		auto c1 = _state->getSymbol(r1), c2 = c1;
-		c1.buildResult(Constraints::Equal, val);
-		left->getProblem()->addConstraint(c1);
-		c2.buildResult(Constraints::NotEqual, val);
-		right->getProblem()->addConstraint(c2);
-
+		#pragma message "TODO: JumpEqualImmediateImmediate"
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 10);
 	} else { //Not symbolic, do normal jump
@@ -316,12 +299,7 @@ void Core::jumpEqualRegisterImmediate() {
 		CoreState *left, *right;
 		forkState(left, right);
 
-		auto c1 = _state->getSymbol(r1).minus(_state->getSymbol(r2)), c2 = c1;
-		//Generate new constraints
-		c1.buildResult(Constraints::Equal, 0);
-		left->getProblem()->addConstraint(c1);
-		c2.buildResult(Constraints::NotEqual, 0);
-		right->getProblem()->addConstraint(c2);
+		#pragma message "TODO: JumpEqualRegisterImmediate"
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);
@@ -347,12 +325,7 @@ void Core::jumpNotEqualRegisterImmediate() {
 		printf("TODO: LEFT CONSTRAINT  r1  != r2\n");
 		printf("TODO: RIGHT CONSTRAINT r1 = r2\n");
 
-		auto c1 = _state->getSymbol(r1).minus(_state->getSymbol(r2)), c2 = c1;
-
-		c1.buildResult(Constraints::Equal, 0);
-		left->getProblem()->addConstraint(c1);
-		c2.buildResult(Constraints::NotEqual, 0);
-		right->getProblem()->addConstraint(c2);
+		#pragma message "TODO: jumpNotEqualRegisterImmediate"
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);

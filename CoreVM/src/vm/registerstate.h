@@ -10,10 +10,10 @@ namespace VM {
      */
     class RegisterState {
 public:
-        RegisterState(z3::context context) {
+        RegisterState(z3::context* context) : 
+            _symbol(context->bool_const("bummer")) {
             _value = 0;
             _isSymbol = false;
-            _symbol = context.bool_const("lsadl");
         }
 
         ~RegisterState() {}

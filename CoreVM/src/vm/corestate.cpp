@@ -11,20 +11,17 @@ CoreState::CoreState(uint8_t* data, unsigned int size) {
 	_data = shared_ptr<uint8_t>(data);
 	_dataSize = size;
 	_copyDataOnWrite = false;
+	_z3Context = new z3::context;
 }
 
 CoreState::CoreState(CoreState* existing) {
 	_registers = new RegisterState[NumRegisters];
 
-	for (unsigned int i = 0; i < NumRegisters; i++) {
-		_registers[i] = existing->_registers[i];
-	}
-
 	_data = existing->_data;
 	_dataSize = existing->_dataSize;
 	_copyDataOnWrite = true;
-
 	_symState = existing->_symState;
+	_z3Context = existing->_z3Context;
 
 	//TODO: This makes the data copy if either state writes to data, ideally the other state
 	//would own the data and this state would watch for writes and make a copy then to save
@@ -42,7 +39,7 @@ CoreState::CoreState(CoreState& existing) {
 	_data = existing._data;
 	_dataSize = existing._dataSize;
 	_copyDataOnWrite = true;
-
+	_z3Context = existing._z3Context;
 	_symState = existing._symState;
 
 	//TODO: This makes the data copy if either state writes to data, ideally the other state
@@ -53,6 +50,7 @@ CoreState::CoreState(CoreState& existing) {
 
 CoreState::~CoreState() {
 	delete[] _registers;
+	delete _z3Context;
 }
 
 void CoreState::makeSymbolic(uint8_t registerId) {

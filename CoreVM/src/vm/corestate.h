@@ -20,7 +20,7 @@ namespace VM {
         /**
          * Constraint solver context
          */
-        z3::context _z3Context;
+        z3::context* _z3Context;
         
         /**
          * Current register data
