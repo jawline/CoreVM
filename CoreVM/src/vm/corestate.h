@@ -20,7 +20,7 @@ namespace VM {
         /**
          * Constraint solver context
          */
-        z3::context* _z3Context;
+        std::shared_ptr<z3::context> _z3Context;
         
         /**
          * Current register data
