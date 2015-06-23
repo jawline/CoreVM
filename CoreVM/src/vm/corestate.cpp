@@ -11,7 +11,7 @@ CoreState::CoreState(uint8_t* data, unsigned int size) {
 	_data = shared_ptr<uint8_t>(data);
 	_dataSize = size;
 	_copyDataOnWrite = false;
-	_z3Context = new z3::context;
+	_z3Context = std::shared_ptr<z3::context>(new z3::context());
 }
 
 CoreState::CoreState(CoreState* existing) {
@@ -50,14 +50,11 @@ CoreState::CoreState(CoreState& existing) {
 
 CoreState::~CoreState() {
 	delete[] _registers;
-	delete _z3Context;
 }
 
 void CoreState::makeSymbolic(uint8_t registerId) {
-	auto var = getProblem()->createVariable("symreg" + std::to_string(_lastSymbol++));
-	auto constraint = Constraints::Constraint();
-	constraint.addItem(var, 1);
-	_registers[registerId].setSymbol(constraint);
+	auto var = _z3Context->mk_symbol("symreg" + std::to_string(_lastSymbol++));
+	_registers[registerId].setSymbol(var);
 }
 
 void CoreState::copyData() {
