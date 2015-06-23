@@ -299,6 +299,8 @@ void Core::jumpEqualRegisterImmediate() {
 		CoreState *left, *right;
 		forkState(left, right);
 
+		z3::expr conditionEq = _state->getSymbol(r1) == _state->getSymbol(r2);
+		z3::expr conditionNeq = _state->getSymbol(r1) != _state->getSymbol(r2);
 		#pragma message "TODO: JumpEqualRegisterImmediate"
 
 		setProgramCounter(left, dst);
