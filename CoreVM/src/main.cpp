@@ -38,8 +38,6 @@ void printInterrupt(VM::Core* c) {
 	 */
 	printf("RAM contents execution\n");
 	printRam(c->getState()->getData(), c->getState()->getDataSize());
-
-	printf("%s", c->getState()->getProblem()->toString().c_str());
 }
 
 void makeSymbolic(VM::Core* c) {
@@ -47,7 +45,7 @@ void makeSymbolic(VM::Core* c) {
 }
 
 void failureState(VM::Core* c) {
-	if (c->getState()->getProblem()->isSatisfiable()) {
+	if (c->getState()->isSatisfiable()) {
 		printf("------------------------------------------------\n");
 		printf("-           FAILURE            STATE           -\n");
 		printf("------------------------------------------------\n");

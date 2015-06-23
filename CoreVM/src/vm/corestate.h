@@ -121,6 +121,7 @@ namespace VM {
         RegisterState const* getRegisters() const;
         uint8_t const* getData() const;
         unsigned int getDataSize() const;
+        bool isSatisfiable();
     };
 }
 
