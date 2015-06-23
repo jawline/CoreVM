@@ -317,8 +317,11 @@ void Core::jumpNotEqualRegisterImmediate() {
 	uint8_t r1 = _state->getDataByte(getProgramCounter()+1);
 	uint8_t r2 = _state->getDataByte(getProgramCounter()+2);
 	uint32_t dst = _state->getDataUInt(getProgramCounter()+3);
+	
+	bool r1Sym = _state->isSymbolic(r1);
+	bool r2Sym = _state->isSymbolic(r2);
 
-	if (_state->isSymbolic(r1) && _state->isSymbolic(r2)) {
+	if (r1Sym && r2Sym) {
 		printf("FORKING\n");
 		CoreState *left, *right;
 		forkState(left, right);
@@ -329,6 +332,10 @@ void Core::jumpNotEqualRegisterImmediate() {
 
 		setProgramCounter(left, dst);
 		setProgramCounter(right, getProgramCounter(right) + 7);
+	} else if (r1Sym) {
+		#pragma message "TODO: jumpNotEqualRegisterImmediate 1 sym"
+	} else if (r2Sym) {
+		#pragma message "TODO: jumpNotEqualRegisterImmediate 1 sym (2nd)"
 	} else {
 		if (_state->getRegisterUInt(r1) != _state->getRegisterUInt(r2)) {
 			setProgramCounter(dst);
