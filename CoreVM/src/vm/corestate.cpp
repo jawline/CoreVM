@@ -53,7 +53,7 @@ CoreState::~CoreState() {
 }
 
 void CoreState::makeSymbolic(uint8_t registerId) {
-	auto var = _z3Context->mk_symbol("symreg" + std::to_string(_lastSymbol++));
+	auto var = _z3Context->int_const("symreg" + std::to_string(_lastSymbol++));
 	_registers[registerId].setSymbol(var);
 }
 
